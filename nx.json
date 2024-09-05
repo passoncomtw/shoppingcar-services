@@ -1,0 +1,73 @@
+{
+  "extends": "nx/presets/npm.json",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudAccessToken": "ZTM0NTM0N2YtNDMxZC00Y2U4LWJjMTMtZWE5OTM3OTZmODM5fHJlYWQtd3JpdGU=",
+  "namedInputs": {
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"]
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/jest/plugin",
+      "options": {
+        "targetName": "test"
+      },
+      "exclude": ["packages/shoppingcar-service-e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/expo/plugin",
+      "options": {
+        "startTargetName": "start",
+        "buildTargetName": "build",
+        "prebuildTargetName": "prebuild",
+        "serveTargetName": "serve",
+        "installTargetName": "install",
+        "exportTargetName": "export",
+        "submitTargetName": "submit",
+        "runIosTargetName": "run-ios",
+        "runAndroidTargetName": "run-android"
+      }
+    },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
+    }
+  ],
+  "targetDefaults": {
+    "e2e-ci--**/*": {
+      "dependsOn": ["^build"]
+    }
+  },
+  "generators": {
+    "@nx/react": {
+      "application": {
+        "babel": true,
+        "style": "css",
+        "linter": "eslint",
+        "bundler": "webpack"
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  }
+}
