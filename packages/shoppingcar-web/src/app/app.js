@@ -1,48 +1,30 @@
-import NxWelcome from './nx-welcome';
+import * as React from "react";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
+import { AuthProvider, Layout, RequireAuth } from "./navigations";
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import PublicScreen  from "./screens/PublicScreen";
 
-import { Route, Routes, Link } from 'react-router-dom';
-export function App() {
+export default function App() {
   return (
-    <div>
-      <NxWelcome title="shoppingcar-web" />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
-      </div>
+    <AuthProvider>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div>
-              This is the generated root route.{' '}
-              <Link to="/page-2">Click here for page 2.</Link>
-            </div>
-          }
-        />
-        <Route
-          path="/page-2"
-          element={
-            <div>
-              <Link to="/">Click here to go back to root page.</Link>
-            </div>
-          }
-        />
+        <Route exact element={<Layout />}>
+          <Route path="/" element={<PublicScreen />} />
+          <Route path="/login" element={<LoginScreen />} />
+          <Route
+            path="/protected"
+            element={
+              <RequireAuth>
+                <HomeScreen />
+              </RequireAuth>
+            }
+          />
+        </Route>
       </Routes>
-      {/* END: routes */}
-    </div>
+    </AuthProvider>
   );
 }
-export default App;
