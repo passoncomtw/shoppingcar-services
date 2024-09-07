@@ -7,32 +7,61 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+# 描述問題
 
-**To Reproduce**
+描述內容
+
+**問題重現**
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+# 修改後 API 文件內容
 
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+## 功能
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser [e.g. chrome, safari]
- - Version [e.g. 22]
+功能描述
 
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser [e.g. stock browser, safari]
- - Version [e.g. 22]
+### ROUTE AND HEADERS
 
-**Additional context**
-Add any other context about the problem here.
+* Route: 
+* Method:
+* Authorization: false
+
+### Request
+
+* phone
+  * 手機號碼格式檢查
+* password
+  * 6~20 英數混合
+
+```json
+{
+  "phone": "0987654321",
+  "password": "a12345678"
+}
+```
+
+### Response
+
+* token - 使用者的 token 令牌
+  * 不會超時
+* user - 使用者的資訊
+  * id - 使用者 id
+  * phone - 使用者電話
+  * name - 使用者名稱
+
+```json
+{
+  "token": "string",
+  "user": {
+    "id": "1",
+    "phone": "0987654321",
+    "name": "testdemo001"
+  }
+}
+```
+
+**參考資料**
