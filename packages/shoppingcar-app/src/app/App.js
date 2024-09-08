@@ -200,7 +200,7 @@ export const App = () => {
                 style={[styles.listItem, styles.learning]}
                 onPress={() =>
                   Linking.openURL(
-                    'https://nx.dev/nx-api/expo/documents/overview'
+                    'https://nx.dev/recipes/react/react-native#react-native-with-nx'
                   )
                 }
               >

@@ -3,15 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@react-native/metro-config": "*",
     "@testing-library/jest-native": "*",
     "@testing-library/react-native": "*",
-    "metro-config": "*",
+    "react": "*",
     "react-native": "*",
-    "expo": "*",
     "react-native-svg": "*",
-    "react-native-web": "*"
-  },
-  "scripts": {
-    "eas-build-post-install": "cd ../../ && node tools/scripts/eas-build-post-install.mjs . packages/shoppingcar-app"
+    "metro-config": "*"
   }
 }
