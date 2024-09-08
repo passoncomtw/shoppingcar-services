@@ -36,3 +36,9 @@ and replace it with:
 
 renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={key} {...props} />,
 ```
+
+[Future chore - BottomNavigation: React 18.3 to warn about spreading key props in](https://github.com/callstack/react-native-paper/issues/4401)
+
+## Android build error
+
+[fix error](https://github.com/facebook/react-native/issues/46069#issuecomment-2298066865)

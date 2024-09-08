@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/accessible-emoji */
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
   StyleSheet,
 } from 'react-native';
@@ -12,6 +12,7 @@ import { AuthNavigation, UnauthNavigation } from './constants/naviagtions';
 
 export const App = () => {
   const { auth } = store.getState();
+  console.log("🚀 ~ App ~ auth:", auth)
   return (
     <NavigationContainer>
       <Provider store={store}>
