@@ -99,3 +99,40 @@ before update
 on order_items
 for each row
 execute function moddatetime(updated_at);
+
+-- Table Definition
+CREATE TABLE "public"."shoppingcars" (
+    "id" int generated always as identity primary key UNIQUE,
+    "user_id" int NOT NULL, -- COMMENT '會員id, users.id',
+    "product_count" int NOT NULL, --  COMMENT '產品數量'
+    "total_amount" decimal(10,2) DEFAULT 0, -- 購物車總額
+    "created_at" TIMESTAMP default current_timestamp,
+    "updated_at" TIMESTAMP default null,
+    CONSTRAINT fk_orders_users FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+create trigger tri_bu_shoppingcars_updated_at
+before update
+on shoppingcars
+for each row
+execute function moddatetime(updated_at);
+
+-- Table Definition
+CREATE TABLE "public"."shoppingcar_items" (
+    "id" int generated always as identity primary key UNIQUE,
+    "product_id" int NOT NULL, -- COMMENT '產品id, products.id'
+    "merchant_id" int NOT NULL, --  COMMENT '商家id, merchants.id'
+    "shoppingcar_id" int NOT NULL, --  COMMENT '購物車id, shoppingcars.id'
+    "count" numeric NOT NULL, -- COMMENT '產品價格'
+    "created_at" TIMESTAMP default current_timestamp,
+    "updated_at" TIMESTAMP default null,
+    CONSTRAINT fk_shoppingcar_items_products FOREIGN KEY(product_id) REFERENCES products(id),
+    CONSTRAINT fk_shoppingcar_items_merchants FOREIGN KEY(merchant_id) REFERENCES merchants(id),
+    CONSTRAINT fk_shoppingcar_items_shoppingcars FOREIGN KEY(shoppingcar_id) REFERENCES shoppingcars(id)
+);
+
+create trigger tri_bu_shoppingcar_items_updated_at
+before update
+on shoppingcar_items
+for each row
+execute function moddatetime(updated_at);
