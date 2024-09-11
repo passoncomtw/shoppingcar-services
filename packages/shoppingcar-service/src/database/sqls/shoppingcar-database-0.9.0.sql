@@ -99,3 +99,21 @@ before update
 on order_items
 for each row
 execute function moddatetime(updated_at);
+
+DROP TABLE IF EXISTS "public"."backend_users";
+-- This script only contains the table creation statements and does not fully represent the table in the database. Do not use it as a backup.
+
+-- Table Definition
+CREATE TABLE "public"."backend_users" (
+    "id" int generated always as identity primary key UNIQUE,
+    "account" varchar(30) NOT NULL, -- COMMENT '後台使用者帳號'
+    "password" varchar(255) NOT NULL, -- COMMENT '後台使用者密碼'
+    "created_at" TIMESTAMP default current_timestamp,
+    "updated_at" TIMESTAMP default null,
+);
+
+create trigger tri_bu_backend_users_updated_at
+before update
+on backend_users
+for each row
+execute function moddatetime(updated_at);
