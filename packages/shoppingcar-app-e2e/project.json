@@ -1,0 +1,9 @@
+{
+  "name": "shoppingcar-app-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "packages/shoppingcar-app-e2e/src",
+  "implicitDependencies": ["shoppingcar-app"],
+  "// targets": "to see all targets run: nx show project shoppingcar-app-e2e --web",
+  "targets": {}
+}

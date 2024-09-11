@@ -1,22 +1,11 @@
-const crypto = require('crypto');
+import hmacSHA512 from 'crypto-js/hmac-sha512';
 
 const {SALT_SECRET} = process.env;
 
 const debugLog = msg => console.log(`[debug] ${msg}`);
 
-const sha512 = function(password, salt){
-  const hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
-  hash.update(password);
-  const value = hash.digest('hex');
-  return {
-      salt:salt,
-      passwordHash:value.toString()
-  };
-};
-
 const saltHashPassword = (userpassword) => {
-  const  passwordData = sha512(userpassword, SALT_SECRET);
-  return passwordData.passwordHash
+  return hmacSHA512(userpassword, SALT_SECRET).toString();
 }
 
 module.exports.debugLog = debugLog;
