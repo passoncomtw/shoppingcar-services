@@ -25,7 +25,10 @@ DROP TABLE IF EXISTS "public"."merchants";
 -- Table Definition
 CREATE TABLE "public"."merchants" (
     "id" int generated always as identity primary key UNIQUE,
-    "name" varchar(30) NOT NULL, -- COMMENT '商家名稱',
+    "name" varchar(30) NOT NULL, -- COMMENT 商家名稱,
+    "password" varchar(30) NOT NULL, -- COMMENT 後台登入密碼,
+    "phone" varchar(30) NOT NULL, -- COMMENT 商家聯絡手機,
+    "email" varchar(30) NOT NULL, -- COMMENT 商家 Email,
     "created_at" TIMESTAMP default current_timestamp,
     "updated_at" TIMESTAMP default NULL
 );
@@ -65,7 +68,9 @@ DROP TABLE IF EXISTS "public"."orders";
 -- Table Definition
 CREATE TABLE "public"."orders" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid() UNIQUE,
-    "user_id" int NOT NULL, -- COMMENT '會員id, users.id',
+    "user_id" int NOT NULL, -- COMMENT '會員id, users.id'
+    "product_count" NUMERIC DEFAULT 0, -- COMMENT 產品數量
+    "total_amount" NUMERIC DEFAULT 0, -- COMMENT 訂單總額
     "created_at" TIMESTAMP default current_timestamp,
     "updated_at" TIMESTAMP default null,
     CONSTRAINT fk_orders_users FOREIGN KEY(user_id) REFERENCES users(id)
