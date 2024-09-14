@@ -23,7 +23,9 @@
     {
       "plugin": "@nx/jest/plugin",
       "options": {
-        "targetName": "test"
+        "targetName": "test",
+        "ci": true,
+        "detectOpenHandles": true
       },
       "exclude": ["packages/shoppingcar-service-e2e/**/*"]
     },
