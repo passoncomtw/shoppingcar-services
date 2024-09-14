@@ -68,8 +68,6 @@ const LineLogin = ({
         )
         .then((res) => {
           if (setPayload) setPayload(res.data);
-
-          console.log("🚀 ~ .then ~ res.data:", res.data)
           // try {
           //   const decodedIdToken = jwt.verify(res.data.id_token, clientSecret, {
           //     algorithms: ['HS256'],

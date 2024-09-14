@@ -8,7 +8,6 @@ const { parseUserResponse } = require("../../services/userServices");
 const { signinRequestSchema } = require("../../helpers/schemas");
 
 const { AUTH_SECRET } = process.env;
-console.log("🚀 ~ AUTH_SECRET:", AUTH_SECRET)
 
 /**
  * @typedef LoginRequest
@@ -58,9 +57,7 @@ export const loginRoute = async (req, res, next) => {
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
-  console.log("🚀 ~ passport.authenticate ~ error:123")
   passport.authenticate("local", { session: false }, async (error, user) => {
-    console.log("🚀 ~ passport.authenticate ~ error:", error)
     try {
       if (error) throw error;
       if(isEmpty(user)) {
