@@ -2,49 +2,15 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const pick = require("lodash/pick");
-const yup = require("yup");
+const isEmpty = require("lodash/isEmpty");
 
-const { responseOk, responseErrWithMsg } = require("../helpers/response");
-const { parseUserResponse } = require("../services/userServices");
-const { jwtAuthorizationMiddleware } = require("../helpers/passportManager");
+const { responseOk, responseErrWithMsg } = require("../../helpers/response");
+const { parseUserResponse } = require("../../services/userServices");
+const { signinRequestSchema } = require("../../helpers/schemas");
 
 const router = express.Router();
 
 const { AUTH_SECRET } = process.env;
-
-/**
- * @typedef LogoutRequest
- * @property {boolean} success.required
- *   - logout response status
- *   - eg: true
- */
-
-
-/**
- * Logout API.
- * @group authorization
- * @route POST /auth/logout
- * @returns {LogoutResponse.model} 200 - success, return requested data
- * @returns {String} 400 - invalid request params/query/body
- * @returns {String} 404 - required data not found
- * @returns {Error} 500 - unexpected error
- * @security JWT
- * @typedef LogoutResponse
- * @property {{integer}} code - response code - eg: 200
- */
-
-router.post("/logout", jwtAuthorizationMiddleware, async (req, res) => {
-try{
-  return responseOk(res, { success: true });
-} catch (error) {
-  return responseErrWithMsg(res, error.message);
-}
-});
-
-const loginRequestSchema = yup.object({
-  phone: yup.string().required('電話或密碼不可為空'),
-  password: yup.string().required('電話或密碼不可為空'),
-});
 
 /**
  * @typedef LoginRequest
@@ -63,18 +29,21 @@ const loginRequestSchema = yup.object({
  *  - eg: 1
  * @property {string} phone.required
  *  - member.phone
+ *  - eg: 0987654321
+ * @property {string} name.required
+ *  - member name
+ *  - eg: testdemo001
  */
 
 /**
  * @typedef LoginResponse
  * @property {[string]} token.required - JWT token string
- * @property {{integer}} expiredIn.required - JWT expired timestamp
- * @property {MemberInformation.model} info.required - member information
+ * @property {MemberInformation.model} user.required - member information
  */
 
 /**
  * LogIn API.
- * @group authorization
+ * @group AppAuthorization
  * @route POST /auth
  * @param {LoginRequest.model} data.body.required - the new point
  * @returns {LoginResponse.model} 200 - success, return requested data
@@ -85,10 +54,19 @@ const loginRequestSchema = yup.object({
  * @typedef LoginResponse
  * @property {{integer}} code - response code - eg: 200
  */
-router.post("/", (req, res) => {
-  return passport.authenticate("local", { session: false }, async (error, user) => {
+export const loginRoute = async (req, res) => {
+  try {
+    await signinRequestSchema.validate(req.body);
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+  
+  passport.authenticate("local", { session: false }, async (error, user) => {
     try {
       if (error) throw error;
+      if(isEmpty(user)) {
+        throw new Error("使用者不存在");
+      }
       // const expireIn = add(new Date(), { days: 1 }).getTime();
 
       const signInfo = pick(user, ["id", "phone"]);
@@ -102,14 +80,11 @@ router.post("/", (req, res) => {
 
       return responseOk(res,  {
           token,
-          expireIn: null,
           user: parseUserResponse(user),
         });
     } catch (error) {
-      return responseErrWithMsg(res, error.message);
+      responseErrWithMsg(res, error.message);
     }
   })(req, res);
-});
+};
 
-module.exports = router;
-export default router;

@@ -11,7 +11,7 @@ module.exports = {
       compiler: 'tsc',
       main: './src/main.js',
       tsConfig: './tsconfig.app.json',
-      assets: ['./src/assets'],
+      assets: ['./src/assets', './src/controllers', './src/database', './src/helpers', './src/services', './src/.sequelizerc'],
       optimization: false,
       outputHashing: 'none',
       generatePackageJson: true,
