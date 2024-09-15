@@ -1,0 +1,9 @@
+{
+  "name": "shoppingcar-servcie",
+  "description": "購物車 RESTFul API",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "test:CI": "CI=true jest test --color --reporters=jest-junit --forceExit --runInBand --coverage --coverageDirectory=output/coverage/jest --reporters default jest-stare"
+  }
+}
