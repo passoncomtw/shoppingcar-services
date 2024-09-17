@@ -12,7 +12,6 @@ import { AuthNavigation, UnauthNavigation } from './constants/naviagtions';
 
 export const App = () => {
   const { auth } = store.getState();
-  console.log("🚀 ~ App ~ auth:", auth)
   return (
     <NavigationContainer>
       <Provider store={store}>
