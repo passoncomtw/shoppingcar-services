@@ -39,8 +39,7 @@ const parseUserResponse = (userResult) => {
   const userResponse = pick(userResult, [
     "id",
     "phone",
-    "email",
-    "createAt",
+    "name",
   ]);
   return userResponse;
 };

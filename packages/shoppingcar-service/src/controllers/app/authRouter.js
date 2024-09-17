@@ -67,9 +67,10 @@ export const loginRoute = async (req, res) => {
       if(isEmpty(user)) {
         throw new Error("使用者不存在");
       }
+      console.log("🚀 ~ passport.authenticate ~ user:", user)
       // const expireIn = add(new Date(), { days: 1 }).getTime();
 
-      const signInfo = pick(user, ["id", "phone"]);
+      const signInfo = pick(user, ["id", "phone", "name"]);
       const token = jwt.sign(
         {
           data: signInfo,

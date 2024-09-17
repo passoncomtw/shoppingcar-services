@@ -4,6 +4,7 @@
   "private": true,
   "version": "0.1.0",
   "scripts": {
-    "test:CI": "CI=true jest test --color --reporters=jest-junit --forceExit --runInBand --coverage --coverageDirectory=output/coverage/jest --reporters default jest-stare"
+    "test:CI": "CI=true jest test --color --reporters=jest-junit --forceExit --runInBand --coverage --coverageDirectory=output/coverage/jest --reporters default jest-stare",
+    "db:seeder": "cd database && npx sequelize-cli db:seed:all && cd .."
   }
 }
