@@ -44,7 +44,7 @@ const { AUTH_SECRET } = process.env;
 /**
  * LogIn API.
  * @group AppAuthorization
- * @route POST /auth
+ * @route POST /app/login
  * @param {LoginRequest.model} data.body.required - the new point
  * @returns {LoginResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
@@ -61,7 +61,7 @@ export const loginRoute = async (req, res) => {
     return responseErrWithMsg(res, error.message);
   }
   
-  passport.authenticate("local", { session: false }, async (error, user) => {
+  passport.authenticate("app-user", { session: false }, async (error, user) => {
     try {
       if (error) throw error;
       if(isEmpty(user)) {
