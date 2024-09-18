@@ -9,4 +9,5 @@ module.exports = {
   testResultsProcessor: "../../node_modules/jest-junit-reporter",
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/shoppingcar-service',
+  maxWorkers: 1,
 };

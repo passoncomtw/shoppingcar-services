@@ -1,10 +1,15 @@
 require("dotenv").config({ path: "../../.env" })
-const server = require("../main")
+const server = require("../../../main")
 const request = require('supertest').agent(server);
 const isEmpty = require("lodash/isEmpty");
 const isNumber = require("lodash/isNumber");
 
 describe("測試 Authorization 功能", () => {
+  afterAll((done) => {
+    server.close();
+    done();
+  });
+
   it("should app user login failed, cos password is empty.", async () => {
     return request
       .post("/app/login")
