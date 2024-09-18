@@ -9,6 +9,11 @@ const signinRequestSchema = yup.object({
   password: yup.string().matches(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/, '密碼必須是 6~20 英數混合').required("密碼不可為空"),
 });
 
+const consoleSigninRequestSchema = yup.object({
+  account: yup.string().required("帳號不可為空"),
+  password: yup.string().matches(/^(?=.*\d)(?=.*[a-zA-Z]).{6,20}$/, '密碼必須是 6~20 英數混合').required("密碼不可為空"),
+});
+
 const registeRequestSchema = yup.object({
   phone: yup.string().required("電話不可為空"),
   name: yup.string().required("暱稱不可為空"),
@@ -24,3 +29,4 @@ module.exports.phoneNumberSchema = phoneNumberSchema;
 module.exports.signinRequestSchema = signinRequestSchema;
 module.exports.registeRequestSchema = registeRequestSchema;
 module.exports.updateUserRequestSchema = updateUserRequestSchema;
+module.exports.consoleSigninRequestSchema = consoleSigninRequestSchema;

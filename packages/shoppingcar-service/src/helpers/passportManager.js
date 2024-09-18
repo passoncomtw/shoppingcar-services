@@ -4,6 +4,7 @@ const isEmpty = require('lodash/isEmpty');
 const LocalStrategy = require('passport-local').Strategy;
 const { saltHashPassword } = require('./utils');
 const { getUserWithPasswordBy } = require('../services/userServices');
+const { getBackendUserWithPasswordBy } = require('../services/backenduserService');
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
@@ -19,23 +20,22 @@ const validateUserAndPassword = (user, password) => {
   return { validated: true };
 }
 
-passport.use(
+passport.use('console-user',
   new LocalStrategy(
     {
       usernameField: 'account',
       passwordField: 'password'
     },
     async (account, password, done) => {
-      // const user = await getUserWithPasswordBy(phone);
-      // const { validated } = validateUserAndPassword(user, password);
+      const backendUser = await getBackendUserWithPasswordBy(account);
+      const { validated } = validateUserAndPassword(backendUser, password);
 
-      // if (!validated) {
-      //   const message = '使用者不存在或密碼錯誤';
-      //   const notfoundError = new Error(message);
-      //   return done(notfoundError, null, { message });
-      // }
-      // return done(null, user);
-      done(null, {message: "mock user"});
+      if (!validated) {
+        const message = '使用者不存在或密碼錯誤';
+        const notfoundError = new Error(message);
+        return done(notfoundError, null, { message });
+      }
+      return done(null, backendUser);
     }
   )
 );

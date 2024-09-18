@@ -4,45 +4,42 @@ import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 
 const { responseOk, responseErrWithMsg } = require("../../helpers/response");
-const { parseUserResponse } = require("../../services/userServices");
-const { signinRequestSchema } = require("../../helpers/schemas");
+const { consoleSigninRequestSchema } = require("../../helpers/schemas");
 
 const { AUTH_SECRET } = process.env;
 
 /**
- * @typedef LoginRequest
- * @property {string} phone.required
+ * @typedef ConsoleLoginRequest
+ * @property {string} account.required
  *   - auth0 Response.sub
- *   - eg: 0987654321
+ *   - eg: admin
  * @property {string} password.required
  *   - password: 6 ~ 20 個英數組合
  *   - eg: a12345678
  */
 
 /**
- * @typedef MemberInformation
+ * @typedef ConsoleMemberInformation
  * @property {number} id.required
- *  - member Id
+ *  - console member Id
  *  - eg: 1
- * @property {string} phone.required
- *  - member.phone
- *  - eg: 0987654321
- * @property {string} name.required
- *  - member name
- *  - eg: testdemo001
+ * @property {string} account.required
+ *  - console member account
+ *  - eg: admin
  */
 
 /**
  * @typedef LoginResponse
  * @property {[string]} token.required - JWT token string
- * @property {MemberInformation.model} user.required - member information
+ * @property {ConsoleMemberInformation.model} user.required 
+ *  - console member information
  */
 
 /**
  * LogIn API.
  * @group ConsoleAuthorization
  * @route POST /console/login
- * @param {LoginRequest.model} data.body.required - the new point
+ * @param {ConsoleLoginRequest.model} data.body.required - the new point
  * @returns {LoginResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
@@ -53,11 +50,11 @@ const { AUTH_SECRET } = process.env;
  */
 export const loginRoute = async (req, res, next) => {
   try {
-    await signinRequestSchema.validate(req.body);
+    await consoleSigninRequestSchema.validate(req.body);
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
-  passport.authenticate("local", { session: false }, async (error, user) => {
+  passport.authenticate("console-user", { session: false }, async (error, user) => {
     try {
       if (error) throw error;
       if(isEmpty(user)) {
@@ -65,7 +62,7 @@ export const loginRoute = async (req, res, next) => {
       }
       // const expireIn = add(new Date(), { days: 1 }).getTime();
 
-      const signInfo = pick(user, ["id", "phone"]);
+      const signInfo = pick(user, ["id", "account"]);
       const token = jwt.sign(
         {
           data: signInfo,
@@ -76,7 +73,7 @@ export const loginRoute = async (req, res, next) => {
 
       return responseOk(res,  {
           token,
-          user: parseUserResponse(user),
+          user: signInfo,
         });
     } catch (error) {
       responseErrWithMsg(res, error.message);

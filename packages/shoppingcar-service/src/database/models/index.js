@@ -17,7 +17,9 @@ const userModelFunc = require("./userModelFunc");
 const userModel = userModelFunc(sequelize, Sequelize.DataTypes);
 db.User = userModel;
 
-
+const backendUserModelFunc = require("./backendUserModelFunc");
+const BackendUserModel = backendUserModelFunc(sequelize, Sequelize.DataTypes);
+db.BackendUser = BackendUserModel;
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
