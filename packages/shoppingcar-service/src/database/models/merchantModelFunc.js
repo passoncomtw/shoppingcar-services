@@ -1,13 +1,24 @@
 const { saltHashPassword } = require("../../helpers/utils");
 
 module.exports = (sequelize, DataTypes) => {
-  const BackendUser = sequelize.define(
-    "BackendUser",
+  const Merchant = sequelize.define(
+    "Merchant",
     {
-      account: {
-        field: "account",
+      name: {
+        field: "name",
         type: DataTypes.STRING,
-        length: 20,
+        length: 30,
+      },
+      phone: {
+        field: "phone",
+        type: DataTypes.STRING,
+        length: 30,
+        unique: true,
+      },
+      email: {
+        field: "email",
+        type: DataTypes.STRING,
+        length: 30,
         unique: true,
       },
       password: {
@@ -20,13 +31,13 @@ module.exports = (sequelize, DataTypes) => {
       },
     }, {
     sequelize,
-    tableName: "backend_users",
+    tableName: "merchants",
     timestamps: true,
     underscored: true,
     freezeTableName: true,
   });
 
-  BackendUser.associate = function (models) {
+  Merchant.associate = function (models) {
     // User.hasMany(models.Contract, {
     //   as: 'contracts',
     //   foreignKey: {
@@ -37,5 +48,5 @@ module.exports = (sequelize, DataTypes) => {
     // });
   };
 
-  return BackendUser;
+  return Merchant;
 };

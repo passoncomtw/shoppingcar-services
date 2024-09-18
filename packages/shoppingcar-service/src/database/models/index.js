@@ -1,7 +1,5 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
 const Sequelize = require('sequelize');
 const config = require('../config/config');
 const db = {};
@@ -20,6 +18,10 @@ db.User = userModel;
 const backendUserModelFunc = require("./backendUserModelFunc");
 const BackendUserModel = backendUserModelFunc(sequelize, Sequelize.DataTypes);
 db.BackendUser = BackendUserModel;
+
+const merchantModelFunc = require("./merchantModelFunc");
+const MerchantModel = merchantModelFunc(sequelize, Sequelize.DataTypes);
+db.Merchant = MerchantModel;
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

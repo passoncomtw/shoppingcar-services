@@ -6,14 +6,13 @@
 import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
-import passport from 'passport';
 import cookieParser from 'cookie-parser';
 import * as path from 'path';
 import appRouter from './controllers/app';
 import consoleRouter from './controllers/console';
-import userRouter from './controllers/userRouter';
 import seaggerUI from 'express-swagger-generator';
 import packageJson from '../../../package.json';
+import './helpers/passportManager';
 
 const {NODE_ENV = "development", APP_DOMAIN} = process.env;
 
@@ -65,7 +64,6 @@ app.get('/api', (req, res) => {
 
 app.use('/app', appRouter);
 app.use('/console', consoleRouter);
-app.use('/users', passport.authenticate('jwt', { session: false }), userRouter);
 
 seaggerUI(app)(swaggerOptions);
 
