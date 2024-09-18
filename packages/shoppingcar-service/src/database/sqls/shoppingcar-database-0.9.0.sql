@@ -27,8 +27,8 @@ CREATE TABLE "public"."merchants" (
     "id" int generated always as identity primary key UNIQUE,
     "name" varchar(30) NOT NULL, -- COMMENT 商家名稱,
     "password" varchar(30) NOT NULL, -- COMMENT 後台登入密碼,
-    "phone" varchar(30) NOT NULL, -- COMMENT 商家聯絡手機,
-    "email" varchar(30) NOT NULL, -- COMMENT 商家 Email,
+    "phone" varchar(30) NOT NULL UNIQUE, -- COMMENT 商家聯絡手機,
+    "email" varchar(30) NOT NULL UNIQUE, -- COMMENT 商家 Email,
     "created_at" TIMESTAMP default current_timestamp,
     "updated_at" TIMESTAMP default NULL
 );
@@ -38,6 +38,10 @@ before update
 on merchants
 for each row
 execute function moddatetime(updated_at);
+
+-- Indices
+CREATE UNIQUE INDEX merchants_email_key ON public.merchants USING btree (email);
+CREATE UNIQUE INDEX merchants_phone_key ON public.merchants USING btree (phone);
 
 DROP TABLE IF EXISTS "public"."products";
 -- This script only contains the table creation statements and does not fully represent the table in the database. Do not use it as a backup.
