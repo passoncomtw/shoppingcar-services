@@ -63,7 +63,13 @@ const createMerchantRoute = async (req, res, user) => {
       item
     });
   } catch(error) {
-    return responseErrWithMsg(res, error.message);
+    const err = error.errors[0];
+    if (err.message) {
+      return responseErrWithMsg(res, err.message);
+    } else {
+      return responseErrWithMsg(res, err);
+    }
+    
   }
 };
 
