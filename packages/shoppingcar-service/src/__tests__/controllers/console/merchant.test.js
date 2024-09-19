@@ -3,6 +3,8 @@ const server = require("../../../main")
 const request = require('supertest').agent(server);
 const isEmpty = require("lodash/isEmpty");
 const isNumber = require("lodash/isNumber");
+const isString = require("lodash/isString");
+const isBoolean = require("lodash/isBoolean");
 const { removeMerchantsServices } = require("../../../services/merchantServices");
 
 const mockMerchant = {
@@ -245,6 +247,25 @@ describe("測試 後台商家 功能", () => {
         const { data } = res.body;
         expect(data).not.toBe(null);
         expect(data.message).toBe("email must be unique");
+      })
+  });
+  it("should get console merchants success.", async () => {
+    return request
+      .get("/console/merchants")
+      .set({ Authorization: token })
+      .query({pageSize: 2})
+      .expect(200)
+      .then((res) => {
+        expect(res.statusCode).toBe(200);
+        const { items, totalCount, pageInfo } = res.body;
+
+        expect(items.length).toBe(2);
+        expect(isNumber(totalCount)).toBe(true);
+        expect(isEmpty(pageInfo)).toBe(false);
+        expect(isBoolean(pageInfo.hasNextPage)).toBe(true);
+        expect(isBoolean(pageInfo.hasPreviousPage)).toBe(true);
+        expect(isString(pageInfo.startCursor)).toBe(true);
+        expect(isString(pageInfo.endCursor)).toBe(true);
       })
   });
 });
