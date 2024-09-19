@@ -1,3 +1,4 @@
+const { makePaginate } = require('sequelize-cursor-pagination');
 const { saltHashPassword } = require("../../helpers/utils");
 
 module.exports = (sequelize, DataTypes) => {
@@ -36,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
+
+  Merchant.paginate = makePaginate(Merchant);
 
   Merchant.associate = function (models) {
     // User.hasMany(models.Contract, {

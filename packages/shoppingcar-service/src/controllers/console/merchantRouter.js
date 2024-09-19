@@ -1,7 +1,23 @@
 const pick = require("lodash/pick");
 const { responseErrWithMsg, responseOk } = require("../../helpers/response");
 const { createMerchantRequestSchema } = require("../../helpers/schemas");
-const { createMerchantService } = require("../../services/merchantServices");
+const { createMerchantService, getMerchantsServices } = require("../../services/merchantServices");
+
+/**
+ * @typedef PageInfoItem
+ * @property {boolean} hasNextPage.required
+ *   - 是否有下一頁
+ *   - eg: true
+ * @property {boolean} hasPreviousPage.required
+ *   - 是否有下一頁
+ *   - eg: true
+ * @property {string} startCursor.required
+ *   - 開始第一筆的錨點
+ *   - eg: WzU3XQ==
+ * @property {string} endCursor.required
+ *   - 最後一筆的錨點
+ *   - eg: WzU3XQ==
+ */
 
 /**
  * @typedef ConsoleCreateMerchantRequest
@@ -36,6 +52,17 @@ const { createMerchantService } = require("../../services/merchantServices");
  */
 
 /**
+ * @typedef ConsoleMerchantsResponse
+ * @property {Array<ConsoleMerchantInformation>} items.required
+ *   - merchant items
+ * @property {integer} totalCount.required
+ *   - Total Count
+ *   - eg: 100
+ * @property {PageInfoItem.model} pageInfo.required
+ *   - 分頁資訊
+ */
+
+/**
  * @typedef ConsoleCreateMerchantResponse
  * @property {ConsoleMerchantInformation.model} item.required 
  *  - console merchant information
@@ -54,7 +81,7 @@ const { createMerchantService } = require("../../services/merchantServices");
  * @typedef ConsoleCreateMerchantResponse
  * @property {{integer}} code - response code - eg: 200
  */
-const createMerchantRoute = async (req, res, user) => {
+const createMerchantRoute = async (req, res) => {
   try {
     const createMerchantRequest = await createMerchantRequestSchema.validate(req.body);
     const result = await createMerchantService(createMerchantRequest);
@@ -69,8 +96,36 @@ const createMerchantRoute = async (req, res, user) => {
     } else {
       return responseErrWithMsg(res, err);
     }
-    
   }
 };
 
+
+/**
+ * Get Merchants API.
+ * @group ConsoleMerchant
+ * @route GET /console/merchants
+ * @param {Number} pageSize.query
+ *   - 每頁回傳幾筆資料
+ *   - eg: 10
+ * @param {String} endCursor.query
+ *   - 結束的標的 pageInfo.endCursor
+ *   - eg: 10
+ * @returns {ConsoleMerchantsResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleMerchantsResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getMerchantsRoute = async (req, res) => {
+  try {
+    const result = await getMerchantsServices(req.query);
+    return responseOk(res,  result);
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
+module.exports.getMerchantsRoute = getMerchantsRoute;
 module.exports.createMerchantRoute = createMerchantRoute;
