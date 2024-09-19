@@ -73,6 +73,138 @@ describe("測試 後台商家 功能", () => {
       })
   });
 
+  it("should create console merchant fail. cos 店家密碼為空 ", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: mockMerchant.phone,
+        name: mockMerchant.name,
+        email: mockMerchant.email,
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("密碼不可為空");
+      })
+  });
+
+  it("should create console merchant fail. cos 店家密碼只有7個英文字母 ", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: mockMerchant.phone,
+        name: mockMerchant.name,
+        email: mockMerchant.email,
+        password: "aaaaaaa"
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("密碼必須是 6~20 英數混合");
+      })
+  });
+
+  it("should create console merchant fail. cos 店家密碼只有7個數字 ", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: mockMerchant.phone,
+        name: mockMerchant.name,
+        email: mockMerchant.email,
+        password: "1111111"
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("密碼必須是 6~20 英數混合");
+      })
+  });
+
+  it("should create console merchant fail. cos 店家密碼只有5個英文數字混合 ", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: mockMerchant.phone,
+        name: mockMerchant.name,
+        email: mockMerchant.email,
+        password: "a12345"
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("密碼必須是 6~20 英數混合");
+      })
+  });
+
+  it("should create console merchant fail. cos 店家密碼有21個英文數字混合 ", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: mockMerchant.phone,
+        name: mockMerchant.name,
+        email: mockMerchant.email,
+        password: "a12345678901234567890"
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("密碼必須是 6~20 英數混合");
+      })
+  });
+
+  it("should create console merchant fail. cos 店家信箱格式錯誤", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: mockMerchant.phone,
+        name: mockMerchant.name,
+        email: "abcdewaaa",
+        password: mockMerchant.password
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("Email 格式錯誤");
+      })
+  });
+
+  it("should create console merchant fail. cos 店家手機格式錯誤", async () => {
+    return request
+      .post("/console/merchants")
+      .set({ Authorization: token })
+      .send({
+        phone: "1111111111",
+        name: mockMerchant.name,
+        email: mockMerchant.email,
+        password: mockMerchant.password
+      })
+      .expect(400)
+      .then((res) => {
+        expect(res.statusCode).toBe(400);
+        const { data } = res.body;
+        expect(data).not.toBe(null);
+        expect(data.message).toBe("電話格式錯誤");
+      })
+  });
+
   it("should create console merchant success.", async () => {
     return request
       .post("/console/merchants")
