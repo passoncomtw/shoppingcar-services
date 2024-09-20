@@ -27,7 +27,6 @@ const LoginScreen = (props) => {
             password: "",
           }}
           onSubmit={(values) => {
-            console.log("🚀 ~ LoginScreen ~ values:", values)
             props.handleSubmit(values);
           }}
         >

@@ -1,7 +1,17 @@
 import { applyMiddleware, compose, createStore } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import {persistStore, persistReducer} from 'redux-persist';
+import storage from 'redux-persist/lib/storage'
 import rootReducer from '../reducers';
 import rootSaga from '../sagas';
+
+
+const persistConfig = {
+  key: '!@#$ConsolestoreCache',
+  version: 1,
+  storage,
+  blacklist: [] // What you don't wanna to persist
+};
 
 const configureStore = () => {
   const sagaMiddleware = createSagaMiddleware({});
@@ -12,9 +22,10 @@ const configureStore = () => {
       sagaMiddleware,
     ];
 
+  const persistedReducer = persistReducer(persistConfig, rootReducer);
   const store = {
     ...createStore(
-      rootReducer,
+      persistedReducer,
       composeEnhancers(applyMiddleware(...middlewares))
     ),
     runSaga: sagaMiddleware.run(rootSaga)
@@ -30,4 +41,6 @@ const configureStore = () => {
   return store;
 };
 
-export default configureStore;
+export const store = configureStore();
+export const persistor = persistStore(store);
+
