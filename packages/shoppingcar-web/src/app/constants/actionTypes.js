@@ -4,10 +4,7 @@ const syncActionTypes = [
 ];
 
 export const basicAsyncActionTypes = [
-  'SIGN_IN',
-  'CREATE_TODO',
-  'UPDATE_TODO',
-  'GET_TODO',
+  'SIGNIN',
 ];
 
 export const asyncActionTypes = basicAsyncActionTypes.reduce((result, actionType) => {

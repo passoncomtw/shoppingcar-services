@@ -1,14 +1,16 @@
-import * as React from "react";
+import { useSelector } from "react-redux";
 import {
-  Link,
-  useNavigate,
-  useLocation,
   Navigate,
   Outlet,
+  useLocation,
 } from "react-router-dom";
-import { fakeAuthProvider } from "../constants/auth";
 
-export function Layout() {
+export function PublicLayout() {
+  const isAuth = useSelector(({auth}) => auth.isAuth);
+  const location = useLocation();
+
+  if (isAuth) return <Navigate to="/protected" state={{ from: location }} replace />;
+
   return (
     <div>
       <Outlet />
@@ -16,45 +18,14 @@ export function Layout() {
   );
 }
 
-let AuthContext = React.createContext(null);
+export function PrivateLayout() {
+  const isAuth = useSelector(({auth}) => auth.isAuth);
+  const location = useLocation();
+  if (!isAuth) return <Navigate to="/login" state={{ from: location }} replace />;
 
-export function AuthProvider({ children }) {
-  let [user, setUser] = React.useState(null);
-
-  let signin = (newUser, callback) => {
-    return fakeAuthProvider.signin(() => {
-      setUser(newUser);
-      callback();
-    });
-  };
-
-  let signout = (callback) => {
-    return fakeAuthProvider.signout(() => {
-      setUser(null);
-      callback();
-    });
-  };
-
-  let value = { user, signin, signout };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth() {
-  return React.useContext(AuthContext);
-}
-
-export function RequireAuth({ children }) {
-  let auth = useAuth();
-  let location = useLocation();
-
-  if (!auth.user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
-
-  return children;
+  return (
+    <div>
+      <Outlet />
+    </div>
+  );
 }

@@ -1,35 +1,12 @@
-import { put, call } from 'redux-saga/effects';
+import { signinResult } from "../../apis/api";
 import types from "../constants/actionTypes";
+import fetchAPIResult from '../helpers/sagaHelper';
 
-const mockLogin = () => new Promise(resolve =>
-  setTimeout(() => {
-    resolve();
-  }, 1000)
-);
-
-const okSignIn = () => {  
-  return {
-    type: types.SIGN_IN_SUCCESS,
-    payload: {
-      isAuth: true
-    }
-  };
-}
-
-const errSignIn = () => {
-  return {
-    type: types.SIGN_IN_ERROR,
-    payload: {
-      isAuth: true
-    }
-  };
-};
-
-export function* SignInSaga() {
-  try {
-    yield call(mockLogin);
-    yield put(okSignIn());
-  } catch (error) {
-    yield put(errSignIn(error));
-  }
+export function* signinSaga({payload}) {
+  return yield fetchAPIResult({
+    actionType: types.SIGNIN,
+    apiResult: signinResult,
+    payload,
+    action: types.SIGNIN,
+  });
 }

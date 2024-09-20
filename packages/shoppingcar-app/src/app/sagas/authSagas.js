@@ -1,6 +1,9 @@
 import { put } from 'redux-saga/effects';
 import types from '../constants/actionTypes';
 
+export function signinSaga() {
+  
+}
 const okLogin = () => ({
   type: types.LOGIN_SUCCESS,
   payload: {},

@@ -1,5 +1,6 @@
 const authState = {
   isAuth: false,
+  user: {},
 };
 
 const todoState = {
