@@ -1,4 +1,4 @@
-import { signinResult } from "../../apis/api";
+import { signinResult } from "../apis/api";
 import types from "../constants/actionTypes";
 import fetchAPIResult from '../helpers/sagaHelper';
 

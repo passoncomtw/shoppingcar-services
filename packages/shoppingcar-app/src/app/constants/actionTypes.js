@@ -6,8 +6,7 @@ const syncActionTypes = [
 ];
 
 export const basicAsyncActionTypes = [
-  'LOGIN',
-  'LOGOUT',
+  'SIGNIN',
   // 'INITIAL_APP',
 ];
 

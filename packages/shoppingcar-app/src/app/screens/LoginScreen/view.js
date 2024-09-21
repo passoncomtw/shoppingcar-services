@@ -7,25 +7,14 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import TextInput from '../../components/TextInput';
 import {theme} from '../../constants/core/theme';
-import {emailValidator} from '../../utils/emailValidator';
-import {passwordValidator} from '../../utils/passwordValidator';
 
-export default function LoginScreen({navigation}) {
-  const [email, setEmail] = useState({value: '', error: ''});
+export default function LoginScreen(props) {
+  const {navigation, handleSubmit} = props;
+  const [phone, setPhone] = useState({value: '', error: ''});
   const [password, setPassword] = useState({value: '', error: ''});
 
   const onLoginPressed = () => {
-    const emailError = emailValidator(email.value);
-    const passwordError = passwordValidator(password.value);
-    if (emailError || passwordError) {
-      setEmail({...email, error: emailError});
-      setPassword({...password, error: passwordError});
-      return;
-    }
-    navigation.reset({
-      index: 0,
-      routes: [{name: 'Dashboard'}],
-    });
+    handleSubmit({phone, password});
   };
 
   return (
@@ -35,14 +24,14 @@ export default function LoginScreen({navigation}) {
       <TextInput
         label="Email"
         returnKeyType="next"
-        value={email.value}
-        onChangeText={(text) => setEmail({value: text, error: ''})}
-        error={!!email.error}
-        errorText={email.error}
+        value={phone.value}
+        onChangeText={(text) => setPhone({value: text, error: ''})}
+        error={!!phone.error}
+        errorText={phone.error}
         autoCapitalize="none"
-        autoCompleteType="email"
-        textContentType="emailAddress"
-        keyboardType="email-address"
+        autoCompleteType="phone"
+        textContentType="Phone"
+        keyboardType="emai"
       />
       <TextInput
         label="Password"
@@ -53,12 +42,6 @@ export default function LoginScreen({navigation}) {
         errorText={password.error}
         secureTextEntry
       />
-      <View style={styles.forgotPassword}>
-        <TouchableOpacity
-          onPress={() => navigation.navigate('ResetPasswordScreen')}>
-          <Text style={styles.forgot}>Forgot your password?</Text>
-        </TouchableOpacity>
-      </View>
       <Button mode="contained" onPress={onLoginPressed}>
         Login
       </Button>

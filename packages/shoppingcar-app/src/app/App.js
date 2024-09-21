@@ -7,7 +7,7 @@ import {
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
-import store, { persistor } from './store/configureStore';
+import { store, persistor } from './store/configureStore';
 import { AuthNavigation, UnauthNavigation } from './constants/naviagtions';
 
 export const App = () => {
