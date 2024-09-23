@@ -4,11 +4,18 @@ import {
   StyleSheet,
 } from 'react-native';
 
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer } from '@react-navigation/native';
 import { store, persistor } from './store/configureStore';
 import { AuthNavigation, UnauthNavigation } from './constants/naviagtions';
+
+const SwitchNavigation = () => {
+  const isAuth = useSelector(({auth}) => auth.isAuth);
+
+  if (isAuth) return <AuthNavigation />;
+  return <UnauthNavigation />;
+}
 
 export const App = () => {
   const { auth } = store.getState();
@@ -16,11 +23,7 @@ export const App = () => {
     <NavigationContainer>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          {
-            auth.isAuth
-              ? <AuthNavigation />
-              : <UnauthNavigation />
-          }
+          <SwitchNavigation />
         </PersistGate>
       </Provider>
     </NavigationContainer>
