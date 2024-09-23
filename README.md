@@ -42,3 +42,9 @@ renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={
 ## Android build error
 
 [fix error](https://github.com/facebook/react-native/issues/46069#issuecomment-2298066865)
+
+## Redux Devtool
+
+[react-native-get-random-values](https://github.com/LinusU/react-native-get-random-values)
+[@redux-devtools/remote](https://github.com/reduxjs/redux-devtools/tree/main/packages/redux-devtools-remote)
+[redux-devtool fixed issue](https://github.com/reduxjs/redux-devtools/issues/1382#issuecomment-1615995161)

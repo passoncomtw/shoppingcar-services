@@ -1,4 +1,4 @@
-export const DOMAIN = process.env.NX_PUBLIC_CONSOLE_DOMAIN;
+import {DOMAIN} from '../../config/config';
 
 const parseJsonString = (jsonStr) => {
   try {

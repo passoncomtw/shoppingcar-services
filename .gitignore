@@ -118,3 +118,6 @@ output
 junit.xml
 jest-stare
 test-report.xml
+
+# Configs
+**/shoppingcar-app/src/app/config/config.js

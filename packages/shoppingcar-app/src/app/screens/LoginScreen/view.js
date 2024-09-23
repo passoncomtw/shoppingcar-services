@@ -14,7 +14,7 @@ export default function LoginScreen(props) {
   const [password, setPassword] = useState({value: '', error: ''});
 
   const onLoginPressed = () => {
-    handleSubmit({phone, password});
+    handleSubmit({phone: phone.value, password: password.value});
   };
 
   return (
@@ -22,7 +22,7 @@ export default function LoginScreen(props) {
       <Logo />
       <Header>Welcome back.</Header>
       <TextInput
-        label="Email"
+        label="Phone"
         returnKeyType="next"
         value={phone.value}
         onChangeText={(text) => setPhone({value: text, error: ''})}
