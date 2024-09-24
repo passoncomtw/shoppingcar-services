@@ -58,6 +58,9 @@ jobs:
           file: ./deploy/${{ env.IMAGE_NAME }}/Dockerfile
           push: true
           tags: passon/${{ env.IMAGE_NAME }}:latest
+      - name: remove docker image
+        run: |
+          docker image rm passon/${{ env.IMAGE_NAME }} || echo "remove docker image finish"
   # do-deployment:
   #   needs: build-and-deploy-shoppingcar-service
   #   if: github.event.pull_request.merged == true
