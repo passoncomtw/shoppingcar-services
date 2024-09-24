@@ -5,15 +5,17 @@ env:
   IMAGE_NAME: shoppingcar-service
 
 on:
-  pull_request:
-    types: 
-      - closed
-    branches:
-      - main
-    paths:
-      - 'deploy/shoppingcar-service/*'
-      - 'packages/shoppingcar-service/**'
-      - '.github/workflows/build-backend-api-prod.yml'      
+  push:
+    - develop
+  # pull_request:
+  #   types: 
+  #     - closed
+  #   branches:
+  #     - main
+  #   paths:
+  #     - 'deploy/shoppingcar-service/*'
+  #     - 'packages/shoppingcar-service/**'
+  #     - '.github/workflows/build-backend-api-prod.yml'      
 
 jobs:
   # This workflow contains multiple jobs
