@@ -34,7 +34,8 @@ jobs:
       - name: unlock-keychain-db
         run: |
           security unlock-keychain -p ${{ secrets.MAC_USER_PASSWORD }} /Users/admin/Library/Keychains/login.keychain-db
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+          chsh -s $(which zsh)
+          source ~/.zshrc
           nvm install 20.17.0
       - name: install dependences
         run: |
