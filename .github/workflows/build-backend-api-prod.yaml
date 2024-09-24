@@ -6,7 +6,8 @@ env:
 
 on:
   push:
-    - develop
+    branches:
+      - develop
   # pull_request:
   #   types: 
   #     - closed
