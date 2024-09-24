@@ -30,9 +30,6 @@ jobs:
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
-      - name: unlock-keychain-db
-        run: |
-          security unlock-keychain -p ${{ secrets.MAC_USER_PASSWORD }} /Users/admin/Library/Keychains/login.keychain-db
       - name: install dependences
         run: |
           ls
