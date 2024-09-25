@@ -69,7 +69,7 @@ seaggerUI(app)(swaggerOptions);
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+  console.log(`Listening at http://127.0.0.1:${port}/api`);
 });
 server.on('error', console.error);
 
