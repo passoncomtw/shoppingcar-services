@@ -68,8 +68,8 @@ app.use('/console', consoleRouter);
 seaggerUI(app)(swaggerOptions);
 
 const port = process.env.PORT || 3333;
-const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+const server = app.listen(port, '0.0.0.0', () => {
+  console.log(`Listening at http://0.0.0.0:${port}/api`);
 });
 server.on('error', console.error);
 
