@@ -5,24 +5,20 @@ env:
   IMAGE_NAME: shoppingcar-service
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
-  # pull_request:
-  #   types:
-  #     - closed
-  #   branches:
-  #     - main
-  #   paths:
-  #     - 'deploy/shoppingcar-service/*'
-  #     - 'packages/shoppingcar-service/**'
-  #     - '.github/workflows/build-backend-api-prod.yml'
+    types:
+      - closed
+    branches:
+      - main
+    paths:
+      - 'deploy/shoppingcar-service/*'
+      - 'packages/shoppingcar-service/**'
+      - '.github/workflows/build-backend-api-prod.yml'
 
 jobs:
   # This workflow contains multiple jobs
   build-and-deploy-shoppingcar-service:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     # The type of runner that the job will run on
     runs-on: mac-mini-build
     strategy:
@@ -64,7 +60,7 @@ jobs:
           echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}"
   do-deployment:
     needs: build-and-deploy-shoppingcar-service
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
