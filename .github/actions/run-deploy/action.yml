@@ -33,7 +33,8 @@ runs:
           cd ./${{ inputs.folder-name }}
           mv deploy/${{ inputs.module-name }}/docker-compose.yaml .
           rm -rf ./deploy
-          echo ${{ inputs.secrets-env }} > .env
+          echo "${{ inputs.secrets-env }}"
+          echo "${{ inputs.secrets-env }}" > .env
           docker pull passon/${{ inputs.module-name }}
           docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi | echo "remove docker image done"
           docker-compose down || echo "stop docker compose service"
