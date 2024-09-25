@@ -19,7 +19,7 @@ on:
   #     - 'packages/shoppingcar-service/**'
   #     - '.github/workflows/build-backend-api-prod.yml'
 
-jobs:
+# jobs:
   # This workflow contains multiple jobs
   # build-and-deploy-shoppingcar-service:
   #   if: github.event.pull_request.merged == true
@@ -61,6 +61,7 @@ jobs:
   #     - name: remove docker image
   #       run: |
   #         docker image rm passon/${{ env.IMAGE_NAME }} || echo "remove docker image finish"
+jobs:
   do-deployment:
     needs: build-and-deploy-shoppingcar-service
     # if: github.event.pull_request.merged == true
