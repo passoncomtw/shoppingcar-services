@@ -21,68 +21,69 @@ on:
 
 jobs:
   # This workflow contains multiple jobs
-  build-and-deploy-shoppingcar-service:
-    # if: github.event.pull_request.merged == true
-    # The type of runner that the job will run on
-    runs-on: mac-mini-build
-    strategy:
-      matrix:
-        node-version: [20.17.0]
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          # Version Spec of the version to use in SemVer notation.
-          # It also admits such aliases as lts/*, latest, nightly and canary builds
-          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
-          node-version: '20.17.0'
-      - name: unlock-keychain-db
-        run: |
-          security unlock-keychain -p ${{ secrets.MAC_USER_PASSWORD }} /Users/admin/Library/Keychains/login.keychain-db
-          node --version
-      - name: install dependences
-        run: |
-          npx yarn install
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_PASSWORD }}
-
-      - name: Build and push Docker image
-        id: push
-        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
-        with:
-          context: .
-          file: ./deploy/${{ env.IMAGE_NAME }}/Dockerfile
-          push: true
-          tags: passon/${{ env.IMAGE_NAME }}:latest
-      - name: remove docker image
-        run: |
-          docker image rm passon/${{ env.IMAGE_NAME }} || echo "remove docker image finish"
-  # do-deployment:
-  #   needs: build-and-deploy-shoppingcar-service
+  # build-and-deploy-shoppingcar-service:
   #   if: github.event.pull_request.merged == true
-  #   runs-on: ubuntu-latest
+  #   # The type of runner that the job will run on
+  #   runs-on: mac-mini-build
+  #   strategy:
+  #     matrix:
+  #       node-version: [20.17.0]
   #   steps:
-  #   - uses: actions/checkout@v3
-  #   # Copy docker-compose and .env files to target server
-  #   - name: copy files to target server via scp
-  #     uses: appleboy/scp-action@v0.1.3
-  #     with:
-  #       host: ${{ secrets.DEV_HOST }}
-  #       username: root
-  #       port: 22
-  #       key: ${{ secrets.SSH_KEY_DEV_VALUE }}
-  #       source: "./deploy/${{ env.IMAGE_NAME }}/docker-compose.yaml"
-  #       target: "~/todo/${{ env.IMAGE_NAME }}/"
-  #       strip_components: 3
-  #   - name: Deploy newest code to production machine
-  #     uses: ./.github/actions/run-deploy
-  #     with:
-  #       folder-name: todo/${{ env.IMAGE_NAME }}/
-  #       branch-name: main
-  #       module-name: ${{ env.IMAGE_NAME }}
-  #       host-name: ${{ secrets.DEV_HOST }}
-  #       ssh-key: ${{ secrets.SSH_KEY_DEV_VALUE }}
+  #     - name: Check out the repo
+  #       uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         # Version Spec of the version to use in SemVer notation.
+  #         # It also admits such aliases as lts/*, latest, nightly and canary builds
+  #         # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+  #         node-version: '20.17.0'
+  #     - name: unlock-keychain-db
+  #       run: |
+  #         security unlock-keychain -p ${{ secrets.MAC_USER_PASSWORD }} /Users/admin/Library/Keychains/login.keychain-db
+  #         node --version
+  #     - name: install dependences
+  #       run: |
+  #         npx yarn install
+  #     - name: Log in to Docker Hub
+  #       uses: docker/login-action@f4ef78c080cd8ba55a85445d5b36e214a81df20a
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_USERNAME }}
+  #         password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+  #     - name: Build and push Docker image
+  #       id: push
+  #       uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+  #       with:
+  #         context: .
+  #         file: ./deploy/${{ env.IMAGE_NAME }}/Dockerfile
+  #         push: true
+  #         tags: passon/${{ env.IMAGE_NAME }}:latest
+  #     - name: remove docker image
+  #       run: |
+  #         docker image rm passon/${{ env.IMAGE_NAME }} || echo "remove docker image finish"
+  do-deployment:
+    needs: build-and-deploy-shoppingcar-service
+    # if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    # Copy docker-compose and .env files to target server
+    - name: copy files to target server via scp
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.DEV_HOST }}
+        username: root
+        port: 22
+        key: ${{ secrets.SSH_KEY_DEV_VALUE }}
+        source: "./deploy/${{ env.IMAGE_NAME }}/docker-compose.yaml"
+        target: "~/shoppingcar-services/${{ env.IMAGE_NAME }}/"
+        strip_components: 3
+    - name: Deploy newest code to production machine
+      uses: ./.github/actions/run-deploy
+      with:
+        folder-name: shoppingcar-services/${{ env.IMAGE_NAME }}/
+        branch-name: main
+        module-name: ${{ env.IMAGE_NAME }}
+        secrets-env: ${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}
+        host-name: ${{ secrets.DEV_HOST }}
+        ssh-key: ${{ secrets.SSH_KEY_DEV_VALUE }}
