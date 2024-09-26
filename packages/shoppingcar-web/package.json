@@ -1,0 +1,9 @@
+{
+  "name": "shoppingcar-web",
+  "description": "購物車 Console Web",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {},
+  "dependencies": {
+  }
+}
