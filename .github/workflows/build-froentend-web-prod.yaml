@@ -30,6 +30,8 @@ jobs:
             echo "${{ secrets.SHOPPINGCAR_WEB_ENV }}" > ./.env
             yarn install            
             npx nx build shoppingcar-web
+            ls dist/packages/shoppingcar-web
+            cat .env
       - name: copy files to target server via scp
         uses: appleboy/scp-action@v0.1.3
         with:
