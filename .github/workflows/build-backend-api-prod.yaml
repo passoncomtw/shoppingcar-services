@@ -4,6 +4,10 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: shoppingcar-service
 
+permissions:
+  actions: read
+  contents: read
+
 on:
   pull_request:
     types:
