@@ -35,7 +35,7 @@ jobs:
       - name: copy files to target server via scp
         uses: appleboy/scp-action@v0.1.3
         with:
-          host: ${{ secrets.DEV_HOST }}
+          host: ${{ secrets.DEV_FROENT_HOST }}
           username: root
           port: 22
           key: ${{ secrets.SSH_KEY_DEV_VALUE }}
