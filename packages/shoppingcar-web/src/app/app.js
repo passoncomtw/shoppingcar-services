@@ -3,8 +3,9 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import { PublicLayout, PrivateLayout } from "./navigations";
-import HomeScreen from "./screens/HomeScreen";
+import PrivateLayout from "./navigations/layouts/PrivateLayout";
+import PublicLayout from "./navigations/layouts/PublicLayout";
+import MerchantsScreen from "./screens/MerchantsScreen";
 import LoginScreen from "./screens/LoginScreen";
 import PublicScreen from "./screens/PublicScreen";
 
@@ -16,7 +17,7 @@ export default function App() {
         <Route path="/login" element={<LoginScreen />} />
       </Route>
       <Route exact element={<PrivateLayout />}>
-        <Route path="/protected" element={<HomeScreen />} />
+        <Route path="/merchants" element={<MerchantsScreen />} />
       </Route>
     </Routes>
   );

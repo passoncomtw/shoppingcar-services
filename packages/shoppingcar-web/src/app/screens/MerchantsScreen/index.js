@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
-import HomeScreen from './view';
+import MerchantsScreen from './view';
 
 const mapStateToProps = ({ auth }) => ({ auth });
 
 const mapDispatchToProps = () => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MerchantsScreen);
