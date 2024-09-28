@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import todoReducer from './todoReducer';
+import merchantReducer from './merchantReducer';
 import authReducer from './authReduer';
 
 const appReducer = combineReducers({
   auth: authReducer,
-  todo: todoReducer,
+  merchant: merchantReducer,
 });
 
 const rootReducer = (state, action) => {

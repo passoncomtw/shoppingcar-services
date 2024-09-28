@@ -10,9 +10,18 @@ import {
   TableContainer,
   Text,
 } from '@chakra-ui/react';
+import { useEffect } from 'react';
 import { PaginationTable } from "table-pagination-chakra-ui"
 
 const MerchantsScreen = (props) => {
+  useEffect(() => {
+    props.handleGetMerchants({
+      PageSize: 10,
+    })
+  }, []);
+
+  const {merchant} = props;
+
   return (
     <Box marginTop={20} bg='white'>
       <TableContainer>
@@ -27,76 +36,15 @@ const MerchantsScreen = (props) => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
+            {merchant.items.map(item => (
+              <Tr>
+              <Td>{item.name}</Td>
+              <Td>{item.name}</Td>
+              <Td>{item.email}</Td>
+              <Td>{item.phone}</Td>
+              <Td><Text color='#0DC884'>-</Text></Td>
             </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#FF4A46'>停用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#FF8E00'>凍結</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
-            <Tr>
-              <Td>Wendy888</Td>
-              <Td>溫蒂</Td>
-              <Td>wendy888@gmail.com</Td>
-              <Td>0987654321</Td>
-              <Td><Text color='#0DC884'>啟用</Text></Td>
-            </Tr>
+            ))}            
           </Tbody>
         </Table>
       </TableContainer>
@@ -105,8 +53,8 @@ const MerchantsScreen = (props) => {
         setPageSize={() => false}
         pageIndex={1}
         setPageIndex={() => false}
-        totalItemsCount={10}
-        pageSizeOptions={[10, 25, 50]}
+        totalItemsCount={merchant.totalAmount}
+        pageSizeOptions={[10]}
       />
     </Box>
   );

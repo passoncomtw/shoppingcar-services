@@ -4,11 +4,13 @@ import types, { basicAsyncActionTypes } from '../constants/actionTypes';
 import { toCamelStyle } from '../utils/format';
 
 import * as authSagas from './authSagas';
+import * as merchantSagas from './merchantSagas';
 import * as Watchers from "./watchers";
 
 
 const allSaga = {
   ...authSagas,
+  ...merchantSagas,
 };
 
 const getMatchedSaga = (actionType) => {

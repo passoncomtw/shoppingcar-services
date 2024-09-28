@@ -5,6 +5,7 @@ const syncActionTypes = [
 
 export const basicAsyncActionTypes = [
   'SIGNIN',
+  'GET_MERCHANTS',
 ];
 
 export const asyncActionTypes = basicAsyncActionTypes.reduce((result, actionType) => {
