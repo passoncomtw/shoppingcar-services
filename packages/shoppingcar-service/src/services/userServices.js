@@ -1,5 +1,5 @@
-const database = require("../database/models");
-const pick = require("lodash/pick");
+import pick from "lodash/pick";
+import database from "~/database/models";
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -44,7 +44,7 @@ const parseUserResponse = (userResult) => {
   return userResponse;
 };
 
-const createUser = async (userData) => {
+const createUserService = async (userData) => {
   const existUser = await database.User.findOne({ where: {phone: userData.phone} });
   if (existUser) throw new Error("使用者已存在");
 
@@ -52,7 +52,6 @@ const createUser = async (userData) => {
     {
       name: userData.name,
       phone: userData.phone,
-      email: userData.email,
       password: userData.password,
     });
   
@@ -64,7 +63,7 @@ const createUser = async (userData) => {
   };
 };
 
-module.exports.createUser = createUser;
+module.exports.createUserService = createUserService;
 module.exports.getUserByUserId = getUserByUserId;
 module.exports.parseUserResponse = parseUserResponse;
 module.exports.updateUserByUserId = updateUserByUserId;

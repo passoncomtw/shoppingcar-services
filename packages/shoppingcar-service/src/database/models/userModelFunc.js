@@ -1,4 +1,4 @@
-const { saltHashPassword } = require("../../helpers/utils");
+import {saltHashPassword} from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(

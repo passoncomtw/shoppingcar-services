@@ -1,7 +1,6 @@
-'use strict';
+import Sequelize from 'sequelize';
+import config from "~/database/config/config";
 
-const Sequelize = require('sequelize');
-const config = require('../config/config');
 const db = {};
 
 let sequelize;

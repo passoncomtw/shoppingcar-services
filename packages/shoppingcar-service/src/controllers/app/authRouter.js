@@ -1,8 +1,8 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
-const passport = require("passport");
-const pick = require("lodash/pick");
-const isEmpty = require("lodash/isEmpty");
+import express from "express";
+import jwt from 'jsonwebtoken';
+import passport from 'passport';
+import pick from 'lodash/pick';
+import isEmpty from 'lodash/isEmpty';
 
 const { responseOk, responseErrWithMsg } = require("../../helpers/response");
 const { parseUserResponse } = require("../../services/userServices");

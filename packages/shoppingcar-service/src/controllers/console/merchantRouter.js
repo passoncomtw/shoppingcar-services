@@ -1,7 +1,7 @@
-const pick = require("lodash/pick");
-const { responseErrWithMsg, responseOk } = require("../../helpers/response");
-const { createMerchantRequestSchema } = require("../../helpers/schemas");
-const { createMerchantService, getMerchantsServices } = require("../../services/merchantServices");
+import pick from "lodash/pick";
+import {responseErrWithMsg, responseOk} from "~/helpers/response";
+import {createMerchantRequestSchema} from "~/helpers/schemas";
+import {createMerchantService, getMerchantsServices} from "~/services/merchantServices";
 
 /**
  * @typedef PageInfoItem

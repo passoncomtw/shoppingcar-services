@@ -28,8 +28,15 @@ const createMerchantRequestSchema = yup.object({
   password: passwordSchema,
 });
 
+const createUserRequestSchema = yup.object({
+  name: yup.string().required("商家名稱不可為空"),
+  phone: yup.string().required("電話不可為空").matches(phoneRegExp, '電話格式錯誤'),
+  password: passwordSchema,
+});
+
 module.exports.phoneNumberSchema = phoneNumberSchema;
 module.exports.signinRequestSchema = signinRequestSchema;
 module.exports.registeRequestSchema = registeRequestSchema;
 module.exports.consoleSigninRequestSchema = consoleSigninRequestSchema;
 module.exports.createMerchantRequestSchema = createMerchantRequestSchema;
+module.exports.createUserRequestSchema = createUserRequestSchema;

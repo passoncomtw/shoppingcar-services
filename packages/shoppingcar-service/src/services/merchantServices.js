@@ -1,5 +1,4 @@
-const database = require("../database/models");
-const isEmpty = require("lodash/isEmpty");
+import database from "~/database/models";
 
 const createMerchantService = async (createMerchantRequest) => {
   return await database.Merchant.create(createMerchantRequest);

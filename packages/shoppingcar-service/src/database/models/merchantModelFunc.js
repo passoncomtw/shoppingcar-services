@@ -1,5 +1,5 @@
-const { makePaginate } = require('sequelize-cursor-pagination');
-const { saltHashPassword } = require("../../helpers/utils");
+import {makePaginate} from "sequelize-cursor-pagination";
+import {saltHashPassword} from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const Merchant = sequelize.define(
