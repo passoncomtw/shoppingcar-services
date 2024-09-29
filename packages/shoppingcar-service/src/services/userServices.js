@@ -63,9 +63,13 @@ const createUserService = async (userData) => {
   };
 };
 
+const removeUsersService = async (query) => {
+  return await database.User.destroy(query);
+}
+
 module.exports.createUserService = createUserService;
 module.exports.getUserByUserId = getUserByUserId;
 module.exports.parseUserResponse = parseUserResponse;
 module.exports.updateUserByUserId = updateUserByUserId;
 module.exports.getUserWithPasswordBy = getUserWithPasswordBy;
-
+module.exports.removeUsersService = removeUsersService;

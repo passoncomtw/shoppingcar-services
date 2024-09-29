@@ -1,20 +1,20 @@
-require("dotenv").config({ path: "../../.env" })
-const server = require("../../../main")
+require("dotenv").config({ path: "../../.env" });
+const server = require("~/main");
 const request = require('supertest').agent(server);
 const isEmpty = require("lodash/isEmpty");
 const isNumber = require("lodash/isNumber");
 const isString = require("lodash/isString");
 const isBoolean = require("lodash/isBoolean");
-const { removeMerchantsServices } = require("../../../services/merchantServices");
+const { removeMerchantsServices } = require("~/services/merchantServices");
 
 const mockMerchant = {
-  "name": "testmerchant001",
-  "phone": "0987654321",
-  "email": "aaa@bbb.ccc",
-  "password": "a12345678"
+  name: "testmerchant001",
+  phone: "0987654321",
+  email: "aaa@bbb.ccc",
+  password: "a12345678"
 };
 
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjozLCJhY2NvdW50IjoiYWRtaW4ifSwiaWF0IjoxNzI2Njc2NzE1fQ.LRL3UGQH_dbWs-8Bmc1xzeOWV_wa1WTiCuPAJB1bR8Y";
+const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo1LCJhY2NvdW50IjoiYWRtaW4ifSwiaWF0IjoxNzI3NTkzOTg2fQ.4-g06VK7rcNbq7bCz-93Hcy02K3SYACD0tu93sQOCfk";
 
 describe("測試 後台商家 功能", () => {
   afterAll(async () => {

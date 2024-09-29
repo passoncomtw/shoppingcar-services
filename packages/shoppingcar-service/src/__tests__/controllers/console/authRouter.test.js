@@ -1,5 +1,5 @@
-require("dotenv").config({ path: "../../.env" })
-const server = require("../../../main")
+require("dotenv").config({ path: "../../.env" });
+const server = require("~/main");
 const request = require('supertest').agent(server);
 const isEmpty = require("lodash/isEmpty");
 const isNumber = require("lodash/isNumber");
