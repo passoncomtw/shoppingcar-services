@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
 import {responseErrWithMsg, responseOk} from "~/helpers/response";
 import {createUserRequestSchema} from "~/helpers/schemas";
-import {createUserService} from "~/services/userServices";
+import {createUserService, getUsersService} from "~/services/userServices";
 
 
 /**
@@ -37,6 +37,17 @@ import {createUserService} from "~/services/userServices";
  */
 
 /**
+ * @typedef ConsoleGetUserResponse
+ * @property {Array<ConsoleUserInformation>} items.required
+ *   - merchant items
+ * @property {integer} totalCount.required
+ *   - Total Count
+ *   - eg: 100
+ * @property {PageInfoItem.model} pageInfo.required
+ *   - 分頁資訊
+ */
+
+/**
  * Create User API.
  * @group ConsoleUser
  * @route POST /console/users
@@ -62,4 +73,33 @@ const createUserRouter = async (req, res) => {
   }
 };
 
+
+/**
+ * Get User API.
+ * @group ConsoleUser
+ * @route GET /console/users
+ * @param {Number} pageSize.query
+ *   - 每頁回傳幾筆資料
+ *   - eg: 10
+ * @param {String} endCursor.query
+ *   - 結束的標的 pageInfo.endCursor
+ *   - eg: 10
+ * @returns {ConsoleGetUserResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleGetUserResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getUsersRouter = async (req, res) => {
+  try {
+    const result = await getUsersService(req.query);
+    return responseOk(res,  result);
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
 module.exports.createUserRouter = createUserRouter;
+module.exports.getUsersRouter = getUsersRouter;

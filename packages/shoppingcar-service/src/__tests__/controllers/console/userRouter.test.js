@@ -156,4 +156,24 @@ it("should create console user fail. cos 會員密碼只有7個英文字母 ", a
         expect(item.phone).toBe(mockUser.phone);
       })
   });
+
+  it("should get console users success.", async () => {
+    return request
+      .get("/console/users")
+      .set({ Authorization: token })
+      .query({pageSize: 2})
+      .expect(200)
+      .then((res) => {
+        expect(res.statusCode).toBe(200);
+        const { items, totalCount, pageInfo } = res.body;
+
+        expect(items.length).toBe(2);
+        expect(isNumber(totalCount)).toBe(true);
+        expect(isEmpty(pageInfo)).toBe(false);
+        expect(isBoolean(pageInfo.hasNextPage)).toBe(true);
+        expect(isBoolean(pageInfo.hasPreviousPage)).toBe(true);
+        expect(isString(pageInfo.startCursor)).toBe(true);
+        expect(isString(pageInfo.endCursor)).toBe(true);
+      })
+  });
 });

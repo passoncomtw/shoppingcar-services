@@ -1,3 +1,4 @@
+import {makePaginate} from "sequelize-cursor-pagination";
 import {saltHashPassword} from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
@@ -30,6 +31,8 @@ module.exports = (sequelize, DataTypes) => {
     underscored: true,
     freezeTableName: true,
   });
+
+  User.paginate = makePaginate(User);
 
   User.associate = function (models) {
     // User.hasMany(models.Contract, {
