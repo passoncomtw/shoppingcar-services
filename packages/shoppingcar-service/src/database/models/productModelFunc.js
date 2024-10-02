@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   Product.associate = function (models) {
     Product.belongsTo(models.Merchant, {
       foreignKey: {
-        name: 'id'
+        name: 'merchant_id'
       },
       onUpdate: "CASCADE",
       onDelete: "CASCADE",

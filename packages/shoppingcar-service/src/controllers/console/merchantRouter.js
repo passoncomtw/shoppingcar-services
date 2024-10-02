@@ -99,7 +99,6 @@ const createMerchantRoute = async (req, res) => {
   }
 };
 
-
 /**
  * Get Merchants API.
  * @group ConsoleMerchant
