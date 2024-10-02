@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
 import {responseErrWithMsg, responseOk} from "~/helpers/response";
 import {createMerchantRequestSchema} from "~/helpers/schemas";
-import {createMerchantService, getMerchantsServices} from "~/services/merchantServices";
+import {createMerchantResult, getMerchantsResult} from "~/services/merchantServices";
 
 /**
  * @typedef PageInfoItem
@@ -84,7 +84,7 @@ import {createMerchantService, getMerchantsServices} from "~/services/merchantSe
 const createMerchantRoute = async (req, res) => {
   try {
     const createMerchantRequest = await createMerchantRequestSchema.validate(req.body);
-    const result = await createMerchantService(createMerchantRequest);
+    const result = await createMerchantResult(createMerchantRequest);
     const item = pick(result, ['id', 'name', 'phone', 'email']);
     return responseOk(res,  {
       item
@@ -120,7 +120,7 @@ const createMerchantRoute = async (req, res) => {
  */
 const getMerchantsRoute = async (req, res) => {
   try {
-    const result = await getMerchantsServices(req.query);
+    const result = await getMerchantsResult(req.query);
     return responseOk(res,  result);
   } catch(error) {
     return responseErrWithMsg(res, error.message);

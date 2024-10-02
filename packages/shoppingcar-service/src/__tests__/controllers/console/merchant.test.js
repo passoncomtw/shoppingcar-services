@@ -5,7 +5,7 @@ const isEmpty = require("lodash/isEmpty");
 const isNumber = require("lodash/isNumber");
 const isString = require("lodash/isString");
 const isBoolean = require("lodash/isBoolean");
-const { removeMerchantsServices } = require("~/services/merchantServices");
+const { removeMerchantsResult } = require("~/services/merchantServices");
 
 const mockMerchant = {
   name: "testmerchant001",
@@ -18,7 +18,7 @@ const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo1L
 
 describe("測試 後台商家 功能", () => {
   afterAll(async () => {
-    await removeMerchantsServices({where: {email: mockMerchant.email}});
+    await removeMerchantsResult({where: {email: mockMerchant.email}});
     return server.close();
   });
 

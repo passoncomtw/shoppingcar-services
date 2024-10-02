@@ -22,6 +22,10 @@ const merchantModelFunc = require("./merchantModelFunc");
 const MerchantModel = merchantModelFunc(sequelize, Sequelize.DataTypes);
 db.Merchant = MerchantModel;
 
+const productModelFunc = require("./productModelFunc");
+const ProductModel = productModelFunc(sequelize, Sequelize.DataTypes);
+db.Product = ProductModel;
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

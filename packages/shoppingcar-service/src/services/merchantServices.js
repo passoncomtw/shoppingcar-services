@@ -1,10 +1,10 @@
 import database from "~/database/models";
 
-const createMerchantService = async (createMerchantRequest) => {
+const createMerchantResult = async (createMerchantRequest) => {
   return await database.Merchant.create(createMerchantRequest);
 };
 
-const getMerchantsServices = async (query) => {
+const getMerchantsResult = async (query) => {
   const {pageSize = 10, endCursor = null} = query;
   const result = await database.Merchant.paginate({
     limit: pageSize,
@@ -20,11 +20,19 @@ const getMerchantsServices = async (query) => {
   };
 };
 
+const getMerchantResult = (whereCondition) => {
+  console.log("🚀 ~ getMerchantResult ~ whereCondition:", whereCondition)
+  return database.Merchant.findOne({
+    attributes: ["id", "name", "email", "phone"],
+    where: whereCondition
+  });
+}
 // for unitest
-const removeMerchantsServices = async (query) => {
+const removeMerchantsResult = async (query) => {
   return await database.Merchant.destroy(query);
 };
 
-module.exports.getMerchantsServices = getMerchantsServices;
-module.exports.createMerchantService = createMerchantService;
-module.exports.removeMerchantsServices = removeMerchantsServices;
+module.exports.getMerchantResult = getMerchantResult;
+module.exports.getMerchantsResult = getMerchantsResult;
+module.exports.createMerchantResult = createMerchantResult;
+module.exports.removeMerchantsResult = removeMerchantsResult;

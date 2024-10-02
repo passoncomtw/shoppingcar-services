@@ -3,7 +3,6 @@ import {responseErrWithMsg, responseOk} from "~/helpers/response";
 import {createUserRequestSchema} from "~/helpers/schemas";
 import {createUserService, getUsersService} from "~/services/userServices";
 
-
 /**
  * @typedef ConsoleCreateUserRequest
  * @property {string} name.required
@@ -72,7 +71,6 @@ const createUserRouter = async (req, res) => {
     return responseErrWithMsg(res, error.message);
   }
 };
-
 
 /**
  * Get User API.
