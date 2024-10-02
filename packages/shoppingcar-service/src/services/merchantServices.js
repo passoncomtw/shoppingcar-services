@@ -21,7 +21,6 @@ const getMerchantsResult = async (query) => {
 };
 
 const getMerchantResult = (whereCondition) => {
-  console.log("🚀 ~ getMerchantResult ~ whereCondition:", whereCondition)
   return database.Merchant.findOne({
     attributes: ["id", "name", "email", "phone"],
     where: whereCondition

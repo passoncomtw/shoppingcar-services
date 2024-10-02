@@ -20,10 +20,18 @@ module.exports = (sequelize, DataTypes) => {
       price: {
         field: "price",
         type: DataTypes.NUMBER(10, 2),
+        get() {
+          const rawValue = this.getDataValue('price');
+          return Number(rawValue);
+        }
       },
       stockAmount: {
         field: "stock_amount",
         type: DataTypes.NUMBER(11, 0),
+        get() {
+          const rawValue = this.getDataValue('stockAmount');
+          return Number(rawValue);
+        }
       },
       merchantId: {
         field: "merchant_id",

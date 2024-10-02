@@ -5,47 +5,47 @@ import {createProductResult} from "~/services/productServices";
 
 /**
  * @typedef ConsoleCreateProductRequest
- * @property {string} name.required
+ * @property {String} name.required
  *   - product name
  *   - eg: testproduct001
- * @property {number} price.required
+ * @property {Number} price.required
  *   - product price
  *   - eg: 100
- * @property {number} stockAmount.required
+ * @property {Number} stockAmount.required
  *   - product stock amount
  *   - eg: 100
- * @property {number} merchantId.required
+ * @property {Number} merchantId.required
  *   - merchant id
  *   - eg: 1
- * @property {string} description.required
+ * @property {String} description.required
  *   - product description
  *   - eg: product description
- * @property {string} subtitle.required
+ * @property {String} subtitle.required
  *   - product subtitle
  *   - eg: product subtitle
  */
 
 /**
  * @typedef ConsoleProductInformation
- * @property {number} id.required
+ * @property {Number} id.required
  *  - console product Id
  *  - eg: 1
- * @property {string} name.required
+ * @property {String} name.required
  *   - product name
  *   - eg: testproduct001
- * @property {number} price.required
+ * @property {Number} price.required
  *   - product price
  *   - eg: 100
- * @property {number} stockAmount.required
+ * @property {Number} stockAmount.required
  *   - product stock amount
  *   - eg: 100
- * @property {number} merchantId.required
+ * @property {Number} merchantId.required
  *   - merchant id
  *   - eg: 1
- * @property {string} description.required
+ * @property {String} description.required
  *   - product description
  *   - eg: product description
- * @property {string} subtitle.required
+ * @property {String} subtitle.required
  *   - product subtitle
  *   - eg: product subtitle
  * @property {ConsoleMerchantInformation.model} merchant.required
@@ -69,16 +69,14 @@ import {createProductResult} from "~/services/productServices";
  * @returns {Error} 500 - unexpected error
  * @security JWT
  * @typedef ConsoleCreateProductResponse
- * @property {{integer}} code - response code - eg: 200
+ * @property {{Number}} code - response code - eg: 200
  */
 const createProductRouter = async (req, res) => {
   try {
     const createProductRequest = await createProductRequestSchema.validate(req.body);
     const result = await createProductResult(createProductRequest);
-    console.log("🚀 ~ createProductRouter ~ result:", result)
-    const item = pick(result, ['id', 'name', 'price', 'stockAmount']);
     return responseOk(res,  {
-      item
+      item: result
     });
   }catch(error) {
     return responseErrWithMsg(res, error.message);

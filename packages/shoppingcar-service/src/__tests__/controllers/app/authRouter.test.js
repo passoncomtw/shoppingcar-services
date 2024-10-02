@@ -1,8 +1,10 @@
-require("dotenv").config({ path: "../../.env" });
-const server = require("../../../main")
-const request = require('supertest').agent(server);
-const isEmpty = require("lodash/isEmpty");
-const isNumber = require("lodash/isNumber");
+require("dotenv").config();
+import server from "~/main";
+import supertest from "supertest";
+import isEmpty from "lodash/isEmpty";
+import isNumber from "lodash/isNumber";
+
+const request = supertest.agent(server);
 
 describe("測試 Authorization 功能", () => {
   afterAll((done) => {
@@ -107,7 +109,6 @@ describe("測試 Authorization 功能", () => {
       .send({ phone: "0987654321", password: "a12345678" })
       .expect(200)
       .then((res) => {
-        console.log("🚀 ~ .then ~ res:", res)
         expect(res.statusCode).toBe(200);
         const { token = null, user = null } = res.body;
         expect(token).not.toBe(null);

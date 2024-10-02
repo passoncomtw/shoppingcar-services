@@ -1,20 +1,15 @@
-require("dotenv").config({ path: "../../.env" });
-const server = require("~/main");
-const request = require('supertest').agent(server);
-const isEmpty = require("lodash/isEmpty");
-const isNumber = require("lodash/isNumber");
-const isString = require("lodash/isString");
-const isBoolean = require("lodash/isBoolean");
-const { removeMerchantsResult } = require("~/services/merchantServices");
+require("dotenv").config();
+import server from "~/main";
+import supertest from "supertest";
+import isEmpty from "lodash/isEmpty";
+import isNumber from "lodash/isNumber";
+import isString from "lodash/isString";
+import isBoolean from "lodash/isBoolean";
+import {removeMerchantsResult} from "~/services/merchantServices";
+import { mockMerchant } from "~/constants/mockDatas/users";
+import { token } from "~/constants/mockDatas/settings";
 
-const mockMerchant = {
-  name: "testmerchant001",
-  phone: "0987654321",
-  email: "aaa@bbb.ccc",
-  password: "a12345678"
-};
-
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo1LCJhY2NvdW50IjoiYWRtaW4ifSwiaWF0IjoxNzI3NTkzOTg2fQ.4-g06VK7rcNbq7bCz-93Hcy02K3SYACD0tu93sQOCfk";
+const request = supertest.agent(server);
 
 describe("測試 後台商家 功能", () => {
   afterAll(async () => {
@@ -223,6 +218,7 @@ describe("測試 後台商家 功能", () => {
         expect(item.email).toBe(mockMerchant.email);
       })
   });
+  
   it("should create console merchant fail. cos phone 重複 ", async () => {
     return request
       .post("/console/merchants")
@@ -236,6 +232,7 @@ describe("測試 後台商家 功能", () => {
         expect(data.message).toBe("phone must be unique");
       })
   });
+
   it("should create console merchant fail. cos phone 重複 ", async () => {
     return request
       .post("/console/merchants")
@@ -249,6 +246,7 @@ describe("測試 後台商家 功能", () => {
         expect(data.message).toBe("email must be unique");
       })
   });
+
   it("should get console merchants success.", async () => {
     return request
       .get("/console/merchants")

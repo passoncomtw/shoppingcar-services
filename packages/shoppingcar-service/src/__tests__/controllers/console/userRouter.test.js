@@ -1,17 +1,15 @@
-require("dotenv").config({ path: "../../.env" });
-const server = require("~/main");
-const request = require('supertest').agent(server);
-const { removeUsersService } = require("~/services/userServices");
-const isEmpty = require("lodash/isEmpty");
-const isNumber = require("lodash/isNumber");
+require("dotenv").config();
+import server from "~/main";
+import supertest from "supertest";
+import isEmpty from "lodash/isEmpty";
+import isNumber from "lodash/isNumber";
+import isString from "lodash/isString";
+import isBoolean from "lodash/isBoolean";
+import {removeUsersService} from "~/services/userServices";
+import { mockUser } from "~/constants/mockDatas/users";
+import { token } from "~/constants/mockDatas/settings";
 
-const mockUser = {
-  name: "testmerchant001",
-  phone: "0987665225",
-  password: "a12345678"
-};
-
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjo1LCJhY2NvdW50IjoiYWRtaW4ifSwiaWF0IjoxNzI3NTkzOTg2fQ.4-g06VK7rcNbq7bCz-93Hcy02K3SYACD0tu93sQOCfk";
+const request = supertest.agent(server);
 
 describe("測試 後台會員 功能", () => {
   afterAll(async () => {
