@@ -25,6 +25,32 @@ const getProductsResult = async (query) => {
   };
 };
 
+const getProductsByMerchantIdResult = async (merchantId, query) => {
+  const {pageSize = 10, endCursor = null} = query;
+  const result = await database.Product.paginate({
+    where: {
+      merchant_id: merchantId,
+    },
+    limit: pageSize,
+    after: endCursor,
+    include: [
+      {        
+        model: database.Merchant,     
+           
+        attributes: ["id", "name", "email", "phone"],
+      }
+    ],
+    attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
+    group: ['Product.id', 'Merchant.id'],
+  });
+  const items = result.edges.map(item => item.node);
+  return {
+    items,
+    totalCount: result.totalCount,
+    pageInfo: result.pageInfo,
+  };
+};
+
 const createProductResult = async (createProductRequest) => {
   const merchantResult = await getMerchantResult({id: createProductRequest.merchantId});
   if (isEmpty(merchantResult)){
@@ -58,5 +84,6 @@ const removeProductResult = async (query) => {
 };
 
 module.exports.getProductsResult = getProductsResult;
+module.exports.getProductsByMerchantIdResult = getProductsByMerchantIdResult;
 module.exports.createProductResult = createProductResult;
 module.exports.removeProductResult = removeProductResult;
