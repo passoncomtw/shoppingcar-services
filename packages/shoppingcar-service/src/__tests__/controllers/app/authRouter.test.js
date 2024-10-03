@@ -1,8 +1,10 @@
-require("dotenv").config({ path: "../../.env" })
-const server = require("../../../main")
-const request = require('supertest').agent(server);
-const isEmpty = require("lodash/isEmpty");
-const isNumber = require("lodash/isNumber");
+require("dotenv").config();
+import server from "~/main";
+import supertest from "supertest";
+import isEmpty from "lodash/isEmpty";
+import isNumber from "lodash/isNumber";
+
+const request = supertest.agent(server);
 
 describe("測試 Authorization 功能", () => {
   afterAll((done) => {

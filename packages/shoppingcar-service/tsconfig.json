@@ -12,6 +12,11 @@
   ],
   "compilerOptions": {
     "esModuleInterop": true,
-    "allowJs": true
+    "allowJs": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["./src/*"],
+      "services/*": ["service/*"]
+    }
   }
 }

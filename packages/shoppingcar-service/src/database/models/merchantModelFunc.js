@@ -1,5 +1,5 @@
-const { makePaginate } = require('sequelize-cursor-pagination');
-const { saltHashPassword } = require("../../helpers/utils");
+import {makePaginate} from "sequelize-cursor-pagination";
+import {saltHashPassword} from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const Merchant = sequelize.define(
@@ -41,14 +41,13 @@ module.exports = (sequelize, DataTypes) => {
   Merchant.paginate = makePaginate(Merchant);
 
   Merchant.associate = function (models) {
-    // User.hasMany(models.Contract, {
-    //   as: 'contracts',
-    //   foreignKey: {
-    //     name: 'user_id'
-    //   },
-    //   onUpdate: 'CASCADE',
-    //   onDelete: 'CASCADE',
-    // });
+    Merchant.hasMany(models.Product, {
+      foreignKey: {
+        name: 'merchant_id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
   };
 
   return Merchant;

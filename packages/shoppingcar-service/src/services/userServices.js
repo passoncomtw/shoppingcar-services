@@ -1,7 +1,7 @@
-const database = require("../database/models");
-const pick = require("lodash/pick");
+import pick from "lodash/pick";
+import database from "~/database/models";
 
-const getUserByUserId = async (userId) => {
+const getUserByUserIdService = async (userId) => {
   return await database.User.findOne({
     attributes: ["id", "name", "phone", "createdAt"],
     where: {
@@ -10,8 +10,24 @@ const getUserByUserId = async (userId) => {
   });
 };
 
-const updateUserByUserId = async (userId, query) => {
-  const user = await getUserByUserId(userId);
+const getUsersService = async (query) => {
+  const {pageSize = 10, endCursor = null} = query;
+  const result = await database.User.paginate({
+    limit: pageSize,
+    after: endCursor,
+    attributes: ["id", "name", "phone"],
+    group: ['User.id'],
+  });
+  const items = result.edges.map(item => item.node);
+  return {
+    items,
+    totalCount: result.totalCount,
+    pageInfo: result.pageInfo,
+  };
+}
+
+const updateUserByUserIdService = async (userId, query) => {
+  const user = await getUserByUserIdService(userId);
 
   if(query.name) {
     user.name = query.name;
@@ -25,7 +41,7 @@ const updateUserByUserId = async (userId, query) => {
   return user;
 };
 
-const getUserWithPasswordBy = async (phone) => {
+const getUserWithPasswordByService = async (phone) => {
   const userResult = await database.User.findOne({
     where: {
       phone,
@@ -44,7 +60,7 @@ const parseUserResponse = (userResult) => {
   return userResponse;
 };
 
-const createUser = async (userData) => {
+const createUserService = async (userData) => {
   const existUser = await database.User.findOne({ where: {phone: userData.phone} });
   if (existUser) throw new Error("使用者已存在");
 
@@ -52,7 +68,6 @@ const createUser = async (userData) => {
     {
       name: userData.name,
       phone: userData.phone,
-      email: userData.email,
       password: userData.password,
     });
   
@@ -64,9 +79,14 @@ const createUser = async (userData) => {
   };
 };
 
-module.exports.createUser = createUser;
-module.exports.getUserByUserId = getUserByUserId;
-module.exports.parseUserResponse = parseUserResponse;
-module.exports.updateUserByUserId = updateUserByUserId;
-module.exports.getUserWithPasswordBy = getUserWithPasswordBy;
+const removeUsersService = async (query) => {
+  return await database.User.destroy(query);
+}
 
+module.exports.createUserService = createUserService;
+module.exports.getUserByUserIdService = getUserByUserIdService;
+module.exports.getUsersService = getUsersService;
+module.exports.parseUserResponse = parseUserResponse;
+module.exports.updateUserByUserIdService = updateUserByUserIdService;
+module.exports.getUserWithPasswordByService = getUserWithPasswordByService;
+module.exports.removeUsersService = removeUsersService;

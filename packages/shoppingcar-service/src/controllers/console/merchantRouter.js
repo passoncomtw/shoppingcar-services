@@ -1,7 +1,7 @@
-const pick = require("lodash/pick");
-const { responseErrWithMsg, responseOk } = require("../../helpers/response");
-const { createMerchantRequestSchema } = require("../../helpers/schemas");
-const { createMerchantService, getMerchantsServices } = require("../../services/merchantServices");
+import pick from "lodash/pick";
+import {responseErrWithMsg, responseOk} from "~/helpers/response";
+import {createMerchantRequestSchema} from "~/helpers/schemas";
+import {createMerchantResult, getMerchantsResult} from "~/services/merchantServices";
 
 /**
  * @typedef PageInfoItem
@@ -84,7 +84,7 @@ const { createMerchantService, getMerchantsServices } = require("../../services/
 const createMerchantRoute = async (req, res) => {
   try {
     const createMerchantRequest = await createMerchantRequestSchema.validate(req.body);
-    const result = await createMerchantService(createMerchantRequest);
+    const result = await createMerchantResult(createMerchantRequest);
     const item = pick(result, ['id', 'name', 'phone', 'email']);
     return responseOk(res,  {
       item
@@ -98,7 +98,6 @@ const createMerchantRoute = async (req, res) => {
     }
   }
 };
-
 
 /**
  * Get Merchants API.
@@ -120,7 +119,7 @@ const createMerchantRoute = async (req, res) => {
  */
 const getMerchantsRoute = async (req, res) => {
   try {
-    const result = await getMerchantsServices(req.query);
+    const result = await getMerchantsResult(req.query);
     return responseOk(res,  result);
   } catch(error) {
     return responseErrWithMsg(res, error.message);

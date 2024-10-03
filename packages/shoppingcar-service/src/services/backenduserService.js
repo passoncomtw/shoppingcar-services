@@ -1,4 +1,4 @@
-const database = require("../database/models");
+import database from "~/database/models";
 
 const getBackendUserWithPasswordBy = async (account) => {
   return await database.BackendUser.findOne({

@@ -1,7 +1,6 @@
-'use strict';
+import Sequelize from 'sequelize';
+import config from "~/database/config/config";
 
-const Sequelize = require('sequelize');
-const config = require('../config/config');
 const db = {};
 
 let sequelize;
@@ -22,6 +21,10 @@ db.BackendUser = BackendUserModel;
 const merchantModelFunc = require("./merchantModelFunc");
 const MerchantModel = merchantModelFunc(sequelize, Sequelize.DataTypes);
 db.Merchant = MerchantModel;
+
+const productModelFunc = require("./productModelFunc");
+const ProductModel = productModelFunc(sequelize, Sequelize.DataTypes);
+db.Product = ProductModel;
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

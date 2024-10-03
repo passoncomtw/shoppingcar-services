@@ -28,8 +28,33 @@ const createMerchantRequestSchema = yup.object({
   password: passwordSchema,
 });
 
+const createUserRequestSchema = yup.object({
+  name: yup.string().required("商家名稱不可為空"),
+  phone: yup.string().required("電話不可為空").matches(phoneRegExp, '電話格式錯誤'),
+  password: passwordSchema,
+});
+
+const createProductRequestSchema = yup.object({
+  name: yup.string().required("商品名稱不可為空"),
+  price: yup.number().required("商品價格不可為空").test(
+    'Is positive?',
+    '價格必須大於 0',
+    (value) => value > 0
+  ),
+  stockAmount: yup.number().required("商品庫存不可為空").test(
+    'Is positive?',
+    '庫存數量必須大於 0',
+    (value) => value > 0
+  ),
+  merchantId: yup.number().required("商家 ID 格式錯誤"),
+  subtitle: yup.string().required("商品次抬頭不可為空"),
+  description: yup.string().required("商品描述不可為空"),
+});
+
 module.exports.phoneNumberSchema = phoneNumberSchema;
 module.exports.signinRequestSchema = signinRequestSchema;
 module.exports.registeRequestSchema = registeRequestSchema;
 module.exports.consoleSigninRequestSchema = consoleSigninRequestSchema;
 module.exports.createMerchantRequestSchema = createMerchantRequestSchema;
+module.exports.createUserRequestSchema = createUserRequestSchema;
+module.exports.createProductRequestSchema = createProductRequestSchema;

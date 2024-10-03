@@ -3,13 +3,20 @@ const authState = {
   user: {},
 };
 
-const todoState = {
+const merchantState = {
   items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: ""
+  }
 };
 
 const initialState = {
   auth: authState,
-  todo: todoState,
+  merchant: merchantState,
 };
 
 export default initialState;

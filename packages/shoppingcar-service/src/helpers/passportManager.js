@@ -3,7 +3,7 @@ const passportJWT = require("passport-jwt");
 const isEmpty = require('lodash/isEmpty');
 const LocalStrategy = require('passport-local').Strategy;
 const { saltHashPassword } = require('./utils');
-const { getUserWithPasswordBy } = require('../services/userServices');
+const { getUserWithPasswordByService } = require('../services/userServices');
 const { getBackendUserWithPasswordBy } = require('../services/backenduserService');
 
 const JWTStrategy = passportJWT.Strategy;
@@ -47,7 +47,7 @@ passport.use('app-user',
       passwordField: 'password'
     },
     async (phone, password, done) => {
-      const user = await getUserWithPasswordBy(phone);
+      const user = await getUserWithPasswordByService(phone);
       const { validated } = validateUserAndPassword(user, password);
 
       if (!validated) {
@@ -91,6 +91,7 @@ module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
 
       return res.status(401).json(err); // send the error response to client
     }
+    req.user = user.data;
     return next(null, user);
   })(req, res, next);
 }
