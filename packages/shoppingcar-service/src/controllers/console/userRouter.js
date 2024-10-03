@@ -6,10 +6,10 @@ import {createUserService, getUsersService} from "~/services/userServices";
 /**
  * @typedef ConsoleCreateUserRequest
  * @property {string} name.required
- *   - merchant name
- *   - eg: testmerchant001
+ *   - user name
+ *   - eg: testuser001
  * @property {string} phone.required
- *   - merchant phone
+ *   - user phone
  *   - eg: 0987654321
  * @property {string} password.required
  *   - password: 6 ~ 20 個英數組合
@@ -19,26 +19,26 @@ import {createUserService, getUsersService} from "~/services/userServices";
 /**
  * @typedef ConsoleUserInformation
  * @property {number} id.required
- *  - console merchant Id
+ *  - console user Id
  *  - eg: 1
  * @property {string} name.required
- *   - merchant name
- *   - eg: testmerchant001
+ *   - user name
+ *   - eg: testuser001
  * @property {string} phone.required
- *   - merchant phone
+ *   - user phone
  *   - eg: 0987654321
  */
 
 /**
  * @typedef ConsoleCreateUserResponse
  * @property {ConsoleUserInformation.model} item.required 
- *  - console merchant information
+ *  - console user information
  */
 
 /**
  * @typedef ConsoleGetUserResponse
  * @property {Array<ConsoleUserInformation>} items.required
- *   - merchant items
+ *   - user items
  * @property {integer} totalCount.required
  *   - Total Count
  *   - eg: 100
@@ -73,7 +73,7 @@ const createUserRouter = async (req, res) => {
 };
 
 /**
- * Get User API.
+ * Get Users API.
  * @group ConsoleUser
  * @route GET /console/users
  * @param {Number} pageSize.query

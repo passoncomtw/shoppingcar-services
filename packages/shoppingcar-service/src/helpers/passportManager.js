@@ -91,6 +91,7 @@ module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
 
       return res.status(401).json(err); // send the error response to client
     }
+    req.user = user.data;
     return next(null, user);
   })(req, res, next);
 }
