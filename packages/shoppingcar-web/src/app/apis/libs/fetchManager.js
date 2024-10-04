@@ -1,4 +1,5 @@
 export const DOMAIN = process.env.NX_PUBLIC_CONSOLE_DOMAIN;
+console.log("🚀 ~ DOMAIN:", DOMAIN)
 
 const parseJsonString = (jsonStr) => {
   try {
