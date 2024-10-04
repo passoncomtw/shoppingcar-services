@@ -1,10 +1,11 @@
 import {
   // fetchGet,
   fetchPost,
-  // fetchGetWithToken,
+  fetchGetWithToken,
   // fetchPostWithToken,
   // fetchPutWithToken,
   // fetchPostFormDataWithToken,
 } from "./libs/fetch";
 
 export const signinResult = (payload) => fetchPost("app/login", payload);
+export const getUserDetailResult = (payload, customHeaders) => fetchGetWithToken("app/users", customHeaders, payload);

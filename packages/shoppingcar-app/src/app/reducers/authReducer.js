@@ -5,6 +5,13 @@ import { authState } from './initialState';
 const loginSuccess = (auth, payload) =>
   ({ ...auth, ...payload, isAuth: true });
 
+const getUserDetailSuccess = (auth, payload) => {
+  return {
+    ...auth,
+    user: payload,
+  };
+};
+
 const logoutSuccess = () => cloneDeep(authState);
 
 export default function reducer(auth = cloneDeep(authState), { type, payload }) {
@@ -13,6 +20,10 @@ export default function reducer(auth = cloneDeep(authState), { type, payload }) 
       return logoutSuccess();
     case types.SIGNIN_SUCCESS:
       return loginSuccess(auth, payload);
+    case types.GET_USER_DETAIL_SUCCESS:
+      return getUserDetailSuccess(auth, payload);
+    case types.GET_USER_DETAIL:
+    case types.GET_USER_DETAIL_ERROR:
     case types.SIGNIN:
     case types.SIGNIN_ERROR:
     case types.LOGOUT:
