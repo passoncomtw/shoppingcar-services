@@ -5,6 +5,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MerchantsScreen from '../screens/MerchantsScreen';
+import MerchantDetailScreen from '../screens/MerchantDetailScreen';
 import SettingScreen from '../screens/SettingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ShoppingcarScreen from '../screens/ShoppingcarScreen';
@@ -14,10 +15,14 @@ const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
 const HomeStackNavigator = () => (
-  <Stack.Navigator>
+  <Stack.Navigator>  
     <Stack.Screen
       name="Merchants"
       component={MerchantsScreen}      
+    />
+    <Stack.Screen
+      name="MerchantDetail"
+      component={MerchantDetailScreen}      
     />
   </Stack.Navigator>
 );

@@ -3,7 +3,7 @@ import {
   StyleSheet,
   StatusBar,
 } from 'react-native';
-import WaterfallFlow from 'react-native-waterfall-flow'
+import WaterfallFlow from 'react-native-waterfall-flow';
 import { Avatar, Card, Text } from 'react-native-paper';
 import Background from '../../components/Background';
 
