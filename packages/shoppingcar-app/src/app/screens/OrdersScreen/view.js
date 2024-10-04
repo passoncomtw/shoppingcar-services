@@ -1,13 +1,13 @@
 import React from "react";
-import Logo from "../../components/Logo";
 import Background from "../../components/Background";
+import Logo from "../../components/Logo";
 import Header from "../../components/Header";
 
-export default function SettingScreen() {  
+export default function OrdersScreen({navigation}) {
   return (
     <Background>
       <Logo />
-      <Header>Shoppingcar Screen</Header>      
+      <Header>Orders Screen</Header>      
     </Background>
   );
 }

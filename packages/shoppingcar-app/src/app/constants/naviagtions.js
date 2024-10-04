@@ -6,8 +6,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import HomeScreen from '../screens/HomeScreen';
 import SettingScreen from '../screens/SettingScreen';
 import LoginScreen from '../screens/LoginScreen';
-import SignupScreen from '../screens/SignupScreen';
-import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import ShoppingcarScreen from '../screens/ShoppingcarScreen';
+import OrdersScreen from '../screens/OrdersScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -15,6 +15,18 @@ const Tab = createMaterialBottomTabNavigator();
 const HomeStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen name="Home" component={HomeScreen} />
+  </Stack.Navigator>
+);
+
+const OrderStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Order" component={OrdersScreen} />
+  </Stack.Navigator>
+);
+
+const ShoppingcarStackNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Shoppingcar" component={ShoppingcarScreen} />
   </Stack.Navigator>
 );
 
@@ -37,12 +49,32 @@ export const AuthNavigation = () => (
         }}
       />
       <Tab.Screen
+        name="OrderTab"
+        component={OrderStackNavigator}
+        options={{
+          tabBarLabel: '',
+          tabBarIcon: ({ focus, color }) => (
+            <MaterialCommunityIcons name="border-all" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="ShoppingcarTab"
+        component={ShoppingcarStackNavigator}
+        options={{
+          tabBarLabel: '',
+          tabBarIcon: ({ focus, color }) => (
+            <MaterialCommunityIcons name="cart" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
         name="SettingTab"
         component={SettingStackNavigator}
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focus, color }) => (
-            <MaterialCommunityIcons name="cog" color={color} size={26} />
+            <MaterialCommunityIcons name="account" color={color} size={26} />
           ),
         }}
       />
@@ -52,7 +84,5 @@ export const AuthNavigation = () => (
 export const UnauthNavigation = () => (
   <Stack.Navigator>
     <Stack.Screen name="Login" component={LoginScreen} />
-    <Stack.Screen name="Signup" component={SignupScreen} />
-    <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
   </Stack.Navigator>
 );
