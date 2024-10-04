@@ -5,12 +5,14 @@ import { toCamelStyle } from "../utils/format";
 
 import * as authSagas from "./authSagas";
 import * as userSagas from "./userSagas";
+import * as merchantSagas from "./merchantSagas";
 import * as Watchers from "./watchers";
 
 
 const allSaga = {
   ...authSagas,
   ...userSagas,
+  ...merchantSagas,
 };
 
 const getMatchedSaga = (actionType) => {

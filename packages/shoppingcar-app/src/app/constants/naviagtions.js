@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import HomeScreen from '../screens/HomeScreen';
+import MerchantsScreen from '../screens/MerchantsScreen';
 import SettingScreen from '../screens/SettingScreen';
 import LoginScreen from '../screens/LoginScreen';
 import ShoppingcarScreen from '../screens/ShoppingcarScreen';
@@ -16,8 +16,8 @@ const Tab = createMaterialBottomTabNavigator();
 const HomeStackNavigator = () => (
   <Stack.Navigator>
     <Stack.Screen
-      name="Home"
-      component={HomeScreen}      
+      name="Merchants"
+      component={MerchantsScreen}      
     />
   </Stack.Navigator>
 );
