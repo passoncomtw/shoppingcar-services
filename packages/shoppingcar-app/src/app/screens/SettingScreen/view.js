@@ -23,7 +23,7 @@ const SettingScreen = (props) => {
         description={authUser.phone}
         left={() => <List.Icon icon="phone" />}
       />
-      <Button mode="contained" onPress={() => alert("登出")}>
+      <Button mode="contained" onPress={props.handleSignout}>
         登出
       </Button>
     </Background>

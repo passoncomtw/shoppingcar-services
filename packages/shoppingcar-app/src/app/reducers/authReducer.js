@@ -12,12 +12,12 @@ const getUserDetailSuccess = (auth, payload) => {
   };
 };
 
-const logoutSuccess = () => cloneDeep(authState);
+const signoutSuccess = () => cloneDeep(authState);
 
 export default function reducer(auth = cloneDeep(authState), { type, payload }) {
   switch (type) {
-    case types.LOGOUT:
-      return logoutSuccess();
+    case types.SIGNOUT:
+      return signoutSuccess();
     case types.SIGNIN_SUCCESS:
       return loginSuccess(auth, payload);
     case types.GET_USER_DETAIL_SUCCESS:

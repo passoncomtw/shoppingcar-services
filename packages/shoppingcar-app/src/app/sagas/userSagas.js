@@ -7,5 +7,6 @@ export function* getUserDetailSaga({payload}) {
     actionType: types.GET_USER_DETAIL,
     apiResult: getUserDetailResult,
     payload,
+    resultHandler: respData => respData.item,
   });
 }
