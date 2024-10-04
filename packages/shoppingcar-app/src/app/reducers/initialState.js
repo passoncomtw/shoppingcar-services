@@ -13,3 +13,14 @@ export const merchantState = {
     endCursor: ""
   },
 };
+
+export const productState = {
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: ""
+  },
+};

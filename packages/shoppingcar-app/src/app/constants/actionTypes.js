@@ -9,6 +9,7 @@ const syncActionTypes = [
 export const basicAsyncActionTypes = [
   "SIGNIN",
   "GET_MERCHANTS",
+  "GET_MERCHANT_PRODUCTS",
   "GET_USER_DETAIL",
 ];
 

@@ -1,18 +1,18 @@
 import cloneDeep from 'lodash/cloneDeep';
 import types from '../constants/actionTypes';
-import { merchantState } from './initialState';
+import { productState } from './initialState';
 
-export default function reducer(merchant = cloneDeep(merchantState), { type, payload }) {
+export default function reducer(merchant = cloneDeep(productState), { type, payload }) {
   switch (type) {
-    case types.GET_MERCHANTS_SUCCESS:
+    case types.GET_MERCHANT_PRODUCTS_SUCCESS:
       return {
         // items: merchant.items.concat(payload.items),
         items: payload.items,
         totalAmount: payload.totalCount,
         pageInfo: payload.pageInfo,
       };
-    case types.GET_MERCHANTS:
-    case types.GET_MERCHANTS_ERROR:
+    case types.GET_MERCHANT_PRODUCTS:
+    case types.GET_MERCHANT_PRODUCTS_ERROR:
     default:
       return merchant;
   }
