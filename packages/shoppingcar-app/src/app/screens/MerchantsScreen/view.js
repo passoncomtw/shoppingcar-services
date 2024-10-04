@@ -7,8 +7,8 @@ import WaterfallFlow from 'react-native-waterfall-flow';
 import { Avatar, Card, Text } from 'react-native-paper';
 import Background from '../../components/Background';
 
-const Item = ({item}) => (
-  <Card style={styles.cardContainerStyle} onPress={() => alert("店家產品列表")}>
+const Item = ({navigation, item}) => (
+  <Card style={styles.cardContainerStyle} onPress={() => navigation.push("MerchantDetail", {aaa:"bbb", merchantId: item.id})}>
     <Avatar.Image size={88} style={{alignSelf: "center"}} source={require('../../../assets/girlLogo.jpg')} />
     <Card.Content>
       <Text variant="titleLarge">{item.name}</Text>
@@ -26,7 +26,7 @@ const MerchantsScreen = (props) => {
       <WaterfallFlow
         numColumns={2}
         data={props.merchant.items}
-        renderItem={({ item }) => <Item item={item} />}
+        renderItem={({ item }) => <Item item={item} navigation={props.navigation} />}
         keyExtractor={item => item.id}
       />
     </Background>

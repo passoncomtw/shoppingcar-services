@@ -47,23 +47,27 @@ const Item = ({ item }) => (
 );
 
 
-const MerchantDetailScreen = () => (
-  <View style={{ flex: 1 }}>
-    <Card>
-      <Avatar.Image style={{ alignSelf: "center" }} size={88} source={require('../../../assets/girlLogo.jpg')} />
-      <Card.Content>
-        <Text variant="titleLarge" style={{ alignSelf: "center" }}>糖果愛好者</Text>
-        <Text variant="bodyMedium" style={{ alignSelf: "center" }}>各種特別的糖果</Text>
-      </Card.Content>
-    </Card>
-    <WaterfallFlow
-      style={{ flex: 1 }}
-      numColumns={2}
-      data={DATA}
-      renderItem={({ item }) => <Item item={item} />}
-      keyExtractor={item => item.id}
-    />
-  </View>
-);
+const MerchantDetailScreen = ({route}) => {
+  const { merchantId } = route.params;
+  
+  return (
+    <View style={{ flex: 1 }}>
+      <Card>
+        <Avatar.Image style={{ alignSelf: "center" }} size={88} source={require('../../../assets/girlLogo.jpg')} />
+        <Card.Content>
+          <Text variant="titleLarge" style={{ alignSelf: "center" }}>糖果愛好者 {merchantId}</Text>
+          <Text variant="bodyMedium" style={{ alignSelf: "center" }}>各種特別的糖果</Text>
+        </Card.Content>
+      </Card>
+      <WaterfallFlow
+        style={{ flex: 1 }}
+        numColumns={2}
+        data={DATA}
+        renderItem={({ item }) => <Item item={item} />}
+        keyExtractor={item => item.id}
+      />
+    </View>
+  );
+};
 
 export default MerchantDetailScreen;
