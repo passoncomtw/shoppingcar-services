@@ -12896,6 +12896,11 @@ react-native-vector-icons@^10.1.0:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
+react-native-waterfall-flow@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-native-waterfall-flow/-/react-native-waterfall-flow-1.1.5.tgz#f480cad514d21a4e849475c9bbefb473ae9c4c84"
+  integrity sha512-7ARV6G0ADXNhvX1uV3OjPOYBsvwth4CxonBqt4nNuXhuiTNq/MJyLCbUK9kPcGXNS+/2PksKwGjGcZbwwvplYw==
+
 react-native-web@^0.19.11:
   version "0.19.12"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.19.12.tgz#30d1fd70bdff7886f43c0c2698629d830fade6bc"
