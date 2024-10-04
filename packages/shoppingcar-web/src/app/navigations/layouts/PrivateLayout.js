@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 const LinkItems = [
   { name: '商家系統', icon: FiArchive, path: "/merchants" },
   { name: '會員系統', icon: FiUser, path: "/users" },
-  { name: '商品系統', icon: FiLayers, path: "/merchants" },
+  { name: '商品系統', icon: FiLayers, path: "/products" },
   { name: '購物車系統', icon: FiDatabase, path: "/merchants" },
   { name: '訂單系統', icon: FiMessageSquare, path: "/merchants" },
   { name: '系統設定', icon: FiSettings, path: "/merchants" },
