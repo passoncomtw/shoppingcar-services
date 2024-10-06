@@ -9,6 +9,7 @@ import {
   TableContainer,
   Text,
   Button,
+  Flex,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { PaginationTable } from "table-pagination-chakra-ui"
@@ -16,7 +17,12 @@ import { PaginationTable } from "table-pagination-chakra-ui"
 const UsersScreen = (props) => {
 
   return (
-    <Box marginTop={20} bg='white'>
+    <Box bg='white'>
+      <Flex paddingRight={10} paddingTop={10} justify="right">
+        <Button as="a"
+          href="/users/create"
+          style={{ textDecoration: 'none' }}>新增會員</Button>
+      </Flex>
       <TableContainer>
         <Table variant='simple'>
           <Thead>
