@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
 import {responseErrWithMsg, responseOk} from "~/helpers/response";
 import {createMerchantRequestSchema} from "~/helpers/schemas";
-import {createMerchantResult, getMerchantsResult} from "~/services/merchantServices";
+import {createMerchantResult, getMerchantsResult, getMerchantItemsResult} from "~/services/merchantServices";
 
 /**
  * @typedef PageInfoItem
@@ -60,6 +60,12 @@ import {createMerchantResult, getMerchantsResult} from "~/services/merchantServi
  *   - eg: 100
  * @property {PageInfoItem.model} pageInfo.required
  *   - 分頁資訊
+ */
+
+/**
+ * @typedef ConsoleMerchantItemsResponse
+ * @property {Array<ConsoleMerchantInformation>} items.required
+ *   - merchant items
  */
 
 /**
@@ -126,5 +132,28 @@ const getMerchantsRoute = async (req, res) => {
   }
 };
 
+
+/**
+ * Get Merchant items API.
+ * @group ConsoleMerchant
+ * @route GET /console/merchants/items
+ * @returns {ConsoleMerchantItemsResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleMerchantItemsResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getMerchantItemsRoute = async (req, res) => {
+  try {
+    const result = await getMerchantItemsResult(req.query);
+    return responseOk(res,  result);
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
 module.exports.getMerchantsRoute = getMerchantsRoute;
+module.exports.getMerchantItemsRoute = getMerchantItemsRoute;
 module.exports.createMerchantRoute = createMerchantRoute;

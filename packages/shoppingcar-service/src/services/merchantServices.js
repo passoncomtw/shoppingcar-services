@@ -20,6 +20,12 @@ const getMerchantsResult = async (query) => {
   };
 };
 
+const getMerchantItemsResult = async () => {
+  return await database.Merchant.findAll({
+    attributes: ["id", "name"],
+  });
+};
+
 const getMerchantResult = (whereCondition) => {
   return database.Merchant.findOne({
     attributes: ["id", "name", "email", "phone"],
@@ -32,6 +38,7 @@ const removeMerchantsResult = async (query) => {
 };
 
 module.exports.getMerchantResult = getMerchantResult;
+module.exports.getMerchantItemsResult = getMerchantItemsResult;
 module.exports.getMerchantsResult = getMerchantsResult;
 module.exports.createMerchantResult = createMerchantResult;
 module.exports.removeMerchantsResult = removeMerchantsResult;
