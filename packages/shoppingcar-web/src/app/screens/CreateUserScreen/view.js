@@ -22,6 +22,7 @@ const CreateUserScreen = (props) => {
     stockAmount: 0,
     price: 0,
   });
+
   useEffect(() => {
     props.handleGetMerchantItems();
   }, []);
@@ -34,8 +35,8 @@ const CreateUserScreen = (props) => {
       </Box>
       <Formik
         initialValues={formData}
-        onSubmit={(values) => {
-          // props.handleSubmit(values);
+        onSubmit={(values) => {          
+          props.handleCreateUser(values);
         }}
       >
         {({ handleSubmit, errors, touched }) => (
@@ -53,8 +54,8 @@ const CreateUserScreen = (props) => {
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="account">商家</FormLabel>
-                <Select placeholder='Select option' value={formData.merchantId}>
-                  {props.merchantItems.map(item => (<option value={item.id}>{item.name}</option>))}
+                <Select placeholder='Select option' value={formData.merchantId} onChange={e => setFormData({...formData, merchantId: e.target.value})}>
+                  {props.merchantItems.map(item => (<option key={`${item.id}-${item.name}`} value={item.id}>{item.name}</option>))}
                 </Select>
               </FormControl>
               <FormControl>

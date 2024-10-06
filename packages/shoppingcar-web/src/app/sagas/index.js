@@ -1,15 +1,17 @@
-import isEmpty from 'lodash/isEmpty';
-import { fork, all, takeLatest } from 'redux-saga/effects';
-import types, { basicAsyncActionTypes } from '../constants/actionTypes';
-import { toCamelStyle } from '../utils/format';
+import isEmpty from "lodash/isEmpty";
+import { fork, all, takeLatest } from "redux-saga/effects";
+import types, { basicAsyncActionTypes } from "../constants/actionTypes";
+import { toCamelStyle } from "../utils/format";
 
-import * as authSagas from './authSagas';
-import * as merchantSagas from './merchantSagas';
+import * as authSagas from "./authSagas";
+import * as merchantSagas from "./merchantSagas";
+import * as userSagas from "./userSagas";
 import * as Watchers from "./watchers";
 
 
 const allSaga = {
   ...authSagas,
+  ...userSagas,
   ...merchantSagas,
 };
 
