@@ -11,8 +11,21 @@ import {
   Textarea,
   Select,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
-const PublicScreen = (props) => {
+const CreateUserScreen = (props) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    subtitle: "",
+    description: "",
+    merchantId: null,
+    stockAmount: 0,
+    price: 0,
+  });
+  useEffect(() => {
+    props.handleGetMerchantItems();
+  }, []);
+
   return (
   <Flex bg="gray.100" align="center" justify="center" h="100vh">
     <Box bg="white" p={6} rounded="md" w="40%">
@@ -20,14 +33,7 @@ const PublicScreen = (props) => {
         <Text fontSize='xl'>新增會員</Text>
       </Box>
       <Formik
-        initialValues={{
-          name: "",
-          subtitle: "",
-          description: "",
-          merchantId: null,
-          stockAmount: 0,
-          price: 0,
-        }}
+        initialValues={formData}
         onSubmit={(values) => {
           // props.handleSubmit(values);
         }}
@@ -41,15 +47,14 @@ const PublicScreen = (props) => {
                   as={Input}
                   id="name"
                   name="name"
-                  variant="filled"
+                  onChange={e => setFormData({...formData, name: e.target.value})}
+                  value={formData.name}
                 />
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="account">商家</FormLabel>
-                <Select placeholder='Select option' value="option2">
-                  <option value='option1'>Option 1</option>
-                  <option value='option2'>Option 2</option>
-                  <option value='option3'>Option 3</option>
+                <Select placeholder='Select option' value={formData.merchantId}>
+                  {props.merchantItems.map(item => (<option value={item.id}>{item.name}</option>))}
                 </Select>
               </FormControl>
               <FormControl>
@@ -58,7 +63,8 @@ const PublicScreen = (props) => {
                   as={Input}
                   id="stockAmount"
                   name="stockAmount"
-                  variant="filled"
+                  onChange={e => setFormData({...formData, stockAmount: e.target.value})}
+                  value={formData.stockAmount}
                 />
               </FormControl>
               <FormControl>
@@ -67,7 +73,8 @@ const PublicScreen = (props) => {
                   as={Input}
                   id="price"
                   name="price"
-                  variant="filled"
+                  onChange={e => setFormData({...formData, price: e.target.value})}
+                  value={formData.price}
                 />
               </FormControl>
               <FormControl>
@@ -77,6 +84,8 @@ const PublicScreen = (props) => {
                   id="subtitle"
                   name="subtitle"
                   placeholder='請輸入次抬頭'
+                  onChange={e => setFormData({...formData, subtitle: e.target.value})}
+                  value={formData.subtitle}
                 />
               </FormControl>
               <FormControl>
@@ -86,6 +95,8 @@ const PublicScreen = (props) => {
                   id="description"
                   name="description"
                   placeholder='請輸入次描述'
+                  onChange={e => setFormData({...formData, description: e.target.value})}
+                  value={formData.description}
                 />
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
@@ -100,4 +111,4 @@ const PublicScreen = (props) => {
   );
 }
 
-export default PublicScreen;
+export default CreateUserScreen;

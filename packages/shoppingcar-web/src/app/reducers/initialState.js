@@ -4,6 +4,7 @@ const authState = {
 };
 
 const merchantState = {
+  merchantItems: [],
   items: [],
   totalAmount: 0,
   pageInfo: {
