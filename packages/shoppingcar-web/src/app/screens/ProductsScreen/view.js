@@ -8,18 +8,12 @@ import {
   Td,
   TableContainer,
   Text,
+  Button,
 } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { PaginationTable } from "table-pagination-chakra-ui"
 
-const MerchantsScreen = (props) => {
-  useEffect(() => {
-    props.handleGetMerchants({
-      PageSize: 10,
-    })
-  }, []);
-
-  const {merchant} = props;
+const ProductsScreen = (props) => {
 
   return (
     <Box marginTop={20} bg='white'>
@@ -27,23 +21,25 @@ const MerchantsScreen = (props) => {
         <Table variant='simple'>
           <Thead>
             <Tr>
-              <Th>帳號</Th>
-              <Th>暱稱</Th>
-              <Th>信箱</Th>
-              <Th>手機號碼</Th>
+              <Th>名稱</Th>
+              <Th>商家</Th>
               <Th>狀態</Th>
+              <Th>價格</Th>
+              <Th>現有庫存</Th>
+              <Th>未發貨</Th>
+              <Th>操作</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {merchant.items.map(item => (
-              <Tr>
-              <Td>{item.name}</Td>
-              <Td>{item.name}</Td>
-              <Td>{item.email}</Td>
-              <Td>{item.phone}</Td>
-              <Td><Text color='#0DC884'>-</Text></Td>
+            <Tr>
+              <Td>怪物糖果</Td>
+              <Td>糖果愛好者</Td>
+              <Td><Text color='#0DC884'>上架</Text></Td>
+              <Td>$20.00</Td>
+              <Td>20</Td>
+              <Td>2</Td>
+              <Td><Button>編輯</Button></Td>
             </Tr>
-            ))}            
           </Tbody>
         </Table>
       </TableContainer>
@@ -52,11 +48,11 @@ const MerchantsScreen = (props) => {
         setPageSize={() => false}
         pageIndex={1}
         setPageIndex={() => false}
-        totalItemsCount={merchant.totalAmount}
+        totalItemsCount={10}
         pageSizeOptions={[10]}
       />
     </Box>
   );
 }
 
-export default MerchantsScreen;
+export default ProductsScreen;

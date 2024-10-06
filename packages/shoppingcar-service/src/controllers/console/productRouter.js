@@ -1,4 +1,3 @@
-import pick from "lodash/pick";
 import {responseErrWithMsg, responseOk} from "~/helpers/response";
 import {createProductRequestSchema} from "~/helpers/schemas";
 import {createProductResult, getProductsResult} from "~/services/productServices";

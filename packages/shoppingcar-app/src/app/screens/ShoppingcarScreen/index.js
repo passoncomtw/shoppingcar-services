@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import ResetPasswordScreen from './view';
+import ShoppingcarScreen from './view';
 
 const mapStateToProps = () => {
   return {};
@@ -8,4 +8,4 @@ const mapStateToProps = () => {
 const mapDispatchToProps = dispatch => ({
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ShoppingcarScreen);

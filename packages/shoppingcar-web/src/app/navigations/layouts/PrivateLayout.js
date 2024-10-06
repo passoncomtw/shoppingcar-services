@@ -29,12 +29,12 @@ import {
 import { useSelector } from "react-redux";
 
 const LinkItems = [
-  { name: '商家系統', icon: FiArchive },
-  { name: '會員系統', icon: FiUser },
-  { name: '商品系統', icon: FiLayers },
-  { name: '購物車系統', icon: FiDatabase },
-  { name: '訂單系統', icon: FiMessageSquare },
-  { name: '系統設定', icon: FiSettings },
+  { name: '商家系統', icon: FiArchive, path: "/merchants" },
+  { name: '會員系統', icon: FiUser, path: "/users" },
+  { name: '商品系統', icon: FiLayers, path: "/products" },
+  { name: '購物車系統', icon: FiDatabase, path: "/merchants" },
+  { name: '訂單系統', icon: FiMessageSquare, path: "/merchants" },
+  { name: '系統設定', icon: FiSettings, path: "/merchants" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -52,7 +52,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       h="full"
       {...rest}>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
@@ -108,11 +108,11 @@ const Navbar = () => {
   )
 };
 
-const NavItem = ({ icon, children, ...rest }) => {
+const NavItem = ({ icon, children, path, ...rest }) => {
   return (
     <Box
       as="a"
-      href="#"
+      href={path}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex

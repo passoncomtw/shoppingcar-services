@@ -7,7 +7,7 @@ services:
     container_name: shoppingcar-service
     image: passon/shoppingcar-service
     ports:
-      - 127.0.0.1:3333:3333
+      - 0.0.0.0:3333:3333
     volumes:
       - .env:/app/.env
 
