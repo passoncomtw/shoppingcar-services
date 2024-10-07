@@ -26,21 +26,6 @@ const getUsersService = async (query) => {
   };
 }
 
-const updateUserByUserIdService = async (userId, query) => {
-  const user = await getUserByUserIdService(userId);
-
-  if(query.name) {
-    user.name = query.name;
-  }
-
-  if(query.email) {
-    user.email = query.email;
-  }
-
-  await user.save();
-  return user;
-};
-
 const getUserWithPasswordByService = async (phone) => {
   const userResult = await database.User.findOne({
     where: {
@@ -77,6 +62,21 @@ const createUserService = async (userData) => {
     createdAt: userResult.createdAt,
     ...userData,
   };
+};
+
+const updateUserByUserIdService = async (userId, query) => {
+  const user = await getUserByUserIdService(userId);
+
+  if(query.name) {
+    user.name = query.name;
+  }
+
+  if(query.email) {
+    user.email = query.email;
+  }
+
+  await user.save();
+  return user;
 };
 
 const removeUsersService = async (query) => {

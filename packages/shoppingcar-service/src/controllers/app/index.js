@@ -9,6 +9,6 @@ const router = Express.Router();
 router.post("/login", loginRoute);
 router.get("/merchants", jwtAuthorizationMiddleware, getMerchantsRoute);
 router.get("/merchants/:merchantId/products", jwtAuthorizationMiddleware, getProductsByMerchantIdRouter)
-router.get("/users", jwtAuthorizationMiddleware, getUserDetailRouter);
+router.get("/users/self", jwtAuthorizationMiddleware, getUserDetailRouter);
 
 export default router;

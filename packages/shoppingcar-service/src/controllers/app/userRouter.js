@@ -1,6 +1,5 @@
 import {responseErrWithMsg, responseOk} from "~/helpers/response";
-
-
+import {getUserByUserIdService} from "~/services/userServices";
 /**
  * @typedef AppUserInformation
  * @property {number} id.required
@@ -12,12 +11,15 @@ import {responseErrWithMsg, responseOk} from "~/helpers/response";
  * @property {string} phone.required
  *   - user phone
  *   - eg: 0987654321
+  * @property {string} createdAt.required
+ *   - 建立時間
+ *   - eg: 2024-09-18T23:05:24.254Z
  */
 
 /**
  * Get Users API.
  * @group AppUser
- * @route GET /app/users
+ * @route GET /app/users/self
  * @returns {AppUserInformation.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
@@ -27,7 +29,13 @@ import {responseErrWithMsg, responseOk} from "~/helpers/response";
  * @property {{integer}} code - response code - eg: 200
  */
 const getUserDetailRouter = async (req, res) => {
-  return responseOk(res, {item: req.user})
+  try {
+    const result = await getUserByUserIdService(req.user.id);
+    return responseOk(res, {item: result})
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+  
 };
 
 module.exports.getUserDetailRouter = getUserDetailRouter;
