@@ -57,7 +57,6 @@ import {createProductResult, getProductsResult} from "~/services/productServices
  *  - console product information
  */
 
-
 /**
  * @typedef ConsoleProductsResponse
  * @property {Array<ConsoleProductInformation>} items.required

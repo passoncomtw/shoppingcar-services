@@ -49,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Product.associate = function (models) {
     Product.belongsTo(models.Merchant, {
+      as: "merchnat",
       foreignKey: {
         name: 'merchant_id'
       },

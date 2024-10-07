@@ -8,14 +8,14 @@ const getProductsResult = async (query) => {
     limit: pageSize,
     after: endCursor,
     include: [
-      {        
-        model: database.Merchant,     
-           
+      {    
+        as: "merchnat",
+        model: database.Merchant,                
         attributes: ["id", "name", "email", "phone"],
       }
     ],
     attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
-    group: ['Product.id', 'Merchant.id'],
+    group: ['Product.id', 'merchnat.id'],
   });
   const items = result.edges.map(item => item.node);
   return {
@@ -23,6 +23,20 @@ const getProductsResult = async (query) => {
     totalCount: result.totalCount,
     pageInfo: result.pageInfo,
   };
+};
+
+const getProductResult = async (query) => {
+  return await database.Product.findOne({
+    include: [
+      {
+        as: "merchnat",
+        model: database.Merchant,                
+        attributes: ["id", "name", "email", "phone"],
+      }
+    ],
+    where: query,
+    attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
+  });
 };
 
 const getProductsByMerchantIdResult = async (merchantId, query) => {
@@ -34,14 +48,14 @@ const getProductsByMerchantIdResult = async (merchantId, query) => {
     limit: pageSize,
     after: endCursor,
     include: [
-      {        
-        model: database.Merchant,     
-           
+      {
+        as: "merchnat",
+        model: database.Merchant,        
         attributes: ["id", "name", "email", "phone"],
       }
     ],
     attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
-    group: ['Product.id', 'Merchant.id'],
+    group: ['Product.id', 'merchnat.id'],
   });
   const items = result.edges.map(item => item.node);
   return {
@@ -61,7 +75,10 @@ const createProductResult = async (createProductRequest) => {
     ...createProductRequest,
     merchant: merchantResult,
   }, {
-    include: [database.Merchant],
+    include: [{
+      as: "merchnat",
+      model: database.Merchant,
+    }],
   });
   return {
     id: result.id,
@@ -84,6 +101,7 @@ const removeProductResult = async (query) => {
 };
 
 module.exports.getProductsResult = getProductsResult;
+module.exports.getProductResult = getProductResult;
 module.exports.getProductsByMerchantIdResult = getProductsByMerchantIdResult;
 module.exports.createProductResult = createProductResult;
 module.exports.removeProductResult = removeProductResult;
