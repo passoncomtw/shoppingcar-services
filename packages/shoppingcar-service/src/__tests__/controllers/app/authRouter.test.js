@@ -110,7 +110,7 @@ describe("測試 Authorization 功能", () => {
       .expect(200)
       .then((res) => {
         expect(res.statusCode).toBe(200);
-        const { token = null, user = null } = res.body;
+        const { token = null, user = null } = res.body;        
         expect(token).not.toBe(null);
         expect(isEmpty(user)).not.toBe(true);
         expect(isNumber(user.id)).toBe(true);
