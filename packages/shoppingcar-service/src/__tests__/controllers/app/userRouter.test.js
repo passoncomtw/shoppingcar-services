@@ -8,18 +8,17 @@ import { token } from "~/constants/mockDatas/settings";
 
 const request = supertest.agent(server);
 
-describe("測試 Authorization 功能", () => {
+describe("測試 App 會員 功能", () => {
   afterAll((done) => {
     server.close();
     done();
   });
 
   
-  it("should app user login success", async () => {
+  it("should get app user info success", async () => {
     return request
       .get("/app/users/self")
       .set({ Authorization: token })
-      .query({})
       .then((res) => {
         expect(res.statusCode).toBe(200);
         const { item } = res.body;

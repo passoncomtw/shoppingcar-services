@@ -264,6 +264,6 @@ describe("測試 後台商家 功能", () => {
         expect(isBoolean(pageInfo.hasPreviousPage)).toBe(true);
         expect(isString(pageInfo.startCursor)).toBe(true);
         expect(isString(pageInfo.endCursor)).toBe(true);
-      })
+      });
   });
 });
