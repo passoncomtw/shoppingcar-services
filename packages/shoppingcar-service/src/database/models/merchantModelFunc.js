@@ -5,6 +5,12 @@ module.exports = (sequelize, DataTypes) => {
   const Merchant = sequelize.define(
     "Merchant",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       name: {
         field: "name",
         type: DataTypes.STRING,

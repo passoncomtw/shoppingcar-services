@@ -4,6 +4,12 @@ module.exports = (sequelize, DataTypes) => {
   const BackendUser = sequelize.define(
     "BackendUser",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       account: {
         field: "account",
         type: DataTypes.STRING,

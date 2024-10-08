@@ -8,14 +8,14 @@ const getProductsResult = async (query) => {
     limit: pageSize,
     after: endCursor,
     include: [
-      {        
-        model: database.Merchant,     
-           
+      {
+        as: "merchant",
+        model: database.Merchant,                
         attributes: ["id", "name", "email", "phone"],
       }
     ],
     attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
-    group: ['Product.id', 'Merchant.id'],
+    group: ['Product.id', 'merchant.id'],
   });
   const items = result.edges.map(item => item.node);
   return {
@@ -34,14 +34,14 @@ const getProductsByMerchantIdResult = async (merchantId, query) => {
     limit: pageSize,
     after: endCursor,
     include: [
-      {        
-        model: database.Merchant,     
-           
+      {       
+        as: "merchant", 
+        model: database.Merchant,           
         attributes: ["id", "name", "email", "phone"],
       }
     ],
     attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
-    group: ['Product.id', 'Merchant.id'],
+    group: ['Product.id', 'merchant.id'],
   });
   const items = result.edges.map(item => item.node);
   return {
@@ -51,18 +51,27 @@ const getProductsByMerchantIdResult = async (merchantId, query) => {
   };
 };
 
+const getProductInformationIdResult = async (whereCondition) => {
+  return await database.Product.findOne({
+    attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
+    include: [
+      {
+        as: "merchant",
+        model: database.Merchant,     
+        attributes: ["id", "name", "email", "phone"],
+      }
+    ],
+    where: whereCondition,
+  });  
+};
+
 const createProductResult = async (createProductRequest) => {
   const merchantResult = await getMerchantResult({id: createProductRequest.merchantId});
   if (isEmpty(merchantResult)){
     throw new Error("商家不存在");
   }
 
-  const result = await database.Product.create({
-    ...createProductRequest,
-    merchant: merchantResult,
-  }, {
-    include: [database.Merchant],
-  });
+  const result = await database.Product.create(createProductRequest);
   return {
     id: result.id,
     name: result.name,
@@ -85,5 +94,6 @@ const removeProductResult = async (query) => {
 
 module.exports.getProductsResult = getProductsResult;
 module.exports.getProductsByMerchantIdResult = getProductsByMerchantIdResult;
+module.exports.getProductInformationIdResult = getProductInformationIdResult;
 module.exports.createProductResult = createProductResult;
 module.exports.removeProductResult = removeProductResult;
