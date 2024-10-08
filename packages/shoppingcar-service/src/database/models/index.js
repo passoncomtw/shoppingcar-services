@@ -26,6 +26,14 @@ const productModelFunc = require("./productModelFunc");
 const ProductModel = productModelFunc(sequelize, Sequelize.DataTypes);
 db.Product = ProductModel;
 
+const shoppingcarModel = require("./shoppingcarModelFunc");
+const ShoppingcarModel = shoppingcarModel(sequelize, Sequelize.DataTypes);
+db.Shoppingcar = ShoppingcarModel;
+
+const shoppingcarItemModel = require("./shoppingcarItemsModelFunc");
+const ShoppingcarItemModel = shoppingcarItemModel(sequelize, Sequelize.DataTypes);
+db.ShoppingcarItem = ShoppingcarItemModel;
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);

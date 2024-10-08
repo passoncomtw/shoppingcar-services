@@ -18,7 +18,6 @@ describe("測試 App 店家 功能", () => {
     done();
   });
 
-  
   it("should get app merchants success", async () => {
     return request
     .get("/app/merchants")

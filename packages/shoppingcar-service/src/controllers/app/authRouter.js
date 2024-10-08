@@ -1,14 +1,10 @@
-import express from "express";
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
-
-const { responseOk, responseErrWithMsg } = require("../../helpers/response");
-const { parseUserResponse } = require("../../services/userServices");
-const { signinRequestSchema } = require("../../helpers/schemas");
-
-const router = express.Router();
+import {responseOk, responseErrWithMsg} from "~/helpers/response";
+import {parseUserResponse} from "~/services/userServices";
+import {signinRequestSchema} from "~/helpers/schemas";
 
 const { AUTH_SECRET } = process.env;
 

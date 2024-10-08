@@ -132,7 +132,7 @@ CREATE TABLE "public"."shoppingcar_items" (
     "product_id" int NOT NULL, -- COMMENT '產品id, products.id'
     "merchant_id" int NOT NULL, --  COMMENT '商家id, merchants.id'
     "shoppingcar_id" int NOT NULL, --  COMMENT '購物車id, shoppingcars.id'
-    "count" numeric NOT NULL, -- COMMENT '產品價格'
+    "amount" numeric NOT NULL, -- COMMENT '產品數量'
     "created_at" TIMESTAMP default current_timestamp,
     "updated_at" TIMESTAMP default null,
     CONSTRAINT fk_shoppingcar_items_products FOREIGN KEY(product_id) REFERENCES products(id),

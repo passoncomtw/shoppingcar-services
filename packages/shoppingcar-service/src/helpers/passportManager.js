@@ -35,6 +35,9 @@ passport.use('console-user',
         const notfoundError = new Error(message);
         return done(notfoundError, null, { message });
       }
+
+      req.user = user;
+      
       return done(null, backendUser);
     }
   )
@@ -55,6 +58,9 @@ passport.use('app-user',
         const notfoundError = new Error(message);
         return done(notfoundError, null, { message });
       }
+
+      req.user = user;
+
       return done(null, user);
     }
   )

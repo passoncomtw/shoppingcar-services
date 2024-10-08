@@ -41,14 +41,12 @@ module.exports = (sequelize, DataTypes) => {
   User.paginate = makePaginate(User);
 
   User.associate = function (models) {
-    // User.hasMany(models.Contract, {
-    //   as: 'contracts',
-    //   foreignKey: {
-    //     name: 'user_id'
-    //   },
-    //   onUpdate: 'CASCADE',
-    //   onDelete: 'CASCADE',
-    // });
+    User.hasOne(models.Shoppingcar, {
+      as: "shoppingcar",
+      foreignKey: {
+        name: 'user_id',
+      },
+    });
   };
 
   return User;
