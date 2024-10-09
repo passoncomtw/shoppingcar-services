@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     User.hasOne(models.Shoppingcar, {
       as: "shoppingcar",
       foreignKey: {
-        name: 'user_id',
+        name: "user_id",
       },
     });
   };

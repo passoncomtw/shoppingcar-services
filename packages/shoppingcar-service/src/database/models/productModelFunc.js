@@ -1,8 +1,8 @@
-import { makePaginate } from 'sequelize-cursor-pagination';
+import { makePaginate } from "sequelize-cursor-pagination";
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define(
-    'Product',
+    "Product",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,42 +11,42 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       name: {
-        field: 'name',
+        field: "name",
         type: DataTypes.STRING,
         length: 20,
       },
       subtitle: {
-        field: 'subtitle',
+        field: "subtitle",
         type: DataTypes.STRING,
       },
       description: {
-        field: 'description',
+        field: "description",
         type: DataTypes.STRING,
       },
       price: {
-        field: 'price',
+        field: "price",
         type: DataTypes.NUMBER(10, 2),
         get() {
-          const rawValue = this.getDataValue('price');
+          const rawValue = this.getDataValue("price");
           return Number(rawValue);
         },
       },
       stockAmount: {
-        field: 'stock_amount',
+        field: "stock_amount",
         type: DataTypes.NUMBER(11, 0),
         get() {
-          const rawValue = this.getDataValue('stockAmount');
+          const rawValue = this.getDataValue("stockAmount");
           return Number(rawValue);
         },
       },
       merchantId: {
-        field: 'merchant_id',
+        field: "merchant_id",
         type: DataTypes.NUMBER(11, 0),
       },
     },
     {
       sequelize,
-      tableName: 'products',
+      tableName: "products",
       timestamps: true,
       underscored: true,
       freezeTableName: true,
@@ -56,10 +56,16 @@ module.exports = (sequelize, DataTypes) => {
   Product.paginate = makePaginate(Product);
 
   Product.associate = function (models) {
-    Product.belongsTo(models.Merchant, {
-      as: 'merchant',
+    Product.hasOne(models.ShoppingcarItem, {
+      as: "shoppingcarItem",
       foreignKey: {
-        name: 'merchant_id',
+        name: "product_id",
+      },
+    });
+    Product.belongsTo(models.Merchant, {
+      as: "merchant",
+      foreignKey: {
+        name: "merchant_id",
       },
     });
   };

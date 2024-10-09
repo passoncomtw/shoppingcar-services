@@ -1,18 +1,50 @@
-import isEmpty from 'lodash/isEmpty';
-import database from '~/database/models';
-import { getProductInformationIdResult } from './productServices';
+import isEmpty from "lodash/isEmpty";
+import database from "~/database/models";
+import { getProductInformationIdResult } from "./productServices";
 
 const getShoppingcarResult = (userId) => {
   return database.Shoppingcar.findOne({
     where: { userId },
     include: [
       {
-        as: 'shoppingcarItems',
+        as: "shoppingcarItems",
         model: database.ShoppingcarItem,
       },
     ],
   });
 };
+
+const getShoppingcarDetailResult = (userId) => {
+  return database.Shoppingcar.findOne({
+    where: { userId },
+    attributes: ["id", "productCount", "totalAmount"],
+    include: [
+      {
+        as: "user",
+        model: database.User,
+        attributes: ["id", "name", "phone"],
+      },
+      {
+        as: "shoppingcarItems",
+        model: database.ShoppingcarItem,
+        attributes: ["id", "amount"],
+        include: [
+          {
+            as: "product",
+            model: database.Product,
+            attributes: ["id", "name", "price", "stockAmount", "description", "subtitle"],
+          },
+          {
+            as: "merchant",
+            model: database.Merchant,
+            attributes: ["id", "name", "phone", "email"],
+          },
+        ],
+      },
+    ],
+  });
+};
+
 const initialShoppingcar = async (userId, tx) => {
   const shoppingcarResult = await getShoppingcarResult(userId);
   if (isEmpty(shoppingcarResult)) {
@@ -92,5 +124,6 @@ const clearShoppingcarItems = async (userId) => {
   await tx.commit();
 };
 
+module.exports.getShoppingcarDetailResult = getShoppingcarDetailResult;
 module.exports.appendProductToShoppingcarResult = appendProductToShoppingcarResult;
 module.exports.clearShoppingcarItems = clearShoppingcarItems;

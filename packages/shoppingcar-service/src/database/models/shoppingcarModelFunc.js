@@ -1,8 +1,8 @@
-import { makePaginate } from 'sequelize-cursor-pagination';
+import { makePaginate } from "sequelize-cursor-pagination";
 
 module.exports = (sequelize, DataTypes) => {
   const Shoppingcar = sequelize.define(
-    'Shoppingcar',
+    "Shoppingcar",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -11,29 +11,29 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       userId: {
-        field: 'user_id',
+        field: "user_id",
         type: DataTypes.NUMBER,
       },
       productCount: {
-        field: 'product_count',
+        field: "product_count",
         type: DataTypes.NUMBER,
         get() {
-          const rawValue = this.getDataValue('productCount');
+          const rawValue = this.getDataValue("productCount");
           return Number(rawValue);
         },
       },
       totalAmount: {
-        field: 'total_amount',
+        field: "total_amount",
         type: DataTypes.NUMBER,
         get() {
-          const rawValue = this.getDataValue('totalAmount');
+          const rawValue = this.getDataValue("totalAmount");
           return Number(rawValue);
         },
       },
     },
     {
       sequelize,
-      tableName: 'shoppingcars',
+      tableName: "shoppingcars",
       timestamps: true,
       underscored: true,
       freezeTableName: true,
@@ -44,15 +44,15 @@ module.exports = (sequelize, DataTypes) => {
 
   Shoppingcar.associate = function (models) {
     Shoppingcar.belongsTo(models.User, {
-      as: 'user',
+      as: "user",
       foreignKey: {
-        name: 'user_id',
+        name: "user_id",
       },
     });
     Shoppingcar.hasMany(models.ShoppingcarItem, {
-      as: 'shoppingcarItems',
+      as: "shoppingcarItems",
       foreignKey: {
-        name: 'shoppingcar_id',
+        name: "shoppingcar_id",
       },
     });
   };
