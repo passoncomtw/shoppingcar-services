@@ -36,8 +36,6 @@ passport.use('console-user',
         return done(notfoundError, null, { message });
       }
 
-      req.user = user;
-      
       return done(null, backendUser);
     }
   )
@@ -58,8 +56,6 @@ passport.use('app-user',
         const notfoundError = new Error(message);
         return done(notfoundError, null, { message });
       }
-
-      req.user = user;
 
       return done(null, user);
     }
@@ -97,6 +93,7 @@ module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
 
       return res.status(401).json(err); // send the error response to client
     }
+
     req.user = user.data;
     return next(null, user);
   })(req, res, next);

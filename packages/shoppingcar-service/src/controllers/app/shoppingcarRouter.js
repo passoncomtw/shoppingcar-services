@@ -37,9 +37,8 @@ const appendProductToShoppingcar = async (req, res) => {
             productId,
             amount,
         });
-        return responseOk(res,  {item: {}});
+        return responseOk(res,  {item: result});
       } catch (error) {
-        console.log("🚀 ~ appendProductToShoppingcar ~ error.message:", error.message)
         return responseErrWithMsg(res, error.message);
       }
 };

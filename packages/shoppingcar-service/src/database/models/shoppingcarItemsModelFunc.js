@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-      },
+      },      
       productId: {
         field: 'product_id',
         type: DataTypes.NUMBER,
