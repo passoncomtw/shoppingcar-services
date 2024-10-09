@@ -42,7 +42,9 @@ const appendProductToShoppingcarResult = async (options) => {
 
   const nextProductCount = shoppingcarResult.productCount + 1;
   const nextTotalAmount =
-    shoppingcarResult.totalAmount + productInformationResult.price * amount;
+  shoppingcarResult.totalAmount + productInformationResult.price * amount;
+  console.log("🚀 ~ appendProductToShoppingcarResult ~ nextTotalAmount:", nextTotalAmount)
+  console.log("🚀 ~ appendProductToShoppingcarResult ~ nextProductCount:", nextProductCount)
     console.log("🚀 ~ appendProductToShoppingcarResult ~ shoppingcarResult.id:", shoppingcarResult.id)
   await Promise.all([
     database.Shoppingcar.update(
@@ -68,6 +70,7 @@ const appendProductToShoppingcarResult = async (options) => {
     ),
   ]);
 
+  await tx.commit();
   await shoppingcarResult.reload();
   return shoppingcarResult;
 };
