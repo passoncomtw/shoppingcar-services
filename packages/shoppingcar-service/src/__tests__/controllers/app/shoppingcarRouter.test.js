@@ -4,7 +4,7 @@ import isString from "lodash/isString";
 import supertest from "supertest";
 import server from "~/main";
 import { token } from "~/constants/mockDatas/settings";
-import {clearShoppingcarItems} from "~/services/shoppingcarService";
+import {clearShoppingcarItems} from "~/services/shoppingcarServices";
 
 const request = supertest.agent(server);
 

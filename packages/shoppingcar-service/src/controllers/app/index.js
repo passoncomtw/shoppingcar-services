@@ -4,6 +4,7 @@ import { loginRoute } from './authRouter';
 import {getUserDetailRouter} from "./userRouter";
 import {getShoppingcarRouter, appendProductToShoppingcar} from "./shoppingcarRouter";
 import {getMerchantsRoute, getProductsByMerchantIdRouter, getProductInformationRouter} from "./merchantRouter";
+import {createOrderRouter} from "./orderRouter";
 
 const router = Express.Router();
 
@@ -17,5 +18,7 @@ router.get("/users/self", jwtAuthorizationMiddleware, getUserDetailRouter);
 
 router.get("/shoppingcars", jwtAuthorizationMiddleware, getShoppingcarRouter);
 router.post("/shoppingcars/:merchantId/products/:productId", jwtAuthorizationMiddleware, appendProductToShoppingcar);
+
+router.post("/orders", jwtAuthorizationMiddleware, createOrderRouter);
 
 export default router;

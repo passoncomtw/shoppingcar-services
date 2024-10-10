@@ -1,5 +1,5 @@
 import {responseOk, responseErrWithMsg} from "~/helpers/response";
-import {getShoppingcarDetailResult, appendProductToShoppingcarResult} from "~/services/shoppingcarService";
+import {getShoppingcarDetailResult, appendProductToShoppingcarResult} from "~/services/shoppingcarServices";
 
 /**
  * @typedef AppProductInformation
