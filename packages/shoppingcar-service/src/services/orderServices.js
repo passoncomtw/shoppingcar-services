@@ -89,4 +89,17 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
   }
 };
 
+const updateOrderPayStatusResult = async (orderId) => {
+  const orderResult = await database.Order.findOne({
+    where: {id: orderId},
+  });
+  if (isEmpty(orderResult)) {
+    throw new Error("訂單不存在");
+  }
+
+  orderResult.isPaid = !orderResult.isPaid;
+  await orderResult.save();
+};
+
 module.exports.createOrderResult = createOrderResult;
+module.exports.updateOrderPayStatusResult = updateOrderPayStatusResult;

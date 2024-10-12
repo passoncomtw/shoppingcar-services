@@ -1,5 +1,5 @@
 import {responseOk, responseErrWithMsg} from "~/helpers/response";
-import {createOrderResult} from "~/services/orderServices";
+import {createOrderResult, updateOrderPayStatusResult} from "~/services/orderServices";
 /**
  * @typedef AppCreateOrderRequest
  * @property {Array} shoppingcarItemIds.required
@@ -69,4 +69,31 @@ const createOrderRouter = async (req, res) => {
       }
 };
 
+/**
+ * Update Order pay status API.
+ * @group AppOrder
+ * @route PUT /app/orders/{orderId}/payment
+ * @param {String} orderId.path
+ *   - 訂單 ID
+ *   - eg: 81669846-5914-4f03-b0b4-d6e85f4dc7f8
+ * @returns {Object} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef Object
+ * @property {{integer}} code - response code - eg: 200
+ */
+const updateOrderPayStatusRouter = async (req, res) => {
+  try {
+      const {orderId} = req.params;
+      console.log("🚀 ~ updateOrderPayStatusRouter ~ orderId:", orderId)
+      await updateOrderPayStatusResult(orderId);
+      return responseOk(res,  {});
+    } catch (error) {
+      return responseErrWithMsg(res, error.message);
+    }
+};
+
 module.exports.createOrderRouter = createOrderRouter;
+module.exports.updateOrderPayStatusRouter = updateOrderPayStatusRouter;

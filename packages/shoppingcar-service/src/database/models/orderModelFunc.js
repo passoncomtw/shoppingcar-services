@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         field: "user_id",
         type: DataTypes.NUMBER,
       },
+      isPaid: {
+        field: "is_paid",
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       productCount: {
         field: "product_count",
         type: DataTypes.NUMBER,
