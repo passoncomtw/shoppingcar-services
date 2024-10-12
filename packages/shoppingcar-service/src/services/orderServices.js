@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 const createOrderResult = async (userId, shoppingcarItemIds) => {
   const tx = await database.sequelize.transaction();
   try {
-    const shoppingarResult = await database.Shoppingcar.findOne({
+    const shoppingcarResult = await database.Shoppingcar.findOne({
       where: { userId },
     });
     const shoppintcarItemsResult = await database.ShoppingcarItem.findAll({
@@ -16,10 +16,10 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
           attributes: ["id", "price", "stockAmount"],
         },
       ],
-      where: { id: { [Op.in]: shoppingcarItemIds }, shoppingcarId: shoppingarResult.id },
+      where: { id: { [Op.in]: shoppingcarItemIds }, shoppingcarId: shoppingcarResult.id },
     });
 
-    if (isEmpty(shoppingarResult)) {
+    if (isEmpty(shoppingcarResult)) {
       throw new Error("購物車不存在");
     }
     if (shoppingcarItemIds.length !== shoppingcarItemIds.length) {
@@ -72,10 +72,10 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
     }
 
     const updateShoppingcarPromise = database.Shoppingcar.update({
-      productCount: shoppingarResult.productCount - shoppingcarItemIds.length,
-      totalAmount: totalAmount,
+      productCount: shoppingcarResult.productCount - shoppingcarItemIds.length,
+      totalAmount: shoppingcarResult.totalAmount - totalAmount,
     }, {
-      where: {id: shoppingarResult.id},
+      where: {id: shoppingcarResult.id},
       transaction: tx,
     });
     allPromises.push(updateShoppingcarPromise);
