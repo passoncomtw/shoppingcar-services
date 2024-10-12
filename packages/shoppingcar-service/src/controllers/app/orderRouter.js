@@ -1,5 +1,5 @@
 import {responseOk, responseErrWithMsg} from "~/helpers/response";
-
+import {createOrderResult} from "~/services/orderServices";
 /**
  * @typedef AppCreateOrderRequest
  * @property {Array} shoppingcarItemIds.required
@@ -61,8 +61,9 @@ import {responseOk, responseErrWithMsg} from "~/helpers/response";
 const createOrderRouter = async (req, res) => {
     try {
         const userId = req.user.id;
-        const result = await createOrderResult(userId);
-        return responseOk(res,  {items: []});
+        const {shoppingcarItemIds} = req.body;
+        const result = await createOrderResult(userId, shoppingcarItemIds);
+        return responseOk(res,  {items: [result.id]});
       } catch (error) {
         return responseErrWithMsg(res, error.message);
       }

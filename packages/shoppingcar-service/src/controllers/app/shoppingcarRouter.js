@@ -87,7 +87,7 @@ const getShoppingcarRouter = async (req, res) => {
  *   - 商家 ID
  *   - eg: 1
  * @param {String} productId.path
- *   - 商家 ID
+ *   - 產品 ID
  *   - eg: 1
  * @param {AppAppendShoppingcarRequest.model} data.body.required - the new point
  * @returns {AppShoppingcarInformation.model} 200 - success, return requested data

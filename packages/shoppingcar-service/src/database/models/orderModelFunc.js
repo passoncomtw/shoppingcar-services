@@ -5,8 +5,8 @@ module.exports = (sequelize, DataTypes) => {
     "Order",
     {
       id: {
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
         allowNull: false,
         primaryKey: true
       },

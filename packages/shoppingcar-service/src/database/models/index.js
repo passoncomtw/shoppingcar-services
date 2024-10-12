@@ -34,6 +34,14 @@ const shoppingcarItemModel = require("./shoppingcarItemsModelFunc");
 const ShoppingcarItemModel = shoppingcarItemModel(sequelize, Sequelize.DataTypes);
 db.ShoppingcarItem = ShoppingcarItemModel;
 
+const orderModelFunc = require("./orderModelFunc");
+const orderModel = orderModelFunc(sequelize, Sequelize.DataTypes);
+db.Order = orderModel;
+
+const orderItemModelFunc = require("./orderItemModelFunc");
+const orderItemModel = orderItemModelFunc(sequelize, Sequelize.DataTypes);
+db.OrderItem = orderItemModel;
+
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
