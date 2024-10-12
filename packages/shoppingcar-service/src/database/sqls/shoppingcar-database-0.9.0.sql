@@ -77,6 +77,7 @@ CREATE TABLE "public"."orders" (
     "total_amount" NUMERIC DEFAULT 0, -- COMMENT 訂單總額
     "created_at" TIMESTAMP default current_timestamp,
     "updated_at" TIMESTAMP default null,
+    "is_paid" bool NOT NULL DEFAULT false,
     CONSTRAINT fk_orders_users FOREIGN KEY(user_id) REFERENCES users(id)
 );
 
