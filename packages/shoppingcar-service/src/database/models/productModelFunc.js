@@ -56,6 +56,12 @@ module.exports = (sequelize, DataTypes) => {
   Product.paginate = makePaginate(Product);
 
   Product.associate = function (models) {
+    Product.hasMany(models.OrderItem, {
+      as: "orderItems",
+      foreignKey: {
+        name: "product_id",
+      },
+    });
     Product.hasOne(models.ShoppingcarItem, {
       as: "shoppingcarItem",
       foreignKey: {

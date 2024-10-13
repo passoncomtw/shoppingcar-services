@@ -117,6 +117,30 @@ const getOrdersResult = async (query) => {
   };
 };
 
+const getOrderInformationResult = async (orderId) => {
+  return database.Order.findOne({
+    include: [
+      {
+        as: "orderItems",
+        attributes: ["id"],
+        model: database.OrderItem,
+        include: [
+          {
+            as: "product",
+            attributes: ["id", "name"],
+            model: database.Product,
+          }
+        ],
+      }
+    ],
+    attributes: ["id", "totalAmount"],
+    where: {
+      id: orderId,
+    }
+  });
+};
+
 module.exports.createOrderResult = createOrderResult;
 module.exports.updateOrderPayStatusResult = updateOrderPayStatusResult;
 module.exports.getOrdersResult = getOrdersResult;
+module.exports.getOrderInformationResult = getOrderInformationResult;

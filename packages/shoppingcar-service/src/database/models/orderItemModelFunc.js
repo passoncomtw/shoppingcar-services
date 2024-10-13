@@ -22,8 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "order_id",
         type: DataTypes.UUID,
         allowNull: false,
-      },
-      
+      },      
       amount: {
         field: "amount",
         type: DataTypes.NUMBER,
@@ -45,7 +44,18 @@ module.exports = (sequelize, DataTypes) => {
   OrderItem.paginate = makePaginate(OrderItem);
 
   OrderItem.associate = function (models) {
-    
+    OrderItem.belongsTo(models.Product, {
+      as: "product",
+      foreignKey: {
+        name: "product_id",
+      },
+    });
+    OrderItem.belongsTo(models.Order, {
+      as: "order",
+      foreignKey: {
+        name: "order_id",
+      },
+    });
   };
 
   return OrderItem;

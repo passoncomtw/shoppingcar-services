@@ -1,5 +1,5 @@
 import {responseOk, responseErrWithMsg} from "~/helpers/response";
-import {getOrdersResult, createOrderResult, updateOrderPayStatusResult} from "~/services/orderServices";
+import {getOrdersResult, getOrderInformationResult, createOrderResult, updateOrderPayStatusResult} from "~/services/orderServices";
 
 /**
  * @typedef AppCreateOrderRequest
@@ -35,6 +35,19 @@ import {getOrdersResult, createOrderResult, updateOrderPayStatusResult} from "~/
  *  - eg: 1
  * @property {Number} totalAmount.required
  *   - 購物車所有額度
+ *   - eg: 100
+ */
+
+/**
+ * @typedef AppOrderItemInformation
+ * @property {Number} id.required
+ *  - app shoppingcar Id
+ *  - eg: 1
+ * @property {Number} totalAmount.required
+ *   - 購物車所有額度
+ *   - eg: 100
+ * @property {Array<AppProductInformation>} orderItems.required
+ *   - product information
  *   - eg: 100
  */
 
@@ -139,6 +152,38 @@ const getOrdersRouter = async (req, res) => {
   return responseOk(res,  result);
 };
 
+/**
+ * @typedef AppOrderInformationResponse
+ * @property {AppOrderItemInformation.model} item.required
+ *   - order item information
+ */
+
+/**
+ * Get Order Information API.
+ * @group AppOrder
+ * @route GET /app/orders/{orderId}
+ * @param {String} orderId.path
+ *   - 訂單 ID
+ *   - eg: 81669846-5914-4f03-b0b4-d6e85f4dc7f8
+ * @returns {AppOrderInformationResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef AppOrderInformationResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getOrderInformationRouter = async (req, res) => {
+  try {
+    const {orderId} = req.params;
+    const item = await getOrderInformationResult(orderId);
+    return responseOk(res,  {item});
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }  
+};
+
 module.exports.getOrdersRouter = getOrdersRouter;
+module.exports.getOrderInformationRouter = getOrderInformationRouter;
 module.exports.createOrderRouter = createOrderRouter;
 module.exports.updateOrderPayStatusRouter = updateOrderPayStatusRouter;
