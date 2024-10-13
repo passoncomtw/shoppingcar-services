@@ -101,5 +101,22 @@ const updateOrderPayStatusResult = async (orderId) => {
   await orderResult.save();
 };
 
+const getOrdersResult = async (query) => {
+  const {pageSize = 10, endCursor = null} = query;
+  const result = await database.Order.paginate({
+    limit: pageSize,
+    after: endCursor,
+    attributes: ["id", "totalAmount"],
+    group: ['Order.id'],
+  });
+  const items = result.edges.map(item => item.node);
+  return {
+    items,
+    totalCount: result.totalCount,
+    pageInfo: result.pageInfo,
+  };
+};
+
 module.exports.createOrderResult = createOrderResult;
 module.exports.updateOrderPayStatusResult = updateOrderPayStatusResult;
+module.exports.getOrdersResult = getOrdersResult;
