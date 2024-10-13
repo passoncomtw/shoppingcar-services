@@ -34,6 +34,11 @@ const createUserRequestSchema = yup.object({
   password: passwordSchema,
 });
 
+const updateUserRequestSchema = yup.object({
+  name: yup.string().nullable().default(null),
+  phone: yup.string().matches(phoneRegExp, '電話格式錯誤').nullable().default(null),
+});
+
 const createProductRequestSchema = yup.object({
   name: yup.string().required("商品名稱不可為空"),
   price: yup.number().required("商品價格不可為空").test(
@@ -58,3 +63,4 @@ module.exports.consoleSigninRequestSchema = consoleSigninRequestSchema;
 module.exports.createMerchantRequestSchema = createMerchantRequestSchema;
 module.exports.createUserRequestSchema = createUserRequestSchema;
 module.exports.createProductRequestSchema = createProductRequestSchema;
+module.exports.updateUserRequestSchema = updateUserRequestSchema;

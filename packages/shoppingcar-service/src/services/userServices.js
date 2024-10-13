@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import pick from "lodash/pick";
 import database from "~/database/models";
 
@@ -26,19 +27,27 @@ const getUsersService = async (query) => {
   };
 }
 
-const updateUserByUserIdService = async (userId, query) => {
-  const user = await getUserByUserIdService(userId);
+const updateUserByUserIdResult = async (userId, query) => {
+  const userResult = await getUserByUserIdService(userId);
+  if (isEmpty(userResult)) {
+    throw new Error("使用者不存在");
+  }
 
   if(query.name) {
-    user.name = query.name;
+    userResult.name = query.name;
   }
 
   if(query.email) {
-    user.email = query.email;
+    userResult.email = query.email;
   }
 
-  await user.save();
-  return user;
+  if(query.phone) {
+    userResult.phone = query.phone;
+  }
+
+  await userResult.save();
+  await userResult.reload();
+  return userResult;
 };
 
 const getUserWithPasswordByService = async (phone) => {
@@ -87,6 +96,6 @@ module.exports.createUserService = createUserService;
 module.exports.getUserByUserIdService = getUserByUserIdService;
 module.exports.getUsersService = getUsersService;
 module.exports.parseUserResponse = parseUserResponse;
-module.exports.updateUserByUserIdService = updateUserByUserIdService;
+module.exports.updateUserByUserIdResult = updateUserByUserIdResult;
 module.exports.getUserWithPasswordByService = getUserWithPasswordByService;
 module.exports.removeUsersService = removeUsersService;
