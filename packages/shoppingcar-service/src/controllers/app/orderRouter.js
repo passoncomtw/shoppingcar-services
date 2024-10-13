@@ -135,8 +135,8 @@ const updateOrderPayStatusRouter = async (req, res) => {
  * @property {{integer}} code - response code - eg: 200
  */
 const getOrdersRouter = async (req, res) => {
-  const items = await getOrdersResult(req.query);
-  return responseOk(res,  {items});
+  const result = await getOrdersResult(req.query);
+  return responseOk(res,  result);
 };
 
 module.exports.getOrdersRouter = getOrdersRouter;

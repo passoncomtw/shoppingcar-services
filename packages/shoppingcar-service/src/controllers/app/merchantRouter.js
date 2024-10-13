@@ -74,7 +74,7 @@ import {getProductsByMerchantIdResult, getProductInformationIdResult} from "~/se
  */
 
 /**
- * Get Merchant API.
+ * Get Merchants API.
  * @group AppMerchants
  * @route GET /app/merchants
  * @param {Number} pageSize.query
