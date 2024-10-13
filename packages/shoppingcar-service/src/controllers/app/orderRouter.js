@@ -41,12 +41,23 @@ import {getOrdersResult, getOrderInformationResult, createOrderResult, updateOrd
 /**
  * @typedef AppOrderItemInformation
  * @property {Number} id.required
- *  - app shoppingcar Id
+ *  - app order item Id
  *  - eg: 1
+ * @property {AppMerchantInformation.model} merchant.required
+ *   - merchant information
+ * @property {AppProductInformation.model} product.required
+ *   - product information
+ */
+
+/**
+ * @typedef AppItemInformation
+ * @property {Number} id.required
+ *  - app order uuid Id
+ *  - eg: 81669846-5914-4f03-b0b4-d6e85f4dc7f8
  * @property {Number} totalAmount.required
  *   - 購物車所有額度
  *   - eg: 100
- * @property {Array<AppProductInformation>} orderItems.required
+ * @property {Array<AppOrderItemInformation>} orderItems.required
  *   - product information
  *   - eg: 100
  */
@@ -154,7 +165,7 @@ const getOrdersRouter = async (req, res) => {
 
 /**
  * @typedef AppOrderInformationResponse
- * @property {AppOrderItemInformation.model} item.required
+ * @property {AppItemInformation.model} item.required
  *   - order item information
  */
 

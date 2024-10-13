@@ -44,6 +44,12 @@ module.exports = (sequelize, DataTypes) => {
   OrderItem.paginate = makePaginate(OrderItem);
 
   OrderItem.associate = function (models) {
+    OrderItem.belongsTo(models.Merchant, {
+      as: "merchant",
+      foreignKey: {
+        name: "merchant_id",
+      },
+    });
     OrderItem.belongsTo(models.Product, {
       as: "product",
       foreignKey: {

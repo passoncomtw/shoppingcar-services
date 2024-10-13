@@ -126,10 +126,15 @@ const getOrderInformationResult = async (orderId) => {
         model: database.OrderItem,
         include: [
           {
+            as: "merchant",
+            attributes: ["id", "name", "phone", "email"],
+            model: database.Merchant,
+          },
+          {
             as: "product",
-            attributes: ["id", "name"],
+            attributes: ["id", "name", "price", "stockAmount", "description", "subtitle"],
             model: database.Product,
-          }
+          },
         ],
       }
     ],
