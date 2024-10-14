@@ -24,20 +24,15 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Pulling newest code and restart pm2 app
+    - name: Pulling newest code and restart docker app
       uses: fifsky/ssh-action@master
       with:
         command: |
           export NVM_DIR=~/.nvm
           source ~/.nvm/nvm.sh
           cd ./${{ inputs.folder-name }}
-          mv deploy/${{ inputs.module-name }}/docker-compose.yaml .
-          rm -rf ./deploy
-          echo "${{ inputs.secrets-env }}"
           echo "${{ inputs.secrets-env }}" > .env
-          docker pull passon/${{ inputs.module-name }}
-          docker images -a | grep none | awk '{ print $3; }' | xargs docker rmi | echo "remove docker image done"
-          docker-compose down || echo "stop docker compose service"
+          docker-compose down --rmi all || echo "stop docker compose service"
           docker-compose up -d
         host: ${{ inputs.host-name }}
         user: root
