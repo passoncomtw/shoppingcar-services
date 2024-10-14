@@ -1,5 +1,5 @@
-import { responseOk } from "~/helpers/response";
-import { getShoppingcarsResult } from "~/services/shoppingcarServices";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { getShoppingcarsResult, clearShoppingcarItemsResult } from "~/services/shoppingcarServices";
 
 /**
  * @typedef ConsoleProductInformation
@@ -65,8 +65,37 @@ import { getShoppingcarsResult } from "~/services/shoppingcarServices";
  * @property {{integer}} code - response code - eg: 200
  */
 const getShoppingcarsRouter = async (req, res) => {
-  const items = await getShoppingcarsResult(req.query);
-  return responseOk(res, { items });
+  const result = await getShoppingcarsResult(req.query);
+  return responseOk(res, result);
+};
+
+
+/**
+ * Clear Shoppingcar API.
+ * @group ConsoleShoppingcar
+ * @route DELETE /console/shoppingcars/{userId}
+ * @param {String} userId.path
+ *   - 會員 ID
+ *   - eg: 1
+ * @returns {Object} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef Object
+ * @property {{Number}} code - response code - eg: 200
+ */
+const clearShoppingcarRouter = async (req, res) => {
+    try {
+        const {userId} = req.params;
+        await clearShoppingcarItemsResult(userId);
+        return responseOk(res, {});
+    }catch(error) {
+        console.log("🚀 ~ clearShoppingcarRouter ~ error.message:", error.message)
+        return responseErrWithMsg(res, error.message);
+    }
+    
 };
 
 module.exports.getShoppingcarsRouter = getShoppingcarsRouter;
+module.exports.clearShoppingcarRouter = clearShoppingcarRouter;

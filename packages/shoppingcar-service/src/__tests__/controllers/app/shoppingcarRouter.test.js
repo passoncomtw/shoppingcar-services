@@ -4,7 +4,7 @@ import isString from "lodash/isString";
 import supertest from "supertest";
 import server from "~/main";
 import { token } from "~/constants/mockDatas/settings";
-import {clearShoppingcarItems} from "~/services/shoppingcarServices";
+import {clearShoppingcarItemsResult} from "~/services/shoppingcarServices";
 
 const request = supertest.agent(server);
 
@@ -14,7 +14,7 @@ const USER_ID = 16;
 
 describe("測試 會員 購物車 功能", () => {
   afterAll(async () => {
-    await clearShoppingcarItems(USER_ID);
+    await clearShoppingcarItemsResult(USER_ID);
     return server.close();
   });
   

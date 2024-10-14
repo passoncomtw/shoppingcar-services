@@ -1,5 +1,6 @@
 import isEmpty from "lodash/isEmpty";
 import database from "~/database/models";
+import {getUserByUserIdResult} from "./userServices";
 import { getProductInformationIdResult } from "./productServices";
 
 const getShoppingcarsResult = async (query) => {
@@ -69,7 +70,12 @@ const getShoppingcarDetailResult = (userId) => {
 };
 
 const initialShoppingcar = async (userId, tx) => {
+  const userResult = await getUserByUserIdResult(userId);
+  if (isEmpty(userResult)) {
+    throw new Error("會員不存在");
+  }
   const shoppingcarResult = await getShoppingcarResult(userId);
+  console.log("🚀 ~ initialShoppingcar ~ shoppingcarResult:", shoppingcarResult)
   if (isEmpty(shoppingcarResult)) {
     await database.Shoppingcar.create(
       {
@@ -127,9 +133,10 @@ const appendProductToShoppingcarResult = async (options) => {
   return shoppingcarResult;
 };
 
-const clearShoppingcarItems = async (userId) => {
+const clearShoppingcarItemsResult = async (userId) => {
   const tx = await database.sequelize.transaction();
   const shoppingcarResult = await initialShoppingcar(userId, tx);
+  console.log("🚀 ~ clearShoppingcarItemsResult ~ shoppingcarResult:", shoppingcarResult)
   await Promise.all([
     database.Shoppingcar.update(
       {
@@ -152,4 +159,4 @@ const clearShoppingcarItems = async (userId) => {
 module.exports.getShoppingcarsResult = getShoppingcarsResult;
 module.exports.getShoppingcarDetailResult = getShoppingcarDetailResult;
 module.exports.appendProductToShoppingcarResult = appendProductToShoppingcarResult;
-module.exports.clearShoppingcarItems = clearShoppingcarItems;
+module.exports.clearShoppingcarItemsResult = clearShoppingcarItemsResult;

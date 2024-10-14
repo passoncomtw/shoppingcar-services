@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
 import { responseErrWithMsg, responseOk } from "~/helpers/response";
 import { createUserRequestSchema, updateUserRequestSchema } from "~/helpers/schemas";
-import { createUserService, getUsersService, updateUserByUserIdResult } from "~/services/userServices";
+import { createUserResult, getUsersResult, updateUserByUserIdResult } from "~/services/userServices";
 
 /**
  * @typedef ConsoleCreateUserRequest
@@ -72,7 +72,7 @@ import { createUserService, getUsersService, updateUserByUserIdResult } from "~/
 const createUserRouter = async (req, res) => {
   try {
     const createUserRequest = await createUserRequestSchema.validate(req.body);
-    const result = await createUserService(createUserRequest);
+    const result = await createUserResult(createUserRequest);
     const item = pick(result, ["id", "name", "phone"]);
     return responseOk(res, {
       item,
@@ -132,7 +132,7 @@ const updateUserRouter = async (req, res) => {
  */
 const getUsersRouter = async (req, res) => {
   try {
-    const result = await getUsersService(req.query);
+    const result = await getUsersResult(req.query);
     return responseOk(res, result);
   } catch (error) {
     return responseErrWithMsg(res, error.message);

@@ -2,7 +2,7 @@ import { isEmpty } from "lodash";
 import pick from "lodash/pick";
 import database from "~/database/models";
 
-const getUserByUserIdService = async (userId) => {
+const getUserByUserIdResult = async (userId) => {
   return await database.User.findOne({
     attributes: ["id", "name", "phone", "createdAt"],
     where: {
@@ -11,7 +11,7 @@ const getUserByUserIdService = async (userId) => {
   });
 };
 
-const getUsersService = async (query) => {
+const getUsersResult = async (query) => {
   const { pageSize = 10, endCursor = null } = query;
   const result = await database.User.paginate({
     limit: pageSize,
@@ -28,7 +28,7 @@ const getUsersService = async (query) => {
 };
 
 const updateUserByUserIdResult = async (userId, query) => {
-  const userResult = await getUserByUserIdService(userId);
+  const userResult = await getUserByUserIdResult(userId);
   if (isEmpty(userResult)) {
     throw new Error("使用者不存在");
   }
@@ -50,7 +50,7 @@ const updateUserByUserIdResult = async (userId, query) => {
   return userResult;
 };
 
-const getUserWithPasswordByService = async (phone) => {
+const getUserWithPasswordResult = async (phone) => {
   const userResult = await database.User.findOne({
     where: {
       phone,
@@ -65,7 +65,7 @@ const parseUserResponse = (userResult) => {
   return userResponse;
 };
 
-const createUserService = async (userData) => {
+const createUserResult = async (userData) => {
   const existUser = await database.User.findOne({ where: { phone: userData.phone } });
   if (existUser) throw new Error("使用者已存在");
 
@@ -82,14 +82,14 @@ const createUserService = async (userData) => {
   };
 };
 
-const removeUsersService = async (query) => {
+const removeUsersResult = async (query) => {
   return await database.User.destroy(query);
 };
 
-module.exports.createUserService = createUserService;
-module.exports.getUserByUserIdService = getUserByUserIdService;
-module.exports.getUsersService = getUsersService;
+module.exports.createUserResult = createUserResult;
+module.exports.getUserByUserIdResult = getUserByUserIdResult;
+module.exports.getUsersResult = getUsersResult;
 module.exports.parseUserResponse = parseUserResponse;
 module.exports.updateUserByUserIdResult = updateUserByUserIdResult;
-module.exports.getUserWithPasswordByService = getUserWithPasswordByService;
-module.exports.removeUsersService = removeUsersService;
+module.exports.getUserWithPasswordResult = getUserWithPasswordResult;
+module.exports.removeUsersResult = removeUsersResult;
