@@ -1,4 +1,5 @@
-const yup = require("yup");
+import * as yup from "yup";
+import isNull from "lodash/isNull";
 
 const phoneRegExp = /^09[0-9]{8}$/;
 const passwordRegExp = /^(?=.*\d)(?=.*[a-zA-Z]).{7,20}$/;
@@ -54,6 +55,22 @@ const updateUserRequestSchema = yup.object({
   phone: yup.string().matches(phoneRegExp, "電話格式錯誤").nullable().default(null),
 });
 
+const updateProductRequestSchema = yup.object({
+  name: yup.string().nullable().default(null),
+  price: yup
+    .number()
+    .nullable()
+    .default(null)
+    .test("Is positive?", "價格必須大於 0", (value) => (isNull(value) || value > 0)),
+  stockAmount: yup
+    .number()
+    .nullable()
+    .default(null)
+    .test("Is positive?", "庫存數量必須大於 0", (value) => (isNull(value) || value > 0)),
+  subtitle: yup.string().nullable().default(null),
+  description: yup.string().nullable().default(null),
+});
+
 const createProductRequestSchema = yup.object({
   name: yup.string().required("商品名稱不可為空"),
   price: yup
@@ -77,4 +94,5 @@ module.exports.createMerchantRequestSchema = createMerchantRequestSchema;
 module.exports.createUserRequestSchema = createUserRequestSchema;
 module.exports.createProductRequestSchema = createProductRequestSchema;
 module.exports.updateUserRequestSchema = updateUserRequestSchema;
+module.exports.updateProductRequestSchema = updateProductRequestSchema;
 module.exports.updateMerchantRequestSchema = updateMerchantRequestSchema;

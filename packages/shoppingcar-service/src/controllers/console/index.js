@@ -2,7 +2,7 @@ import Express from "express";
 import { jwtAuthorizationMiddleware } from "../../helpers/passportManager";
 import { loginRoute } from "./authRouter";
 import { createMerchantRoute, getMerchantItemsRoute, getMerchantsRoute, updateMerchantRouter } from "./merchantRouter";
-import { createProductRouter, getProductsRouter } from "./productRouter";
+import { createProductRouter, updateProductRouter, getProductsRouter } from "./productRouter";
 import { createUserRouter, getUsersRouter, updateUserRouter } from "./userRouter";
 
 const router = Express.Router();
@@ -20,5 +20,6 @@ router.put("/users/:userId", jwtAuthorizationMiddleware, updateUserRouter);
 
 router.get("/products", jwtAuthorizationMiddleware, getProductsRouter);
 router.post("/products", jwtAuthorizationMiddleware, createProductRouter);
+router.put("/products/:productId", jwtAuthorizationMiddleware, updateProductRouter);
 
 export default router;
