@@ -2,6 +2,29 @@ import isEmpty from "lodash/isEmpty";
 import database from "~/database/models";
 import { getProductInformationIdResult } from "./productServices";
 
+const getShoppingcarsResult = async (query) => {
+  const { pageSize = 10, endCursor = null } = query;
+  const result = await database.Shoppingcar.paginate({
+    limit: pageSize,
+    after: endCursor,
+    include: [
+      {
+        as: "user",
+        model: database.User,
+        attributes: ["id", "name"],
+      },
+    ],
+    attributes: ["id", "productCount", "totalAmount"],
+    group: ["Shoppingcar.id", "user.id"],
+  });
+  const items = result.edges.map((item) => item.node);
+  return {
+    items,
+    totalCount: result.totalCount,
+    pageInfo: result.pageInfo,
+  };
+};
+
 const getShoppingcarResult = (userId) => {
   return database.Shoppingcar.findOne({
     where: { userId },
@@ -126,6 +149,7 @@ const clearShoppingcarItems = async (userId) => {
   await tx.commit();
 };
 
+module.exports.getShoppingcarsResult = getShoppingcarsResult;
 module.exports.getShoppingcarDetailResult = getShoppingcarDetailResult;
 module.exports.appendProductToShoppingcarResult = appendProductToShoppingcarResult;
 module.exports.clearShoppingcarItems = clearShoppingcarItems;
