@@ -22,9 +22,10 @@ const getMerchantsResult = async (query) => {
 };
 
 const getMerchantItemsResult = async () => {
-  return await database.Merchant.findAll({
+  const items = await database.Merchant.findAll({
     attributes: ["id", "name"],
   });
+  return { items };
 };
 
 const getMerchantResult = (whereCondition) => {
