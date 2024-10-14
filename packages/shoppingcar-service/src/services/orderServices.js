@@ -102,6 +102,7 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
 };
 
 const updateOrderPayStatusResult = async (orderId) => {
+  console.log("🚀 ~ updateOrderPayStatusResult ~ orderId:", orderId)
   const orderResult = await database.Order.findOne({
     where: { id: orderId },
   });
@@ -111,6 +112,8 @@ const updateOrderPayStatusResult = async (orderId) => {
 
   orderResult.isPaid = !orderResult.isPaid;
   await orderResult.save();
+  await orderResult.reload();
+  return orderResult;
 };
 
 const getConsoleOrdersResult = async (query) => {

@@ -126,7 +126,6 @@ const createOrderRouter = async (req, res) => {
 const updateOrderPayStatusRouter = async (req, res) => {
   try {
     const { orderId } = req.params;
-    console.log("🚀 ~ updateOrderPayStatusRouter ~ orderId:", orderId);
     await updateOrderPayStatusResult(orderId);
     return responseOk(res, {});
   } catch (error) {

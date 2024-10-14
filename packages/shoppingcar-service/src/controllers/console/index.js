@@ -2,7 +2,7 @@ import Express from "express";
 import { jwtAuthorizationMiddleware } from "../../helpers/passportManager";
 import { loginRoute } from "./authRouter";
 import { createMerchantRoute, getMerchantItemsRoute, getMerchantsRoute, updateMerchantRouter } from "./merchantRouter";
-import { getOrdersRouter } from "./orderRouter";
+import { getOrdersRouter, updateOrderPayStatusRouter } from "./orderRouter";
 import { createProductRouter, getProductsRouter, updateProductRouter } from "./productRouter";
 import { clearShoppingcarRouter, getShoppingcarsRouter } from "./shoppingcarRouter";
 import { createUserRouter, getUsersRouter, updateUserRouter } from "./userRouter";
@@ -21,6 +21,7 @@ router.post("/users", jwtAuthorizationMiddleware, createUserRouter);
 router.put("/users/:userId", jwtAuthorizationMiddleware, updateUserRouter);
 
 router.get("/orders", jwtAuthorizationMiddleware, getOrdersRouter);
+router.put("/orders/:orderId", jwtAuthorizationMiddleware, updateOrderPayStatusRouter);
 
 router.get("/shoppingcars", jwtAuthorizationMiddleware, getShoppingcarsRouter);
 router.delete("/shoppingcars/:userId", jwtAuthorizationMiddleware, clearShoppingcarRouter);
