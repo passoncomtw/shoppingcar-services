@@ -35,7 +35,7 @@ const getMerchantResult = (whereCondition) => {
 };
 
 const updateMerchantResult = async (merchantId, body) => {
-  const merchantResult = await getMerchantResult({id: merchantId});
+  const merchantResult = await getMerchantResult({ id: merchantId });
   if (isEmpty(merchantResult)) {
     throw new Error("商家不存在");
   }

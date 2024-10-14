@@ -1,7 +1,7 @@
 import isEmpty from "lodash/isEmpty";
 import database from "~/database/models";
-import {getUserByUserIdResult} from "./userServices";
 import { getProductInformationIdResult } from "./productServices";
+import { getUserByUserIdResult } from "./userServices";
 
 const getShoppingcarsResult = async (query) => {
   const { pageSize = 10, endCursor = null } = query;
@@ -75,7 +75,6 @@ const initialShoppingcar = async (userId, tx) => {
     throw new Error("會員不存在");
   }
   const shoppingcarResult = await getShoppingcarResult(userId);
-  console.log("🚀 ~ initialShoppingcar ~ shoppingcarResult:", shoppingcarResult)
   if (isEmpty(shoppingcarResult)) {
     await database.Shoppingcar.create(
       {
@@ -136,7 +135,6 @@ const appendProductToShoppingcarResult = async (options) => {
 const clearShoppingcarItemsResult = async (userId) => {
   const tx = await database.sequelize.transaction();
   const shoppingcarResult = await initialShoppingcar(userId, tx);
-  console.log("🚀 ~ clearShoppingcarItemsResult ~ shoppingcarResult:", shoppingcarResult)
   await Promise.all([
     database.Shoppingcar.update(
       {

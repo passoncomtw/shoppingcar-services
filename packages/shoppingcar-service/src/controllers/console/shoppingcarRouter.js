@@ -1,5 +1,5 @@
 import { responseErrWithMsg, responseOk } from "~/helpers/response";
-import { getShoppingcarsResult, clearShoppingcarItemsResult } from "~/services/shoppingcarServices";
+import { clearShoppingcarItemsResult, getShoppingcarsResult } from "~/services/shoppingcarServices";
 
 /**
  * @typedef ConsoleProductInformation
@@ -69,7 +69,6 @@ const getShoppingcarsRouter = async (req, res) => {
   return responseOk(res, result);
 };
 
-
 /**
  * Clear Shoppingcar API.
  * @group ConsoleShoppingcar
@@ -86,15 +85,13 @@ const getShoppingcarsRouter = async (req, res) => {
  * @property {{Number}} code - response code - eg: 200
  */
 const clearShoppingcarRouter = async (req, res) => {
-    try {
-        const {userId} = req.params;
-        await clearShoppingcarItemsResult(userId);
-        return responseOk(res, {});
-    }catch(error) {
-        console.log("🚀 ~ clearShoppingcarRouter ~ error.message:", error.message)
-        return responseErrWithMsg(res, error.message);
-    }
-    
+  try {
+    const { userId } = req.params;
+    await clearShoppingcarItemsResult(userId);
+    return responseOk(res, {});
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
 };
 
 module.exports.getShoppingcarsRouter = getShoppingcarsRouter;
