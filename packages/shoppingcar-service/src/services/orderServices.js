@@ -113,6 +113,29 @@ const updateOrderPayStatusResult = async (orderId) => {
   await orderResult.save();
 };
 
+const getConsoleOrdersResult = async (query) => {
+  const { pageSize = 10, endCursor = null } = query;
+  const result = await database.Order.paginate({
+    limit: pageSize,
+    after: endCursor,
+    attributes: ["id", "productCount", "totalAmount"],
+    include: [
+      {
+        as: "user",
+        model: database.User,
+        attributes: ["id", "name"],
+      }
+    ],
+    group: ["Order.id", "user.id"],
+  });
+  const items = result.edges.map((item) => item.node);
+  return {
+    items,
+    totalCount: result.totalCount,
+    pageInfo: result.pageInfo,
+  };
+};
+
 const getOrdersResult = async (query) => {
   const { pageSize = 10, endCursor = null } = query;
   const result = await database.Order.paginate({
@@ -160,4 +183,5 @@ const getOrderInformationResult = async (orderId) => {
 module.exports.createOrderResult = createOrderResult;
 module.exports.updateOrderPayStatusResult = updateOrderPayStatusResult;
 module.exports.getOrdersResult = getOrdersResult;
+module.exports.getConsoleOrdersResult = getConsoleOrdersResult;
 module.exports.getOrderInformationResult = getOrderInformationResult;
