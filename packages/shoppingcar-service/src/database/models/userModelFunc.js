@@ -1,10 +1,16 @@
-import {makePaginate} from "sequelize-cursor-pagination";
-import {saltHashPassword} from "~/helpers/utils";
+import { makePaginate } from "sequelize-cursor-pagination";
+import { saltHashPassword } from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       name: {
         field: "name",
         type: DataTypes.STRING,
@@ -24,25 +30,31 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue("password", saltHashPassword(value));
         },
       },
-    }, {
-    sequelize,
-    tableName: "users",
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-  });
+    },
+    {
+      sequelize,
+      tableName: "users",
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true,
+    }
+  );
 
   User.paginate = makePaginate(User);
 
   User.associate = function (models) {
-    // User.hasMany(models.Contract, {
-    //   as: 'contracts',
-    //   foreignKey: {
-    //     name: 'user_id'
-    //   },
-    //   onUpdate: 'CASCADE',
-    //   onDelete: 'CASCADE',
-    // });
+    User.hasOne(models.Shoppingcar, {
+      as: "shoppingcar",
+      foreignKey: {
+        name: "user_id",
+      },
+    });
+    User.hasMany(models.Order, {
+      as: "orders",
+      foreignKey: {
+        name: "user_id",
+      },
+    });
   };
 
   return User;

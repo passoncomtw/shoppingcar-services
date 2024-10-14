@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
-import {responseErrWithMsg, responseOk} from "~/helpers/response";
-import {createUserRequestSchema} from "~/helpers/schemas";
-import {createUserService, getUsersService} from "~/services/userServices";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { createUserRequestSchema, updateUserRequestSchema } from "~/helpers/schemas";
+import { createUserResult, getUsersResult, updateUserByUserIdResult } from "~/services/userServices";
 
 /**
  * @typedef ConsoleCreateUserRequest
@@ -14,6 +14,16 @@ import {createUserService, getUsersService} from "~/services/userServices";
  * @property {string} password.required
  *   - password: 6 ~ 20 個英數組合
  *   - eg: a12345678
+ */
+
+/**
+ * @typedef ConsoleUpdateUserRequest
+ * @property {string} name
+ *   - user name
+ *   - eg: testuser001
+ * @property {string} phone
+ *   - user phone
+ *   - eg: 0987654321
  */
 
 /**
@@ -30,8 +40,8 @@ import {createUserService, getUsersService} from "~/services/userServices";
  */
 
 /**
- * @typedef ConsoleCreateUserResponse
- * @property {ConsoleUserInformation.model} item.required 
+ * @typedef ConsoleUserResponse
+ * @property {ConsoleUserInformation.model} item.required
  *  - console user information
  */
 
@@ -51,23 +61,53 @@ import {createUserService, getUsersService} from "~/services/userServices";
  * @group ConsoleUser
  * @route POST /console/users
  * @param {ConsoleCreateUserRequest.model} data.body.required - the new point
- * @returns {ConsoleCreateUserResponse.model} 200 - success, return requested data
+ * @returns {ConsoleUserResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
  * @returns {Error} 500 - unexpected error
  * @security JWT
- * @typedef ConsoleCreateUserResponse
+ * @typedef ConsoleUserResponse
  * @property {{integer}} code - response code - eg: 200
  */
 const createUserRouter = async (req, res) => {
   try {
     const createUserRequest = await createUserRequestSchema.validate(req.body);
-    const result = await createUserService(createUserRequest);
-    const item = pick(result, ['id', 'name', 'phone']);
-    return responseOk(res,  {
-      item
+    const result = await createUserResult(createUserRequest);
+    const item = pick(result, ["id", "name", "phone"]);
+    return responseOk(res, {
+      item,
     });
-  }catch(error) {
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
+/**
+ * Update User API.
+ * @group ConsoleUser
+ * @route PUT /console/users/{userId}
+ * @param {String} userId.path
+ *   - 會員 ID
+ *   - eg: 1
+ * @param {ConsoleUpdateUserRequest.model} data.body.required - the new point
+ * @returns {ConsoleUserResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleUserResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const updateUserRouter = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const updateUserRequest = await updateUserRequestSchema.validate(req.body);
+    const result = await updateUserByUserIdResult(userId, updateUserRequest);
+    const item = pick(result, ["id", "name", "phone"]);
+    return responseOk(res, {
+      item,
+    });
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
@@ -92,12 +132,13 @@ const createUserRouter = async (req, res) => {
  */
 const getUsersRouter = async (req, res) => {
   try {
-    const result = await getUsersService(req.query);
-    return responseOk(res,  result);
-  } catch(error) {
+    const result = await getUsersResult(req.query);
+    return responseOk(res, result);
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
 
 module.exports.createUserRouter = createUserRouter;
 module.exports.getUsersRouter = getUsersRouter;
+module.exports.updateUserRouter = updateUserRouter;

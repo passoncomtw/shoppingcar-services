@@ -1,9 +1,15 @@
-import {saltHashPassword} from "~/helpers/utils";
+import { saltHashPassword } from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const BackendUser = sequelize.define(
     "BackendUser",
     {
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+      },
       account: {
         field: "account",
         type: DataTypes.STRING,
@@ -18,13 +24,15 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue("password", saltHashPassword(value));
         },
       },
-    }, {
-    sequelize,
-    tableName: "backend_users",
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-  });
+    },
+    {
+      sequelize,
+      tableName: "backend_users",
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true,
+    }
+  );
 
   BackendUser.associate = function (models) {
     // User.hasMany(models.Contract, {

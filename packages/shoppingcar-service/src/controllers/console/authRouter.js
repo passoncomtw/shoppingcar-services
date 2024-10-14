@@ -1,7 +1,7 @@
-import jwt from 'jsonwebtoken';
-import passport from 'passport';
-import pick from 'lodash/pick';
-import isEmpty from 'lodash/isEmpty';
+import jwt from "jsonwebtoken";
+import isEmpty from "lodash/isEmpty";
+import pick from "lodash/pick";
+import passport from "passport";
 
 const { responseOk, responseErrWithMsg } = require("../../helpers/response");
 const { consoleSigninRequestSchema } = require("../../helpers/schemas");
@@ -31,7 +31,7 @@ const { AUTH_SECRET } = process.env;
 /**
  * @typedef LoginResponse
  * @property {[string]} token.required - JWT token string
- * @property {ConsoleMemberInformation.model} user.required 
+ * @property {ConsoleMemberInformation.model} user.required
  *  - console member information
  */
 
@@ -51,13 +51,13 @@ const { AUTH_SECRET } = process.env;
 export const loginRoute = async (req, res, next) => {
   try {
     await consoleSigninRequestSchema.validate(req.body);
-  } catch(error) {
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
   passport.authenticate("console-user", { session: false }, async (error, user) => {
     try {
       if (error) throw error;
-      if(isEmpty(user)) {
+      if (isEmpty(user)) {
         throw new Error("使用者不存在");
       }
       // const expireIn = add(new Date(), { days: 1 }).getTime();
@@ -71,10 +71,10 @@ export const loginRoute = async (req, res, next) => {
         AUTH_SECRET
       );
 
-      return responseOk(res,  {
-          token,
-          user: signInfo,
-        });
+      return responseOk(res, {
+        token,
+        user: signInfo,
+      });
     } catch (error) {
       responseErrWithMsg(res, error.message);
     }

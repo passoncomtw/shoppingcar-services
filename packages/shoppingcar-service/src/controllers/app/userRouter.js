@@ -1,5 +1,6 @@
-import {responseErrWithMsg, responseOk} from "~/helpers/response";
-
+import isEmpty from "lodash/isEmpty";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { getUserByUserIdResult } from "~/services/userServices";
 
 /**
  * @typedef AppUserInformation
@@ -17,7 +18,7 @@ import {responseErrWithMsg, responseOk} from "~/helpers/response";
 /**
  * Get Users API.
  * @group AppUser
- * @route GET /app/users
+ * @route GET /app/users/self
  * @returns {AppUserInformation.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
@@ -27,7 +28,14 @@ import {responseErrWithMsg, responseOk} from "~/helpers/response";
  * @property {{integer}} code - response code - eg: 200
  */
 const getUserDetailRouter = async (req, res) => {
-  return responseOk(res, {item: req.user})
+  try {
+    const userResult = await getUserByUserIdResult(req.user.id);
+    if (isEmpty(userResult)) throw new Error("會員不存在或 Token 失效");
+
+    return responseOk(res, { item: userResult });
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
 };
 
 module.exports.getUserDetailRouter = getUserDetailRouter;
