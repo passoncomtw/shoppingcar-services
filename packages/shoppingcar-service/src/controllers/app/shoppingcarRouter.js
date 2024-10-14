@@ -1,5 +1,5 @@
-import {responseOk, responseErrWithMsg} from "~/helpers/response";
-import {getShoppingcarDetailResult, appendProductToShoppingcarResult} from "~/services/shoppingcarServices";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { appendProductToShoppingcarResult, getShoppingcarDetailResult } from "~/services/shoppingcarServices";
 
 /**
  * @typedef AppProductInformation
@@ -76,7 +76,7 @@ import {getShoppingcarDetailResult, appendProductToShoppingcarResult} from "~/se
 const getShoppingcarRouter = async (req, res) => {
   const userId = req.user.id;
   const shoppingcarResult = await getShoppingcarDetailResult(userId);
-  return responseOk(res,  {item: shoppingcarResult});
+  return responseOk(res, { item: shoppingcarResult });
 };
 
 /**
@@ -99,23 +99,23 @@ const getShoppingcarRouter = async (req, res) => {
  * @property {{integer}} code - response code - eg: 200
  */
 const appendProductToShoppingcar = async (req, res) => {
-    try {
-        const { merchantId, productId } = req.params;
-        const { amount } = req.body;
-        const userId = req.user.id;
+  try {
+    const { merchantId, productId } = req.params;
+    const { amount } = req.body;
+    const userId = req.user.id;
 
-        await appendProductToShoppingcarResult({
-            userId,
-            merchantId,
-            productId,
-            amount,
-        });
+    await appendProductToShoppingcarResult({
+      userId,
+      merchantId,
+      productId,
+      amount,
+    });
 
-        const shoppingcarResult = await getShoppingcarDetailResult(userId);
-        return responseOk(res,  {item: shoppingcarResult});
-      } catch (error) {
-        return responseErrWithMsg(res, error.message);
-      }
+    const shoppingcarResult = await getShoppingcarDetailResult(userId);
+    return responseOk(res, { item: shoppingcarResult });
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
 };
 
 module.exports.getShoppingcarRouter = getShoppingcarRouter;

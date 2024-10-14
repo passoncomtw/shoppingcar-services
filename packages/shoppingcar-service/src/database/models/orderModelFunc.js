@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       userId: {
         field: "user_id",
@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       underscored: true,
       freezeTableName: true,
-    },
+    }
   );
 
   Order.paginate = makePaginate(Order);

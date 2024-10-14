@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-      },      
+      },
       productId: {
         field: "product_id",
         type: DataTypes.NUMBER,
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
         field: "shoppingcar_id",
         type: DataTypes.NUMBER,
       },
-      
+
       amount: {
         field: "amount",
         type: DataTypes.NUMBER,
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       underscored: true,
       freezeTableName: true,
-    },
+    }
   );
 
   ShoppingcarItem.paginate = makePaginate(ShoppingcarItem);

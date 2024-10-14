@@ -1,9 +1,9 @@
-import Express from 'express';
-import { jwtAuthorizationMiddleware } from '../../helpers/passportManager';
-import { loginRoute } from './authRouter';
-import { createMerchantRoute, getMerchantsRoute, getMerchantItemsRoute } from './merchantRouter';
-import { createUserRouter, getUsersRouter, updateUserRouter } from './userRouter';
+import Express from "express";
+import { jwtAuthorizationMiddleware } from "../../helpers/passportManager";
+import { loginRoute } from "./authRouter";
+import { createMerchantRoute, getMerchantItemsRoute, getMerchantsRoute, updateMerchantRouter } from "./merchantRouter";
 import { createProductRouter, getProductsRouter } from "./productRouter";
+import { createUserRouter, getUsersRouter, updateUserRouter } from "./userRouter";
 
 const router = Express.Router();
 
@@ -12,6 +12,7 @@ router.post("/login", loginRoute);
 router.get("/merchants", jwtAuthorizationMiddleware, getMerchantsRoute);
 router.get("/merchants/items", jwtAuthorizationMiddleware, getMerchantItemsRoute);
 router.post("/merchants", jwtAuthorizationMiddleware, createMerchantRoute);
+router.put("/merchants/:merchantId", jwtAuthorizationMiddleware, updateMerchantRouter);
 
 router.get("/users", jwtAuthorizationMiddleware, getUsersRouter);
 router.post("/users", jwtAuthorizationMiddleware, createUserRouter);

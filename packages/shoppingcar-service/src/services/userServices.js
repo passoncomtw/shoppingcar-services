@@ -12,20 +12,20 @@ const getUserByUserIdService = async (userId) => {
 };
 
 const getUsersService = async (query) => {
-  const {pageSize = 10, endCursor = null} = query;
+  const { pageSize = 10, endCursor = null } = query;
   const result = await database.User.paginate({
     limit: pageSize,
     after: endCursor,
     attributes: ["id", "name", "phone"],
-    group: ['User.id'],
+    group: ["User.id"],
   });
-  const items = result.edges.map(item => item.node);
+  const items = result.edges.map((item) => item.node);
   return {
     items,
     totalCount: result.totalCount,
     pageInfo: result.pageInfo,
   };
-}
+};
 
 const updateUserByUserIdResult = async (userId, query) => {
   const userResult = await getUserByUserIdService(userId);
@@ -33,15 +33,15 @@ const updateUserByUserIdResult = async (userId, query) => {
     throw new Error("使用者不存在");
   }
 
-  if(query.name) {
+  if (query.name) {
     userResult.name = query.name;
   }
 
-  if(query.email) {
+  if (query.email) {
     userResult.email = query.email;
   }
 
-  if(query.phone) {
+  if (query.phone) {
     userResult.phone = query.phone;
   }
 
@@ -61,25 +61,19 @@ const getUserWithPasswordByService = async (phone) => {
 };
 
 const parseUserResponse = (userResult) => {
-  const userResponse = pick(userResult, [
-    "id",
-    "phone",
-    "name",
-  ]);
+  const userResponse = pick(userResult, ["id", "phone", "name"]);
   return userResponse;
 };
 
 const createUserService = async (userData) => {
-  const existUser = await database.User.findOne({ where: {phone: userData.phone} });
+  const existUser = await database.User.findOne({ where: { phone: userData.phone } });
   if (existUser) throw new Error("使用者已存在");
 
-  const userResult = await database.User.create(
-    {
-      name: userData.name,
-      phone: userData.phone,
-      password: userData.password,
-    });
-  
+  const userResult = await database.User.create({
+    name: userData.name,
+    phone: userData.phone,
+    password: userData.password,
+  });
 
   return {
     id: userResult.id,
@@ -90,7 +84,7 @@ const createUserService = async (userData) => {
 
 const removeUsersService = async (query) => {
   return await database.User.destroy(query);
-}
+};
 
 module.exports.createUserService = createUserService;
 module.exports.getUserByUserIdService = getUserByUserIdService;

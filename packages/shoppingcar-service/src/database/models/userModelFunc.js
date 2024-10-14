@@ -1,5 +1,5 @@
-import {makePaginate} from "sequelize-cursor-pagination";
-import {saltHashPassword} from "~/helpers/utils";
+import { makePaginate } from "sequelize-cursor-pagination";
+import { saltHashPassword } from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
@@ -30,13 +30,15 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue("password", saltHashPassword(value));
         },
       },
-    }, {
-    sequelize,
-    tableName: "users",
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-  });
+    },
+    {
+      sequelize,
+      tableName: "users",
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true,
+    }
+  );
 
   User.paginate = makePaginate(User);
 

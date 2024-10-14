@@ -1,5 +1,10 @@
-import {responseOk, responseErrWithMsg} from "~/helpers/response";
-import {getOrdersResult, getOrderInformationResult, createOrderResult, updateOrderPayStatusResult} from "~/services/orderServices";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import {
+  createOrderResult,
+  getOrderInformationResult,
+  getOrdersResult,
+  updateOrderPayStatusResult,
+} from "~/services/orderServices";
 
 /**
  * @typedef AppCreateOrderRequest
@@ -93,14 +98,14 @@ import {getOrdersResult, getOrderInformationResult, createOrderResult, updateOrd
  * @property {{integer}} code - response code - eg: 200
  */
 const createOrderRouter = async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const {shoppingcarItemIds} = req.body;
-        const result = await createOrderResult(userId, shoppingcarItemIds);
-        return responseOk(res,  {items: [result.id]});
-      } catch (error) {
-        return responseErrWithMsg(res, error.message);
-      }
+  try {
+    const userId = req.user.id;
+    const { shoppingcarItemIds } = req.body;
+    const result = await createOrderResult(userId, shoppingcarItemIds);
+    return responseOk(res, { items: [result.id] });
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
 };
 
 /**
@@ -120,13 +125,13 @@ const createOrderRouter = async (req, res) => {
  */
 const updateOrderPayStatusRouter = async (req, res) => {
   try {
-      const {orderId} = req.params;
-      console.log("🚀 ~ updateOrderPayStatusRouter ~ orderId:", orderId)
-      await updateOrderPayStatusResult(orderId);
-      return responseOk(res,  {});
-    } catch (error) {
-      return responseErrWithMsg(res, error.message);
-    }
+    const { orderId } = req.params;
+    console.log("🚀 ~ updateOrderPayStatusRouter ~ orderId:", orderId);
+    await updateOrderPayStatusResult(orderId);
+    return responseOk(res, {});
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
 };
 
 /**
@@ -160,7 +165,7 @@ const updateOrderPayStatusRouter = async (req, res) => {
  */
 const getOrdersRouter = async (req, res) => {
   const result = await getOrdersResult(req.query);
-  return responseOk(res,  result);
+  return responseOk(res, result);
 };
 
 /**
@@ -186,12 +191,12 @@ const getOrdersRouter = async (req, res) => {
  */
 const getOrderInformationRouter = async (req, res) => {
   try {
-    const {orderId} = req.params;
+    const { orderId } = req.params;
     const item = await getOrderInformationResult(orderId);
-    return responseOk(res,  {item});
-  } catch(error) {
+    return responseOk(res, { item });
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
-  }  
+  }
 };
 
 module.exports.getOrdersRouter = getOrdersRouter;

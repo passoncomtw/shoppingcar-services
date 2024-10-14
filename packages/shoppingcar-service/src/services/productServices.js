@@ -1,23 +1,23 @@
 import isEmpty from "lodash/isEmpty";
 import database from "~/database/models";
-import  {getMerchantResult} from "./merchantServices";
+import { getMerchantResult } from "./merchantServices";
 
 const getProductsResult = async (query) => {
-  const {pageSize = 10, endCursor = null} = query;
+  const { pageSize = 10, endCursor = null } = query;
   const result = await database.Product.paginate({
     limit: pageSize,
     after: endCursor,
     include: [
       {
         as: "merchant",
-        model: database.Merchant,                
+        model: database.Merchant,
         attributes: ["id", "name", "email", "phone"],
-      }
+      },
     ],
     attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
-    group: ['Product.id', 'merchant.id'],
+    group: ["Product.id", "merchant.id"],
   });
-  const items = result.edges.map(item => item.node);
+  const items = result.edges.map((item) => item.node);
   return {
     items,
     totalCount: result.totalCount,
@@ -26,7 +26,7 @@ const getProductsResult = async (query) => {
 };
 
 const getProductsByMerchantIdResult = async (merchantId, query) => {
-  const {pageSize = 10, endCursor = null} = query;
+  const { pageSize = 10, endCursor = null } = query;
   const result = await database.Product.paginate({
     where: {
       merchant_id: merchantId,
@@ -34,16 +34,16 @@ const getProductsByMerchantIdResult = async (merchantId, query) => {
     limit: pageSize,
     after: endCursor,
     include: [
-      {       
-        as: "merchant", 
-        model: database.Merchant,           
+      {
+        as: "merchant",
+        model: database.Merchant,
         attributes: ["id", "name", "email", "phone"],
-      }
+      },
     ],
     attributes: ["id", "name", "stockAmount", "price", "subtitle", "description"],
-    group: ['Product.id', 'merchant.id'],
+    group: ["Product.id", "merchant.id"],
   });
-  const items = result.edges.map(item => item.node);
+  const items = result.edges.map((item) => item.node);
   return {
     items,
     totalCount: result.totalCount,
@@ -57,17 +57,17 @@ const getProductInformationIdResult = async (whereCondition) => {
     include: [
       {
         as: "merchant",
-        model: database.Merchant,     
+        model: database.Merchant,
         attributes: ["id", "name", "email", "phone"],
-      }
+      },
     ],
     where: whereCondition,
-  });  
+  });
 };
 
 const createProductResult = async (createProductRequest) => {
-  const merchantResult = await getMerchantResult({id: createProductRequest.merchantId});
-  if (isEmpty(merchantResult)){
+  const merchantResult = await getMerchantResult({ id: createProductRequest.merchantId });
+  if (isEmpty(merchantResult)) {
     throw new Error("商家不存在");
   }
 

@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty";
-import {responseErrWithMsg, responseOk} from "~/helpers/response";
-import {getUserByUserIdService} from "~/services/userServices";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { getUserByUserIdService } from "~/services/userServices";
 
 /**
  * @typedef AppUserInformation
@@ -30,10 +30,10 @@ import {getUserByUserIdService} from "~/services/userServices";
 const getUserDetailRouter = async (req, res) => {
   try {
     const userResult = await getUserByUserIdService(req.user.id);
-    if(isEmpty(userResult)) throw new Error("會員不存在或 Token 失效");
+    if (isEmpty(userResult)) throw new Error("會員不存在或 Token 失效");
 
-    return responseOk(res, {item: userResult})
-  }catch(error) {
+    return responseOk(res, { item: userResult });
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };

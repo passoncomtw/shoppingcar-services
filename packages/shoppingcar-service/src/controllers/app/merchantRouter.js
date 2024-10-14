@@ -1,6 +1,6 @@
-import {responseErrWithMsg, responseOk} from "~/helpers/response";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
 import { getMerchantsResult } from "~/services/merchantServices";
-import {getProductsByMerchantIdResult, getProductInformationIdResult} from "~/services/productServices";
+import { getProductInformationIdResult, getProductsByMerchantIdResult } from "~/services/productServices";
 
 /**
  * @typedef AppMerchantInformation
@@ -94,8 +94,8 @@ import {getProductsByMerchantIdResult, getProductInformationIdResult} from "~/se
 const getMerchantsRoute = async (req, res) => {
   try {
     const result = await getMerchantsResult(req.query);
-    return responseOk(res,  result);
-  } catch(error) {
+    return responseOk(res, result);
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
@@ -125,7 +125,7 @@ const getProductsByMerchantIdRouter = async (req, res) => {
   try {
     const { merchantId } = req.params;
     const result = await getProductsByMerchantIdResult(merchantId, req.query);
-    return responseOk(res,  result);
+    return responseOk(res, result);
   } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
@@ -152,13 +152,13 @@ const getProductsByMerchantIdRouter = async (req, res) => {
 const getProductInformationRouter = async (req, res) => {
   try {
     const { merchantId, productId } = req.params;
-    const result = await getProductInformationIdResult({id: productId, merchantId});
-    return responseOk(res,  {item: result});
+    const result = await getProductInformationIdResult({ id: productId, merchantId });
+    return responseOk(res, { item: result });
   } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
 
-module.exports.getProductsByMerchantIdRouter= getProductsByMerchantIdRouter;
+module.exports.getProductsByMerchantIdRouter = getProductsByMerchantIdRouter;
 module.exports.getProductInformationRouter = getProductInformationRouter;
 module.exports.getMerchantsRoute = getMerchantsRoute;

@@ -1,6 +1,6 @@
 import isEmpty from "lodash/isEmpty";
+import { Op } from "sequelize";
 import database from "~/database/models";
-import { Op } from 'sequelize';
 
 const createOrderResult = async (userId, shoppingcarItemIds) => {
   const tx = await database.sequelize.transaction();
@@ -27,42 +27,51 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
     }
 
     const totalAmount = shoppintcarItemsResult.reduce((result, item) => {
-      const {product} = item;
+      const { product } = item;
       const amount = product.price * item.amount;
       return result + amount;
     }, 0);
 
-    const orderResult = await database.Order.create({
-      userId,
-      totalAmount,
-      productCount: shoppintcarItemsResult.length,
-    }, {transaction: tx});
+    const orderResult = await database.Order.create(
+      {
+        userId,
+        totalAmount,
+        productCount: shoppintcarItemsResult.length,
+      },
+      { transaction: tx }
+    );
 
     const allPromises = [];
-    for(let index = 0; index < shoppintcarItemsResult.length; index++) {
+    for (let index = 0; index < shoppintcarItemsResult.length; index++) {
       const shoppingcarItemResult = shoppintcarItemsResult[index];
-      const {product} = shoppingcarItemResult;
+      const { product } = shoppingcarItemResult;
 
       if (shoppingcarItemResult.amount > product.stockAmount) {
         throw new Error("產品庫存不足");
       }
 
-      const updateProductPromise = database.Product.update({
-        stockAmount: product.stockAmount - shoppingcarItemResult.amount,
-      }, {
-        where: {id: product.id},
-        transaction: tx,
-      });
+      const updateProductPromise = database.Product.update(
+        {
+          stockAmount: product.stockAmount - shoppingcarItemResult.amount,
+        },
+        {
+          where: { id: product.id },
+          transaction: tx,
+        }
+      );
 
-      const createOrderItemPromise = database.OrderItem.create({
-        orderId: orderResult.id,
-        productId: product.id,
-        merchantId: shoppingcarItemResult.merchant_id,
-        amount: shoppingcarItemResult.amount,
-      }, {transaction: tx});
+      const createOrderItemPromise = database.OrderItem.create(
+        {
+          orderId: orderResult.id,
+          productId: product.id,
+          merchantId: shoppingcarItemResult.merchant_id,
+          amount: shoppingcarItemResult.amount,
+        },
+        { transaction: tx }
+      );
 
       const removeShoppingcarItemPromise = database.ShoppingcarItem.destroy({
-        where: {id: shoppingcarItemResult.id},
+        where: { id: shoppingcarItemResult.id },
         transaction: tx,
       });
 
@@ -71,13 +80,16 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
       allPromises.push(removeShoppingcarItemPromise);
     }
 
-    const updateShoppingcarPromise = database.Shoppingcar.update({
-      productCount: shoppingcarResult.productCount - shoppingcarItemIds.length,
-      totalAmount: shoppingcarResult.totalAmount - totalAmount,
-    }, {
-      where: {id: shoppingcarResult.id},
-      transaction: tx,
-    });
+    const updateShoppingcarPromise = database.Shoppingcar.update(
+      {
+        productCount: shoppingcarResult.productCount - shoppingcarItemIds.length,
+        totalAmount: shoppingcarResult.totalAmount - totalAmount,
+      },
+      {
+        where: { id: shoppingcarResult.id },
+        transaction: tx,
+      }
+    );
     allPromises.push(updateShoppingcarPromise);
 
     await Promise.all(allPromises);
@@ -91,7 +103,7 @@ const createOrderResult = async (userId, shoppingcarItemIds) => {
 
 const updateOrderPayStatusResult = async (orderId) => {
   const orderResult = await database.Order.findOne({
-    where: {id: orderId},
+    where: { id: orderId },
   });
   if (isEmpty(orderResult)) {
     throw new Error("訂單不存在");
@@ -102,14 +114,14 @@ const updateOrderPayStatusResult = async (orderId) => {
 };
 
 const getOrdersResult = async (query) => {
-  const {pageSize = 10, endCursor = null} = query;
+  const { pageSize = 10, endCursor = null } = query;
   const result = await database.Order.paginate({
     limit: pageSize,
     after: endCursor,
     attributes: ["id", "totalAmount"],
-    group: ['Order.id'],
+    group: ["Order.id"],
   });
-  const items = result.edges.map(item => item.node);
+  const items = result.edges.map((item) => item.node);
   return {
     items,
     totalCount: result.totalCount,
@@ -136,12 +148,12 @@ const getOrderInformationResult = async (orderId) => {
             model: database.Product,
           },
         ],
-      }
+      },
     ],
     attributes: ["id", "totalAmount"],
     where: {
       id: orderId,
-    }
+    },
   });
 };
 

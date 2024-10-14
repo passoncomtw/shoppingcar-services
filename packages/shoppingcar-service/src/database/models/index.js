@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize';
+import Sequelize from "sequelize";
 import config from "~/database/config/config";
 
 const db = {};
@@ -42,7 +42,7 @@ const orderItemModelFunc = require("./orderItemModelFunc");
 const orderItemModel = orderItemModelFunc(sequelize, Sequelize.DataTypes);
 db.OrderItem = orderItemModel;
 
-Object.keys(db).forEach(modelName => {
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

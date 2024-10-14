@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
-import {responseErrWithMsg, responseOk} from "~/helpers/response";
-import {createUserRequestSchema, updateUserRequestSchema} from "~/helpers/schemas";
-import {createUserService, updateUserService, getUsersService, updateUserByUserIdResult} from "~/services/userServices";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { createUserRequestSchema, updateUserRequestSchema } from "~/helpers/schemas";
+import { createUserService, getUsersService, updateUserByUserIdResult } from "~/services/userServices";
 
 /**
  * @typedef ConsoleCreateUserRequest
@@ -41,7 +41,7 @@ import {createUserService, updateUserService, getUsersService, updateUserByUserI
 
 /**
  * @typedef ConsoleUserResponse
- * @property {ConsoleUserInformation.model} item.required 
+ * @property {ConsoleUserInformation.model} item.required
  *  - console user information
  */
 
@@ -74,10 +74,10 @@ const createUserRouter = async (req, res) => {
     const createUserRequest = await createUserRequestSchema.validate(req.body);
     const result = await createUserService(createUserRequest);
     const item = pick(result, ["id", "name", "phone"]);
-    return responseOk(res,  {
-      item
+    return responseOk(res, {
+      item,
     });
-  }catch(error) {
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
@@ -100,14 +100,14 @@ const createUserRouter = async (req, res) => {
  */
 const updateUserRouter = async (req, res) => {
   try {
-    const {userId} = req.params;
+    const { userId } = req.params;
     const updateUserRequest = await updateUserRequestSchema.validate(req.body);
     const result = await updateUserByUserIdResult(userId, updateUserRequest);
     const item = pick(result, ["id", "name", "phone"]);
-    return responseOk(res,  {
-      item
+    return responseOk(res, {
+      item,
     });
-  }catch(error) {
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
@@ -133,8 +133,8 @@ const updateUserRouter = async (req, res) => {
 const getUsersRouter = async (req, res) => {
   try {
     const result = await getUsersService(req.query);
-    return responseOk(res,  result);
-  } catch(error) {
+    return responseOk(res, result);
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };

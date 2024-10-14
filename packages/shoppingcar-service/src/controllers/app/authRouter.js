@@ -1,10 +1,10 @@
-import jwt from 'jsonwebtoken';
-import passport from 'passport';
-import pick from 'lodash/pick';
-import isEmpty from 'lodash/isEmpty';
-import {responseOk, responseErrWithMsg} from "~/helpers/response";
-import {parseUserResponse} from "~/services/userServices";
-import {signinRequestSchema} from "~/helpers/schemas";
+import jwt from "jsonwebtoken";
+import isEmpty from "lodash/isEmpty";
+import pick from "lodash/pick";
+import passport from "passport";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
+import { signinRequestSchema } from "~/helpers/schemas";
+import { parseUserResponse } from "~/services/userServices";
 
 const { AUTH_SECRET } = process.env;
 
@@ -53,14 +53,14 @@ const { AUTH_SECRET } = process.env;
 export const loginRoute = async (req, res) => {
   try {
     await signinRequestSchema.validate(req.body);
-  } catch(error) {
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
-  
+
   passport.authenticate("app-user", { session: false }, async (error, user) => {
     try {
       if (error) throw error;
-      if(isEmpty(user)) {
+      if (isEmpty(user)) {
         throw new Error("使用者不存在");
       }
       // const expireIn = add(new Date(), { days: 1 }).getTime();
@@ -74,13 +74,12 @@ export const loginRoute = async (req, res) => {
         AUTH_SECRET
       );
 
-      return responseOk(res,  {
-          token,
-          user: parseUserResponse(user),
-        });
+      return responseOk(res, {
+        token,
+        user: parseUserResponse(user),
+      });
     } catch (error) {
       responseErrWithMsg(res, error.message);
     }
   })(req, res);
 };
-

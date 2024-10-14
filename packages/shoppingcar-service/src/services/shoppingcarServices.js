@@ -54,7 +54,7 @@ const initialShoppingcar = async (userId, tx) => {
         productCount: 0,
         totalAmount: 0,
       },
-      { transaction: tx },
+      { transaction: tx }
     );
     return await getShoppingcarResult(userId);
   }
@@ -73,9 +73,8 @@ const appendProductToShoppingcarResult = async (options) => {
   const { merchant } = productInformationResult;
 
   const nextProductCount = shoppingcarResult.productCount + 1;
-  const nextTotalAmount =
-  shoppingcarResult.totalAmount + productInformationResult.price * amount;
-  
+  const nextTotalAmount = shoppingcarResult.totalAmount + productInformationResult.price * amount;
+
   await Promise.all([
     database.Shoppingcar.update(
       {
@@ -87,7 +86,7 @@ const appendProductToShoppingcarResult = async (options) => {
           id: shoppingcarResult.id,
         },
       },
-      { transaction: tx },
+      { transaction: tx }
     ),
     database.ShoppingcarItem.create(
       {
@@ -96,7 +95,7 @@ const appendProductToShoppingcarResult = async (options) => {
         shoppingcarId: shoppingcarResult.id,
         amount,
       },
-      { transaction: tx },
+      { transaction: tx }
     ),
   ]);
 
@@ -109,16 +108,19 @@ const clearShoppingcarItems = async (userId) => {
   const tx = await database.sequelize.transaction();
   const shoppingcarResult = await initialShoppingcar(userId, tx);
   await Promise.all([
-    database.Shoppingcar.update({
-      productCount: 0,
-      totalAmount: 0,
-    }, {
-      where: {userId},
-      transaction: tx
-    }),
+    database.Shoppingcar.update(
+      {
+        productCount: 0,
+        totalAmount: 0,
+      },
+      {
+        where: { userId },
+        transaction: tx,
+      }
+    ),
     database.ShoppingcarItem.destroy({
-      where: {shoppingcarId: shoppingcarResult.id},
-      transaction: tx
+      where: { shoppingcarId: shoppingcarResult.id },
+      transaction: tx,
     }),
   ]);
   await tx.commit();

@@ -1,5 +1,5 @@
-import {makePaginate} from "sequelize-cursor-pagination";
-import {saltHashPassword} from "~/helpers/utils";
+import { makePaginate } from "sequelize-cursor-pagination";
+import { saltHashPassword } from "~/helpers/utils";
 
 module.exports = (sequelize, DataTypes) => {
   const Merchant = sequelize.define(
@@ -36,13 +36,15 @@ module.exports = (sequelize, DataTypes) => {
           this.setDataValue("password", saltHashPassword(value));
         },
       },
-    }, {
-    sequelize,
-    tableName: "merchants",
-    timestamps: true,
-    underscored: true,
-    freezeTableName: true,
-  });
+    },
+    {
+      sequelize,
+      tableName: "merchants",
+      timestamps: true,
+      underscored: true,
+      freezeTableName: true,
+    }
+  );
 
   Merchant.paginate = makePaginate(Merchant);
 
@@ -61,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Merchant.hasMany(models.Product, {
       foreignKey: {
-        name: 'merchant_id'
+        name: "merchant_id",
       },
     });
   };

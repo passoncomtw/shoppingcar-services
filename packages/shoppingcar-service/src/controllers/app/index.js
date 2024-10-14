@@ -1,10 +1,10 @@
-import Express from 'express';
-import { jwtAuthorizationMiddleware } from '~/helpers/passportManager';
-import { loginRoute } from './authRouter';
+import Express from "express";
+import { jwtAuthorizationMiddleware } from "~/helpers/passportManager";
+import { loginRoute } from "./authRouter";
+import { getMerchantsRoute, getProductInformationRouter, getProductsByMerchantIdRouter } from "./merchantRouter";
+import { createOrderRouter, getOrderInformationRouter, getOrdersRouter, updateOrderPayStatusRouter } from "./orderRouter";
+import { appendProductToShoppingcar, getShoppingcarRouter } from "./shoppingcarRouter";
 import { getUserDetailRouter } from "./userRouter";
-import { getShoppingcarRouter, appendProductToShoppingcar } from "./shoppingcarRouter";
-import { getMerchantsRoute, getProductsByMerchantIdRouter, getProductInformationRouter } from "./merchantRouter";
-import { getOrdersRouter, getOrderInformationRouter, createOrderRouter, updateOrderPayStatusRouter } from "./orderRouter";
 
 const router = Express.Router();
 

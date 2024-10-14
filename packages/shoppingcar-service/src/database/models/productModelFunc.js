@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       underscored: true,
       freezeTableName: true,
-    },
+    }
   );
 
   Product.paginate = makePaginate(Product);
