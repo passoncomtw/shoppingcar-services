@@ -1,6 +1,6 @@
 {
   "name": "shoppingcar-services",
-  "version": "0.0.0",
+  "version": "0.8.0",
   "license": "MIT",
   "config": {
     "commitizen": {
@@ -10,7 +10,8 @@
   "scripts": {
     "start:dev:app": "npx nx start shoppingcar-app",
     "start:dev:api": "npx nx serve shoppingcar-service --verbose",
-    "start:dev:web": "npx nx serve shoppingcar-web"
+    "start:dev:web": "npx nx serve shoppingcar-web",
+    "gnerator:changelog": "node_modules/conventional-changelog-cli/cli.js -p angular -i CHANGELOG.md -s"
   },
   "private": true,
   "dependencies": {
@@ -72,6 +73,7 @@
     "babel-jest": "^29.7.0",
     "babel-plugin-module-resolver": "^5.0.2",
     "babel-plugin-root-import": "^6.6.0",
+    "conventional-changelog-cli": "^5.0.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
