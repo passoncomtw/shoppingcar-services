@@ -11,7 +11,6 @@ import {
   Button,
   Flex,
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
 import { PaginationTable } from "table-pagination-chakra-ui"
 
 const UsersScreen = (props) => {
