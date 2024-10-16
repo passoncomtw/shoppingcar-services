@@ -4,3 +4,8 @@ export const createUserAction = payload => ({
   type: types.CREATE_USER,
   payload,
 });
+
+export const getUsersAction = payload => ({
+    type: types.GET_USERS,
+    payload,
+  });

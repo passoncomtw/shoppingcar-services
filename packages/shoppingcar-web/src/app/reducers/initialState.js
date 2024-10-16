@@ -15,8 +15,20 @@ const merchantState = {
   }
 };
 
+const userState = {
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: ""
+  }
+};
+
 const initialState = {
   auth: authState,
+  user: userState,
   merchant: merchantState,
 };
 
