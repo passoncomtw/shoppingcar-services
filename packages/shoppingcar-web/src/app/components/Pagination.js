@@ -1,11 +1,13 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
 import { Box, Center, Flex, IconButton, Text } from "@chakra-ui/react";
+import isNaN from "lodash/isNaN";
 
 const EMPTY_FUNCTION = () => false;
 
 const Pagination = (props) => {
   const { page, pageSize, totalAmount, handlePrePage = EMPTY_FUNCTION, handleNextPage = EMPTY_FUNCTION } = props;
-  const totalPageCount = Math.ceil(totalAmount / pageSize);
+  const pageCount = Math.ceil(totalAmount / pageSize);
+  const totalPageCount = isNaN(pageCount) ? 1 : pageCount;
 
   return (
     <Box w="100%" p={4}>

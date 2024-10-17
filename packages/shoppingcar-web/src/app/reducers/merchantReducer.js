@@ -6,7 +6,9 @@ export default function reducer(merchant = { ...initialState.merchant }, { type,
     case types.GET_MERCHANTS_SUCCESS:
       return {
         ...merchant,
-        ...payload,
+        items: payload.items,
+        totalAmount: payload.totalCount,
+        pageInfo: payload.pageInfo,
       };
     case types.GET_MERCHANT_ITEMS_SUCCESS:
       return {

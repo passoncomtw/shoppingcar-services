@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { getUsersAction } from "../../actions/userActions";
 import UsersScreen from "./view";
 
-const mapStateToProps = ({ user }) => ({ user });
+const mapStateToProps = ({ user }) => ({ userItems: user.items, pageInfo: user.pageInfo, totalAmount: user.totalAmount });
 
 const mapDispatchToProps = (dispatch) => ({
   handleGetUsers: (payload) => {
