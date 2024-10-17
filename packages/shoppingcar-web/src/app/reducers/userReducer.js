@@ -7,7 +7,9 @@ export default function reducer(user = { ...cloneDeep(initialState.user) }, { ty
     case types.GET_USERS_SUCCESS:
       return {
         ...user,
-        ...payload,
+        items: payload.items,
+        totalAmount: payload.totalCount,
+        pageInfo: payload.pageInfo,
       };
     case types.GET_USERS:
     case types.GET_USERS_ERROR:

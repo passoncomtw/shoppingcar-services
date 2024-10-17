@@ -10,6 +10,8 @@ const signinSuccess = (auth, payload) => ({
 
 export default function reducer(auth = { ...cloneDeep(initialState.auth) }, { type, payload }) {
   switch (type) {
+    case types.SIGNOUT:
+      return cloneDeep(initialState.auth);
     case types.SIGNIN_SUCCESS:
       return signinSuccess(auth, payload);
     case types.SIGNIN:

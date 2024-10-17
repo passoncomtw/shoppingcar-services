@@ -1,8 +1,9 @@
 import { Box, Button, Flex, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { PaginationTable } from "table-pagination-chakra-ui";
+import { useEffect, useState } from "react";
+import Pagination from "../../components/Pagination";
 
 const UsersScreen = (props) => {
+  const [page, setPage] = useState(1);
   useEffect(() => {
     props.handleGetUsers({
       pageSize: 10,
@@ -26,7 +27,7 @@ const UsersScreen = (props) => {
             </Tr>
           </Thead>
           <Tbody>
-            {props.user.items.map((item, index) => (
+            {props.userItems.map((item, index) => (
               <Tr key={`${item.name}-${index}`}>
                 <Td>{item.phone}</Td>
                 <Td>{item.name}</Td>
@@ -41,13 +42,24 @@ const UsersScreen = (props) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <PaginationTable
+      <Pagination
+        page={page}
+        totalAmount={props.totalAmount}
         pageSize={10}
-        setPageSize={() => false}
-        pageIndex={1}
-        setPageIndex={() => false}
-        totalItemsCount={10}
-        pageSizeOptions={[10]}
+        handlePrePage={() =>
+          props.handleGetUsers({
+            pageSize: 10,
+            startCursor: props.pageInfo.startCursor,
+            onSuccess: () => setPage(page - 1),
+          })
+        }
+        handleNextPage={() =>
+          props.handleGetUsers({
+            pageSize: 10,
+            endCursor: props.pageInfo.endCursor,
+            onSuccess: () => setPage(page + 1),
+          })
+        }
       />
     </Box>
   );

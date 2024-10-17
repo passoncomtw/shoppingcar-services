@@ -4,6 +4,8 @@ import ProductsScreen from "./view";
 
 const mapStateToProps = ({product}) => ({
     productItems: product.items,
+    pageInfo: product.pageInfo,
+    totalAmount: product.totalAmount,
 });
 
 const mapDispatchToProps = (dispatch) => ({

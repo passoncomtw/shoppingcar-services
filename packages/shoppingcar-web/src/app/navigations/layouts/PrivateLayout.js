@@ -26,7 +26,8 @@ import {
   Outlet,
   useLocation,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SignOutAction } from '../../actions/authActions';
 
 const LinkItems = [
   { name: '商家系統', icon: FiArchive, path: "/merchants" },
@@ -61,6 +62,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  
   return (
     <>
       <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
@@ -97,7 +100,7 @@ const Navbar = () => {
                   <MenuDivider />
                   <MenuItem>Your Servers</MenuItem>
                   <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={() => dispatch(SignOutAction())}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>

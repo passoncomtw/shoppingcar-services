@@ -3,7 +3,7 @@ import { Field, Formik } from "formik";
 import isEmpty from "lodash/isEmpty";
 import isNull from "lodash/isNull";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getUserByUserIdResult } from "../../apis/api";
 import { updateUserSchema } from "../../constants/yupSchemas/user";
 import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
@@ -17,7 +17,6 @@ const INITIAL_FORMDATA = {
 const UpdateUserScreen = (props) => {
   const [formData, setFormData] = useState({ ...INITIAL_FORMDATA });
   const [errors, setErrors] = useState({});
-  const navigate = useNavigate();
   const { userId } = useParams();
 
   useEffect(() => {
