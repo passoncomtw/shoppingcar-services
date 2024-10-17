@@ -11,7 +11,8 @@
     "start:dev:app": "npx nx start shoppingcar-app",
     "start:dev:api": "npx nx serve shoppingcar-service --verbose",
     "start:dev:web": "npx nx serve shoppingcar-web",
-    "gnerator:changelog": "node_modules/conventional-changelog-cli/cli.js -p angular -i CHANGELOG.md -s"
+    "gnerator:changelog": "./node_modules/conventional-changelog-cli/cli.js -p angular -i CHANGELOG.md -s",
+    "initial:changelog": "rm -f ./CHANGELOG.md && ./node_modules/conventional-changelog-cli/cli.js -p angular -i CHANGELOG.md -s"
   },
   "private": true,
   "dependencies": {
