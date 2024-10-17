@@ -12,10 +12,11 @@ const getUserByUserIdResult = async (userId) => {
 };
 
 const getUsersResult = async (query) => {
-  const { pageSize = 10, endCursor = null } = query;
+  const { pageSize = 10, endCursor = null, startCursor = null } = query;
   const result = await database.User.paginate({
     limit: pageSize,
     after: endCursor,
+    before: startCursor,
     attributes: ["id", "name", "phone"],
     group: ["User.id"],
   });

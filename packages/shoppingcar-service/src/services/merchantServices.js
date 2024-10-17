@@ -6,10 +6,11 @@ const createMerchantResult = async (createMerchantRequest) => {
 };
 
 const getMerchantsResult = async (query) => {
-  const { pageSize = 10, endCursor = null } = query;
+  const { pageSize = 10, endCursor = null, startCursor = null } = query;
   const result = await database.Merchant.paginate({
     limit: pageSize,
     after: endCursor,
+    before: startCursor,
     attributes: ["id", "name", "email", "phone"],
     group: ["Merchant.id"],
   });
