@@ -1,7 +1,7 @@
 import pick from "lodash/pick";
 import { responseErrWithMsg, responseOk } from "~/helpers/response";
 import { createUserRequestSchema, updateUserRequestSchema } from "~/helpers/schemas";
-import { createUserResult, getUsersResult, updateUserByUserIdResult } from "~/services/userServices";
+import { createUserResult, getUserByUserIdResult, getUsersResult, updateUserByUserIdResult } from "~/services/userServices";
 
 /**
  * @typedef ConsoleCreateUserRequest
@@ -139,6 +139,32 @@ const getUsersRouter = async (req, res) => {
   }
 };
 
+/**
+ * Get User By UserId API.
+ * @group ConsoleUser
+ * @route GET /console/users/{userId}
+ * @param {String} userId.path
+ *   - 會員 ID
+ *   - eg: 1
+ * @returns {ConsoleUserResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleUserResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getUserByUserIdRouter = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const item = await getUserByUserIdResult(userId);
+    return responseOk(res, { item });
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
 module.exports.createUserRouter = createUserRouter;
 module.exports.getUsersRouter = getUsersRouter;
+module.exports.getUserByUserIdRouter = getUserByUserIdRouter;
 module.exports.updateUserRouter = updateUserRouter;

@@ -5,7 +5,7 @@ import { createMerchantRoute, getMerchantItemsRoute, getMerchantsRoute, updateMe
 import { getOrdersRouter, updateOrderPayStatusRouter } from "./orderRouter";
 import { createProductRouter, getProductsRouter, updateProductRouter } from "./productRouter";
 import { clearShoppingcarRouter, getShoppingcarsRouter } from "./shoppingcarRouter";
-import { createUserRouter, getUsersRouter, updateUserRouter } from "./userRouter";
+import { createUserRouter, getUsersRouter, updateUserRouter, getUserByUserIdRouter } from "./userRouter";
 
 const router = Express.Router();
 
@@ -16,9 +16,10 @@ router.get("/merchants", jwtAuthorizationMiddleware, getMerchantsRoute);
 router.post("/merchants", jwtAuthorizationMiddleware, createMerchantRoute);
 router.put("/merchants/:merchantId", jwtAuthorizationMiddleware, updateMerchantRouter);
 
+router.get("/users/:userId", jwtAuthorizationMiddleware, getUserByUserIdRouter);
 router.get("/users", jwtAuthorizationMiddleware, getUsersRouter);
-router.post("/users", jwtAuthorizationMiddleware, createUserRouter);
 router.put("/users/:userId", jwtAuthorizationMiddleware, updateUserRouter);
+router.post("/users", jwtAuthorizationMiddleware, createUserRouter);
 
 router.get("/orders", jwtAuthorizationMiddleware, getOrdersRouter);
 router.put("/orders/:orderId", jwtAuthorizationMiddleware, updateOrderPayStatusRouter);
