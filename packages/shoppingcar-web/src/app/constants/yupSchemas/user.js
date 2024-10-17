@@ -23,3 +23,8 @@ export const createUserSchema = yup.object().shape({
   password: passwordSchema,
   confirmPassword: yup.string().oneOf([yup.ref("password"), null], "密碼和確認密碼不一致"),
 });
+
+export const updateUserSchema = yup.object().shape({
+  phone: phoneSchema,
+  name: userNameSchema,
+});

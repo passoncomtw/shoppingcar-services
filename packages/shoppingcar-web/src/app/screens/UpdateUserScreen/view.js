@@ -1,18 +1,16 @@
-import isNull from "lodash/isNull";
 import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import isEmpty from "lodash/isEmpty";
+import isNull from "lodash/isNull";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getUserByUserIdResult } from "../../apis/api";
-import { createUserSchema } from "../../constants/yupSchemas/user";
+import { updateUserSchema } from "../../constants/yupSchemas/user";
 import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
   phone: "",
-  password: "",
-  confirmPassword: "",
   errors: {},
 };
 
@@ -54,17 +52,17 @@ const UpdateUserScreen = (props) => {
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(createUserSchema, formData);
+              const validatedPayload = await handleYupSchema(updateUserSchema, formData);
               setErrors({});
-              props.handleCreateUser({
+              props.handleUpdateUser({
+                userId,
                 ...validatedPayload,
-                onSuccess: () => navigate("/users"),
+                onSuccess: () => alert("編輯會員成功"),
               });
             } catch (error) {
               const errors = handleYupErrors(error);
               setErrors(errors);
             }
-            // props.handleCreateUser(values);
           }}
         >
           {({ handleSubmit }) => (

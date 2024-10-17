@@ -5,6 +5,11 @@ export const createUserAction = payload => ({
   payload,
 });
 
+export const updateUserAction = payload => ({
+  type: types.UPDATE_USER,
+  payload,
+});
+
 export const getUsersAction = payload => ({
     type: types.GET_USERS,
     payload,
