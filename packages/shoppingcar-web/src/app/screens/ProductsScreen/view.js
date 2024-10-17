@@ -1,24 +1,17 @@
-import {
-  Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Text,
-  Button,
-} from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { PaginationTable } from "table-pagination-chakra-ui"
+import { Box, Button, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { PaginationTable } from "table-pagination-chakra-ui";
 
 const ProductsScreen = (props) => {
-
+  useEffect(() => {
+    props.handleGetProducts({
+      pageSize: 10,
+    });
+  }, []);
   return (
-    <Box marginTop={20} bg='white'>
+    <Box marginTop={20} bg="white">
       <TableContainer>
-        <Table variant='simple'>
+        <Table variant="simple">
           <Thead>
             <Tr>
               <Th>名稱</Th>
@@ -31,15 +24,21 @@ const ProductsScreen = (props) => {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>怪物糖果</Td>
-              <Td>糖果愛好者</Td>
-              <Td><Text color='#0DC884'>上架</Text></Td>
-              <Td>$20.00</Td>
-              <Td>20</Td>
-              <Td>2</Td>
-              <Td><Button>編輯</Button></Td>
-            </Tr>
+            {props.productItems.map((productItem) => (
+              <Tr>
+                <Td>{productItem.name}</Td>
+                <Td>{productItem.merchant.name}</Td>
+                <Td>
+                  <Text color="#0DC884">-</Text>
+                </Td>
+                <Td>${productItem.price.toFixed(2)}</Td>
+                <Td>{productItem.stockAmount}</Td>
+                <Td>-</Td>
+                <Td>
+                  <Button>編輯</Button>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>
@@ -53,6 +52,6 @@ const ProductsScreen = (props) => {
       />
     </Box>
   );
-}
+};
 
 export default ProductsScreen;

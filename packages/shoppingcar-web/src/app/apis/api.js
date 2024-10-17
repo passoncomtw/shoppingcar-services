@@ -14,3 +14,5 @@ export const updateUserResult = (payload, customHeaders) => {
   return fetchPutWithToken(`console/users/${userId}`, customHeaders, body);
 };
 export const createUserResult = (payload, customElements) => fetchPostWithToken("console/users", customElements, payload);
+
+export const getProductsResult = (payload, customHeaders) => fetchGetWithToken("console/products", customHeaders, payload);
