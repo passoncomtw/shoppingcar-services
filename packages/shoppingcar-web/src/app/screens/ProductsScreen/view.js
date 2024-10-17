@@ -1,8 +1,9 @@
 import { Box, Button, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
-import { useEffect } from "react";
-import { PaginationTable } from "table-pagination-chakra-ui";
+import { useEffect, useState } from "react";
+import Pagination from "../../components/Pagination";
 
 const ProductsScreen = (props) => {
+  const [page, setPage] = useState(1);
   useEffect(() => {
     props.handleGetProducts({
       pageSize: 10,
@@ -42,13 +43,24 @@ const ProductsScreen = (props) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <PaginationTable
+      <Pagination
+        page={page}
+        totalAmount={props.totalAmount}
         pageSize={10}
-        setPageSize={() => false}
-        pageIndex={1}
-        setPageIndex={() => false}
-        totalItemsCount={10}
-        pageSizeOptions={[10]}
+        handlePrePage={() =>
+          props.handleGetProducts({
+            pageSize: 10,
+            startCursor: props.pageInfo.startCursor,
+            onSuccess: () => setPage(page - 1),
+          })
+        }
+        handleNextPage={() =>
+          props.handleGetProducts({
+            pageSize: 10,
+            endCursor: props.pageInfo.endCursor,
+            onSuccess: () => setPage(page + 1),
+          })
+        }
       />
     </Box>
   );
