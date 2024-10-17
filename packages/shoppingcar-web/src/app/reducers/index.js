@@ -1,9 +1,11 @@
-import { combineReducers } from 'redux';
-import merchantReducer from './merchantReducer';
-import authReducer from './authReduer';
+import { combineReducers } from "redux";
+import authReducer from "./authReduer";
+import merchantReducer from "./merchantReducer";
+import userReducer from "./userReducer";
 
 const appReducer = combineReducers({
   auth: authReducer,
+  user: userReducer,
   merchant: merchantReducer,
 });
 

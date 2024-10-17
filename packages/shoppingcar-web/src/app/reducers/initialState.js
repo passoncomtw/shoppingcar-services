@@ -4,6 +4,18 @@ const authState = {
 };
 
 const merchantState = {
+  merchantItems: [],
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: ""
+  }
+};
+
+const userState = {
   items: [],
   totalAmount: 0,
   pageInfo: {
@@ -16,6 +28,7 @@ const merchantState = {
 
 const initialState = {
   auth: authState,
+  user: userState,
   merchant: merchantState,
 };
 

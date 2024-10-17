@@ -1,13 +1,19 @@
-import { select } from "redux-saga/effects";
-import { getMerchantsResult } from "../apis/api";
+import { getMerchantsResult, getMerchantItemsResult } from "../apis/api";
 import types from "../constants/actionTypes";
-import fetchAPIResult from '../helpers/sagaHelper';
+import fetchAPIResult from "../helpers/sagaHelper";
 
-export function* getMerchantsSaga({payload}) {
+export function* getMerchantsSaga({ payload }) {
   return yield fetchAPIResult({
     actionType: types.GET_MERCHANTS,
     apiResult: getMerchantsResult,
     payload,
-    action: types.GET_MERCHANTS,
+  });
+}
+
+export function* getMerchantItemsSaga({ payload }) {
+  return yield fetchAPIResult({
+    actionType: types.GET_MERCHANT_ITEMS,
+    apiResult: getMerchantItemsResult,
+    payload,
   });
 }

@@ -1,30 +1,20 @@
-import {
-  Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Text,
-} from '@chakra-ui/react';
-import { useEffect } from 'react';
-import { PaginationTable } from "table-pagination-chakra-ui"
+import { Box, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { PaginationTable } from "table-pagination-chakra-ui";
 
 const MerchantsScreen = (props) => {
   useEffect(() => {
     props.handleGetMerchants({
       PageSize: 10,
-    })
+    });
   }, []);
 
-  const {merchant} = props;
+  const { merchant } = props;
 
   return (
-    <Box marginTop={20} bg='white'>
+    <Box marginTop={20} bg="white">
       <TableContainer>
-        <Table variant='simple'>
+        <Table variant="simple">
           <Thead>
             <Tr>
               <Th>帳號</Th>
@@ -35,15 +25,17 @@ const MerchantsScreen = (props) => {
             </Tr>
           </Thead>
           <Tbody>
-            {merchant.items.map(item => (
-              <Tr>
-              <Td>{item.name}</Td>
-              <Td>{item.name}</Td>
-              <Td>{item.email}</Td>
-              <Td>{item.phone}</Td>
-              <Td><Text color='#0DC884'>-</Text></Td>
-            </Tr>
-            ))}            
+            {merchant.items.map((item, index) => (
+              <Tr key={`${item.name}-${index}`}>
+                <Td>{item.name}</Td>
+                <Td>{item.name}</Td>
+                <Td>{item.email}</Td>
+                <Td>{item.phone}</Td>
+                <Td>
+                  <Text color="#0DC884">-</Text>
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </TableContainer>
@@ -57,6 +49,6 @@ const MerchantsScreen = (props) => {
       />
     </Box>
   );
-}
+};
 
 export default MerchantsScreen;
