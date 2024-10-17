@@ -116,10 +116,11 @@ const updateOrderPayStatusResult = async (orderId) => {
 };
 
 const getConsoleOrdersResult = async (query) => {
-  const { pageSize = 10, endCursor = null } = query;
+  const { pageSize = 10, endCursor = null, startCursor = null } = query;
   const result = await database.Order.paginate({
     limit: pageSize,
     after: endCursor,
+    before: startCursor,
     attributes: ["id", "productCount", "totalAmount"],
     include: [
       {

@@ -34,7 +34,7 @@ const UsersScreen = (props) => {
                   <Text color="#0DC884">-</Text>
                 </Td>
                 <Td>
-                  <Button>編輯</Button>
+                  <Button as="a" href={`/users/update/${item.id}`}>編輯</Button>
                 </Td>
               </Tr>
             ))}

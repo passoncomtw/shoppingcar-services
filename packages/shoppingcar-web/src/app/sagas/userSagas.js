@@ -1,4 +1,4 @@
-import { getUsersResult, createUserResult } from "../apis/api";
+import { createUserResult, getUsersResult, updateUserResult } from "../apis/api";
 import types from "../constants/actionTypes";
 import fetchAPIResult from "../helpers/sagaHelper";
 
@@ -7,6 +7,15 @@ export function* getUsersSaga({ payload }) {
     actionType: types.GET_USERS,
     apiResult: getUsersResult,
     payload,
+  });
+}
+
+export function* updateUserSaga({ payload: { onSuccess, ...payload } }) {
+  return yield fetchAPIResult({
+    actionType: types.UPDATE_USER,
+    apiResult: updateUserResult,
+    payload,
+    onSuccess,
   });
 }
 

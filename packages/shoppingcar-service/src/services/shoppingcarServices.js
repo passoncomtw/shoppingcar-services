@@ -4,10 +4,11 @@ import { getProductInformationIdResult } from "./productServices";
 import { getUserByUserIdResult } from "./userServices";
 
 const getShoppingcarsResult = async (query) => {
-  const { pageSize = 10, endCursor = null } = query;
+  const { pageSize = 10, endCursor = null, startCursor = null } = query;
   const result = await database.Shoppingcar.paginate({
     limit: pageSize,
     after: endCursor,
+    before: startCursor,
     include: [
       {
         as: "user",

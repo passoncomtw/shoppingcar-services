@@ -4,10 +4,11 @@ import database from "~/database/models";
 import { getMerchantResult } from "./merchantServices";
 
 const getProductsResult = async (query) => {
-  const { pageSize = 10, endCursor = null } = query;
+  const { pageSize = 10, endCursor = null, startCursor = null } = query;
   const result = await database.Product.paginate({
     limit: pageSize,
     after: endCursor,
+    before: startCursor,
     include: [
       {
         as: "merchant",

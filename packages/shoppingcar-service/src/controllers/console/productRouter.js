@@ -125,6 +125,9 @@ import { createProductResult, getProductsResult, updateProductResult } from "~/s
  * @param {Number} pageSize.query
  *   - 每頁回傳幾筆資料
  *   - eg: 10
+ * @param {String} startCursor.query
+ *   - 結束的標的 pageInfo.startCursor
+ *   - eg: 10
  * @param {String} endCursor.query
  *   - 結束的標的 pageInfo.endCursor
  *   - eg: 10

@@ -1,45 +1,68 @@
 import { Box, Button, Flex, FormControl, FormErrorMessage, FormLabel, Input, Text, VStack } from "@chakra-ui/react";
 import { Field, Formik } from "formik";
 import isEmpty from "lodash/isEmpty";
+import isNull from "lodash/isNull";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createUserSchema } from "../../constants/yupSchemas/user";
+import { useNavigate, useParams } from "react-router-dom";
+import { getUserByUserIdResult } from "../../apis/api";
+import { updateUserSchema } from "../../constants/yupSchemas/user";
 import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
   phone: "",
-  password: "",
-  confirmPassword: "",
   errors: {},
 };
 
-const CreateUserScreen = (props) => {
+const UpdateUserScreen = (props) => {
   const [formData, setFormData] = useState({ ...INITIAL_FORMDATA });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const { userId } = useParams();
 
+  useEffect(() => {
+    getUserByUserIdResult({ userId }, { Authorization: props.authToken }).then((response) => {
+      const { item } = response.result;
+      if (item) {
+        setFormData({ ...INITIAL_FORMDATA, ...item });
+      } else {
+        setFormData(null);
+      }
+    });
+  }, []);
+
+  if (isNull(formData)) {
+    return (
+      <Flex bg="gray.100" align="center" justify="center" h="100vh">
+        <Box bg="white" p={6} rounded="md" w="40%">
+          <Box display="flex" align="center">
+            <Text fontSize="xl">會員不存在</Text>
+          </Box>
+        </Box>
+      </Flex>
+    );
+  }
   return (
     <Flex bg="gray.100" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} rounded="md" w="40%">
         <Box display="flex" align="center">
-          <Text fontSize="xl">新增會員</Text>
+          <Text fontSize="xl">編輯會員</Text>
         </Box>
         <Formik
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(createUserSchema, formData);
+              const validatedPayload = await handleYupSchema(updateUserSchema, formData);
               setErrors({});
-              props.handleCreateUser({
+              props.handleUpdateUser({
+                userId,
                 ...validatedPayload,
-                onSuccess: () => navigate("/users"),
+                onSuccess: () => alert("編輯會員成功"),
               });
             } catch (error) {
               const errors = handleYupErrors(error);
               setErrors(errors);
             }
-            // props.handleCreateUser(values);
           }}
         >
           {({ handleSubmit }) => (
@@ -69,34 +92,8 @@ const CreateUserScreen = (props) => {
                   />
                   <FormErrorMessage>{errors.phone}</FormErrorMessage>
                 </FormControl>
-                <FormControl isInvalid={!isEmpty(errors.password)}>
-                  <FormLabel htmlFor="password">密碼</FormLabel>
-                  <Field
-                    as={Input}
-                    id="password"
-                    name="password"
-                    variant="filled"
-                    type="password"
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  />
-                  <FormErrorMessage>{errors.password}</FormErrorMessage>
-                </FormControl>
-                <FormControl isInvalid={!isEmpty(errors.confirmPassword)}>
-                  <FormLabel htmlFor="confirmPassword">確認密碼</FormLabel>
-                  <Field
-                    as={Input}
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    variant="filled"
-                    type="password"
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  />
-                  <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
-                </FormControl>
                 <Button type="submit" colorScheme="purple" width="full">
-                  新增會員
+                  編輯會員
                 </Button>
               </VStack>
             </form>
@@ -107,4 +104,4 @@ const CreateUserScreen = (props) => {
   );
 };
 
-export default CreateUserScreen;
+export default UpdateUserScreen;
