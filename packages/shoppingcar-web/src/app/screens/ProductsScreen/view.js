@@ -1,4 +1,4 @@
-import { Box, Button, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination";
 
@@ -10,7 +10,12 @@ const ProductsScreen = (props) => {
     });
   }, []);
   return (
-    <Box marginTop={20} bg="white">
+    <Box bg="white">
+      <Flex paddingRight={10} paddingTop={10} justify="right">
+        <Button as="a" href="/products/create" style={{ textDecoration: "none" }}>
+          新增商品
+        </Button>
+      </Flex>
       <TableContainer>
         <Table variant="simple">
           <Thead>
