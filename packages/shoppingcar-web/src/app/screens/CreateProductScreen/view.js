@@ -7,12 +7,12 @@ import { createProductSchema } from "../../constants/yupSchemas/product";
 import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
-  name: "testdemo001",
-  price: 1000,
-  stockAmount: 1000,
-  merchantId: 58,
-  description: "test demo001test",
-  subtitle: "test123123123123",
+  name: "",
+  price: 0,
+  stockAmount: 0,
+  merchantId: null,
+  description: "",
+  subtitle: "",
   errors: {},
 };
 

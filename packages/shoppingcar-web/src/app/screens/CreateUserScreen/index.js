@@ -2,8 +2,7 @@ import { connect } from "react-redux";
 import { createUserAction } from "../../actions/userActions";
 import CreateUserScreen from "./view";
 
-const mapStateToProps = ({}) => ({
-});
+const mapStateToProps = ({}) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
   handleCreateUser: (payload) => {
