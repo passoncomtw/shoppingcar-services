@@ -1,18 +1,18 @@
 import constants from "flux-constants";
 
-const syncActionTypes = [];
+const syncActionTypes = ["SIGNOUT"];
 
 export const basicAsyncActionTypes = [
   "SIGNIN",
-  "SIGNOUT",
-  "GET_MERCHANTS",
   "GET_USERS",
+  "GET_PRODUCTS",
+  "GET_MERCHANTS",
   "GET_MERCHANT_ITEMS",
   "CREATE_USER",
   "CREATE_PRODUCT",
   "CREATE_MERCHANT",
   "UPDATE_USER",
-  "GET_PRODUCTS",
+  "UPDATE_MERCHANT"
 ];
 
 export const asyncActionTypes = basicAsyncActionTypes.reduce((result, actionType) => {
