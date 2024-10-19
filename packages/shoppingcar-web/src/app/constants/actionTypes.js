@@ -7,6 +7,7 @@ export const basicAsyncActionTypes = [
   "GET_USERS",
   "GET_PRODUCTS",
   "GET_MERCHANTS",
+  "GET_SHOPPINGCARS",
   "GET_MERCHANT_ITEMS",
   "CREATE_USER",
   "CREATE_PRODUCT",

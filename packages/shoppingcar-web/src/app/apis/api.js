@@ -32,3 +32,6 @@ export const updateProductByIdResult = (payload, customHeaders) => {
 };
 export const createProductResult = (payload, customHeaders) =>
   fetchPostWithToken("console/products", customHeaders, payload);
+
+
+export const getShoppingcarsResult = (payload, customHeaders) => fetchGetWithToken("console/shoppingcars", customHeaders, payload);

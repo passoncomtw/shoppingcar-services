@@ -12,6 +12,7 @@ import UpdateMerchantScreen from "./screens/UpdateMerchantScreen";
 import UpdateUserScreen from "./screens/UpdateUserScreen";
 import UsersScreen from "./screens/UsersScreen";
 import UpdateProductScreen from "./screens/UpdateProductScreen";
+import ShoppingcarsScreen from "./screens/ShoppingcarsScreen";
 
 export default function App() {
   return (
@@ -30,6 +31,7 @@ export default function App() {
         <Route path="/products/update/:productId" element={<UpdateProductScreen />} />
         <Route path="/products/create" element={<CreateProductScreen />} />
         <Route path="/products" element={<ProductsScreen />} />
+        <Route path="/shoppingcars" element={<ShoppingcarsScreen />} />
       </Route>
     </Routes>
   );

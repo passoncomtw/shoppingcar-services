@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import merchantReducer from "./merchantReducer";
 import productReducer from "./productReducer";
+import shoppingcarReducer from "./shoppingcarReducer";
 import userReducer from "./userReducer";
 
 const appReducer = combineReducers({
@@ -9,6 +10,7 @@ const appReducer = combineReducers({
   user: userReducer,
   product: productReducer,
   merchant: merchantReducer,
+  shoppingcar: shoppingcarReducer,
 });
 
 const rootReducer = (state, action) => {
