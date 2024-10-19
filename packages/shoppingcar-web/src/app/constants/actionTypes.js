@@ -5,6 +5,7 @@ const syncActionTypes = ["SIGNOUT"];
 export const basicAsyncActionTypes = [
   "SIGNIN",
   "GET_USERS",
+  "GET_ORDERS",
   "GET_PRODUCTS",
   "GET_MERCHANTS",
   "GET_SHOPPINGCARS",

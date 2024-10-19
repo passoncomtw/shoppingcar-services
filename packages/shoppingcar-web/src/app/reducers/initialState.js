@@ -48,11 +48,23 @@ const shoppingcarState = {
   },
 };
 
+const orderState = {
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: "",
+  },
+};
+
 const initialState = {
   auth: authState,
   user: userState,
   product: productState,
   merchant: merchantState,
+  order: orderState,
   shoppingcar: shoppingcarState,
 };
 
