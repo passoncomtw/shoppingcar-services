@@ -14,9 +14,9 @@ export const getMerchantResult = (payload, customHeaders) =>
 export const getMerchantItemsResult = (payload, customHeaders) =>
   fetchGetWithToken("console/merchants/items", customHeaders, payload);
 export const updateMerchantResult = (payload, customHeaders) => {
-  const {merchantId, ...body} = payload
+  const { merchantId, ...body } = payload;
   return fetchPutWithToken(`console/merchants/${merchantId}`, customHeaders, body);
-}
+};
 export const updateUserResult = (payload, customHeaders) => {
   const { userId, ...body } = payload;
   return fetchPutWithToken(`console/users/${userId}`, customHeaders, body);
@@ -24,5 +24,11 @@ export const updateUserResult = (payload, customHeaders) => {
 export const createUserResult = (payload, customElements) => fetchPostWithToken("console/users", customElements, payload);
 
 export const getProductsResult = (payload, customHeaders) => fetchGetWithToken("console/products", customHeaders, payload);
+export const getProductByIdResult = (payload, customHeaders) =>
+  fetchGetWithToken(`console/products/${payload.productId}`, customHeaders);
+export const updateProductByIdResult = (payload, customHeaders) => {
+  const { productId, ...body } = payload;
+  return fetchGetWithToken(`console/products/${productId}`, customHeaders, body);
+};
 export const createProductResult = (payload, customHeaders) =>
   fetchPostWithToken("console/products", customHeaders, payload);

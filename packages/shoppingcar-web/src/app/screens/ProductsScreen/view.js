@@ -41,7 +41,7 @@ const ProductsScreen = (props) => {
                 <Td>{productItem.stockAmount}</Td>
                 <Td>-</Td>
                 <Td>
-                  <Button>編輯</Button>
+                  <Button as="a" href={`/products/update/${productItem.id}`}>編輯</Button>
                 </Td>
               </Tr>
             ))}

@@ -11,6 +11,7 @@ import PublicScreen from "./screens/PublicScreen";
 import UpdateMerchantScreen from "./screens/UpdateMerchantScreen";
 import UpdateUserScreen from "./screens/UpdateUserScreen";
 import UsersScreen from "./screens/UsersScreen";
+import UpdateProductScreen from "./screens/UpdateProductScreen";
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
         <Route path="/users/create" element={<CreateUserScreen />} />
         <Route path="/users/update/:userId" element={<UpdateUserScreen />} />
         <Route path="/users" element={<UsersScreen />} />
+        <Route path="/products/update/:productId" element={<UpdateProductScreen />} />
         <Route path="/products/create" element={<CreateProductScreen />} />
         <Route path="/products" element={<ProductsScreen />} />
       </Route>
