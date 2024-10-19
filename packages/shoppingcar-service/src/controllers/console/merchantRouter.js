@@ -4,6 +4,7 @@ import { createMerchantRequestSchema, updateMerchantRequestSchema } from "~/help
 import {
   createMerchantResult,
   getMerchantItemsResult,
+  getMerchantResult,
   getMerchantsResult,
   updateMerchantResult,
 } from "~/services/merchantServices";
@@ -209,6 +210,31 @@ const getMerchantsRoute = async (req, res) => {
 };
 
 /**
+ * Get Merchant API.
+ * @group ConsoleMerchant
+ * @route GET /console/merchants/{merchantId}
+ * @param {String} merchantId.path
+ *   - 商家 ID
+ *   - eg: 1
+ * @returns {ConsoleMerchantResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleMerchantResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getMerchantRoute = async (req, res) => {
+  try {
+    const { merchantId } = req.params;
+    const item = await getMerchantResult({ id: merchantId });
+    return responseOk(res, { item });
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
+/**
  * Get Merchant items API.
  * @group ConsoleMerchant
  * @route GET /console/merchants/items
@@ -229,6 +255,7 @@ const getMerchantItemsRoute = async (req, res) => {
   }
 };
 
+module.exports.getMerchantRoute = getMerchantRoute;
 module.exports.getMerchantsRoute = getMerchantsRoute;
 module.exports.getMerchantItemsRoute = getMerchantItemsRoute;
 module.exports.createMerchantRoute = createMerchantRoute;

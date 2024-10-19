@@ -1,7 +1,13 @@
 import Express from "express";
 import { jwtAuthorizationMiddleware } from "../../helpers/passportManager";
 import { loginRoute } from "./authRouter";
-import { createMerchantRoute, getMerchantItemsRoute, getMerchantsRoute, updateMerchantRouter } from "./merchantRouter";
+import {
+  createMerchantRoute,
+  getMerchantItemsRoute,
+  getMerchantRoute,
+  getMerchantsRoute,
+  updateMerchantRouter,
+} from "./merchantRouter";
 import { getOrdersRouter, updateOrderPayStatusRouter } from "./orderRouter";
 import { createProductRouter, getProductRouter, getProductsRouter, updateProductRouter } from "./productRouter";
 import { clearShoppingcarRouter, getShoppingcarsRouter } from "./shoppingcarRouter";
@@ -11,6 +17,7 @@ const router = Express.Router();
 
 router.post("/login", loginRoute);
 
+router.get("/merchants/:merchantId", jwtAuthorizationMiddleware, getMerchantRoute);
 router.get("/merchants/items", jwtAuthorizationMiddleware, getMerchantItemsRoute);
 router.get("/merchants", jwtAuthorizationMiddleware, getMerchantsRoute);
 router.post("/merchants", jwtAuthorizationMiddleware, createMerchantRoute);
