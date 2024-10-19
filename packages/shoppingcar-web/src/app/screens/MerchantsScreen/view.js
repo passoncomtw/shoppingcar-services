@@ -1,4 +1,4 @@
-import { Box, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box, Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination";
 
@@ -13,7 +13,12 @@ const MerchantsScreen = (props) => {
   const { merchant } = props;
 
   return (
-    <Box marginTop={20} bg="white">
+    <Box bg="white">
+      <Flex paddingRight={10} paddingTop={10} justify="right">
+        <Button as="a" href="/merchants/create" style={{ textDecoration: "none" }}>
+          新增商家
+        </Button>
+      </Flex>
       <TableContainer>
         <Table variant="simple">
           <Thead>
@@ -22,7 +27,7 @@ const MerchantsScreen = (props) => {
               <Th>暱稱</Th>
               <Th>信箱</Th>
               <Th>手機號碼</Th>
-              <Th>狀態</Th>
+              <Th>操作</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -33,7 +38,9 @@ const MerchantsScreen = (props) => {
                 <Td>{item.email}</Td>
                 <Td>{item.phone}</Td>
                 <Td>
-                  <Text color="#0DC884">-</Text>
+                  <Button as="a" href={`/merchants/update/${item.id}`}>
+                    編輯
+                  </Button>
                 </Td>
               </Tr>
             ))}

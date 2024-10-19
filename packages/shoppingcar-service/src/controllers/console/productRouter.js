@@ -1,6 +1,11 @@
 import { responseErrWithMsg, responseOk } from "~/helpers/response";
 import { createProductRequestSchema, updateProductRequestSchema } from "~/helpers/schemas";
-import { createProductResult, getProductsResult, updateProductResult } from "~/services/productServices";
+import {
+  createProductResult,
+  getProductInformationIdResult,
+  getProductsResult,
+  updateProductResult,
+} from "~/services/productServices";
 
 /**
  * @typedef ConsoleCreateProductRequest
@@ -96,13 +101,13 @@ import { createProductResult, getProductsResult, updateProductResult } from "~/s
  */
 
 /**
- * @typedef ConsoleProductResponse
+ * @typedef ConsoleProductWithMerchantInformationResponse
  * @property {ConsoleProductWithMerchantInformation.model} item.required
  *  - console product information
  */
 
 /**
- * @typedef ConsoleUpdatedProductResponse
+ * @typedef ConsoleProductResponse
  * @property {ConsoleProductInformation.model} item.required
  *  - console product information
  */
@@ -119,7 +124,7 @@ import { createProductResult, getProductsResult, updateProductResult } from "~/s
  */
 
 /**
- * Get Product API.
+ * Get Products API.
  * @group ConsoleProduct
  * @route GET /console/products
  * @param {Number} pageSize.query
@@ -143,6 +148,31 @@ const getProductsRouter = async (req, res) => {
   try {
     const result = await getProductsResult(req.query);
     return responseOk(res, result);
+  } catch (error) {
+    return responseErrWithMsg(res, error.message);
+  }
+};
+
+/**
+ * Get Product API.
+ * @group ConsoleProduct
+ * @route GET /console/products/{productId}
+ * @param {String} productId.path
+ *   - 商品 ID
+ *   - eg: 1
+ * @returns {ConsoleProductWithMerchantInformationResponse.model} 200 - success, return requested data
+ * @returns {String} 400 - invalid request params/query/body
+ * @returns {String} 404 - required data not found
+ * @returns {Error} 500 - unexpected error
+ * @security JWT
+ * @typedef ConsoleProductWithMerchantInformationResponse
+ * @property {{integer}} code - response code - eg: 200
+ */
+const getProductRouter = async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const item = await getProductInformationIdResult({ id: productId });
+    return responseOk(res, { item });
   } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
@@ -181,12 +211,12 @@ const createProductRouter = async (req, res) => {
  *   - 商品 ID
  *   - eg: 1
  * @param {ConsoleUpdateProductRequest.model} data.body.required - the new point
- * @returns {ConsoleUpdatedProductResponse.model} 200 - success, return requested data
+ * @returns {ConsoleProductResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
  * @returns {Error} 500 - unexpected error
  * @security JWT
- * @typedef ConsoleUpdatedProductResponse
+ * @typedef ConsoleProductResponse
  * @property {{Number}} code - response code - eg: 200
  */
 const updateProductRouter = async (req, res) => {
@@ -202,6 +232,7 @@ const updateProductRouter = async (req, res) => {
   }
 };
 
+module.exports.getProductRouter = getProductRouter;
 module.exports.getProductsRouter = getProductsRouter;
 module.exports.createProductRouter = createProductRouter;
 module.exports.updateProductRouter = updateProductRouter;

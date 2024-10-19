@@ -18,7 +18,6 @@ const SwitchNavigation = () => {
 }
 
 export const App = () => {
-  const { auth } = store.getState();
   return (
     <NavigationContainer>
       <Provider store={store}>

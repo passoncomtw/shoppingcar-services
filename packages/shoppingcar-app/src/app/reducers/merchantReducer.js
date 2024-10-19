@@ -6,7 +6,6 @@ export default function reducer(merchant = cloneDeep(merchantState), { type, pay
   switch (type) {
     case types.GET_MERCHANTS_SUCCESS:
       return {
-        // items: merchant.items.concat(payload.items),
         items: payload.items,
         totalAmount: payload.totalCount,
         pageInfo: payload.pageInfo,

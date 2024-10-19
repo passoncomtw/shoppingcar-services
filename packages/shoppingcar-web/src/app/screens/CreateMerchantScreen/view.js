@@ -3,18 +3,19 @@ import { Field, Formik } from "formik";
 import isEmpty from "lodash/isEmpty";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createUserSchema } from "../../constants/yupSchemas/user";
+import { createMerchantSchema } from "../../constants/yupSchemas/merchant";
 import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
   phone: "",
+  email: "",
   password: "",
   confirmPassword: "",
   errors: {},
 };
 
-const CreateUserScreen = (props) => {
+const CreateMerchantScreen = (props) => {
   const [formData, setFormData] = useState({ ...INITIAL_FORMDATA });
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
@@ -23,17 +24,17 @@ const CreateUserScreen = (props) => {
     <Flex bg="gray.100" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} rounded="md" w="40%">
         <Box display="flex" align="center">
-          <Text fontSize="xl">新增會員</Text>
+          <Text fontSize="xl">新增商家</Text>
         </Box>
         <Formik
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(createUserSchema, formData);
+              const validatedPayload = await handleYupSchema(createMerchantSchema, formData);
               setErrors({});
-              props.handleCreateUser({
+              props.handleCreateMerchant({
                 ...validatedPayload,
-                onSuccess: () => navigate("/users"),
+                onSuccess: () => navigate("/merchants"),
               });
             } catch (error) {
               const errors = handleYupErrors(error);
@@ -68,6 +69,19 @@ const CreateUserScreen = (props) => {
                   />
                   <FormErrorMessage>{errors.phone}</FormErrorMessage>
                 </FormControl>
+                <FormControl isInvalid={!isEmpty(errors.email)}>
+                  <FormLabel htmlFor="email">信箱</FormLabel>
+                  <Field
+                    as={Input}
+                    id="email"
+                    type="email"
+                    name="email"
+                    variant="filled"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  />
+                  <FormErrorMessage>{errors.email}</FormErrorMessage>
+                </FormControl>
                 <FormControl isInvalid={!isEmpty(errors.password)}>
                   <FormLabel htmlFor="password">密碼</FormLabel>
                   <Field
@@ -95,7 +109,7 @@ const CreateUserScreen = (props) => {
                   <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
                 </FormControl>
                 <Button type="submit" colorScheme="purple" width="full">
-                  新增會員
+                  新增商家
                 </Button>
               </VStack>
             </form>
@@ -106,4 +120,4 @@ const CreateUserScreen = (props) => {
   );
 };
 
-export default CreateUserScreen;
+export default CreateMerchantScreen;
