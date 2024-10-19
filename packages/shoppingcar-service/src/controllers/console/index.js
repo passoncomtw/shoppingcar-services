@@ -3,9 +3,9 @@ import { jwtAuthorizationMiddleware } from "../../helpers/passportManager";
 import { loginRoute } from "./authRouter";
 import { createMerchantRoute, getMerchantItemsRoute, getMerchantsRoute, updateMerchantRouter } from "./merchantRouter";
 import { getOrdersRouter, updateOrderPayStatusRouter } from "./orderRouter";
-import { createProductRouter, getProductsRouter, updateProductRouter } from "./productRouter";
+import { createProductRouter, getProductRouter, getProductsRouter, updateProductRouter } from "./productRouter";
 import { clearShoppingcarRouter, getShoppingcarsRouter } from "./shoppingcarRouter";
-import { createUserRouter, getUsersRouter, updateUserRouter, getUserByUserIdRouter } from "./userRouter";
+import { createUserRouter, getUserByUserIdRouter, getUsersRouter, updateUserRouter } from "./userRouter";
 
 const router = Express.Router();
 
@@ -27,6 +27,7 @@ router.put("/orders/:orderId", jwtAuthorizationMiddleware, updateOrderPayStatusR
 router.get("/shoppingcars", jwtAuthorizationMiddleware, getShoppingcarsRouter);
 router.delete("/shoppingcars/:userId", jwtAuthorizationMiddleware, clearShoppingcarRouter);
 
+router.get("/products/:productId", jwtAuthorizationMiddleware, getProductRouter);
 router.get("/products", jwtAuthorizationMiddleware, getProductsRouter);
 router.post("/products", jwtAuthorizationMiddleware, createProductRouter);
 router.put("/products/:productId", jwtAuthorizationMiddleware, updateProductRouter);
