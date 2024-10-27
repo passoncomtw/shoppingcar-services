@@ -11,6 +11,7 @@ export const basicAsyncActionTypes = [
   "GET_MERCHANTS",
   "GET_MERCHANT_PRODUCTS",
   "GET_USER_DETAIL",
+  "ADD_PRODUCT_INTO_SHOPPINGCAR",
 ];
 
 export const asyncActionTypes = basicAsyncActionTypes.reduce((result, actionType) => {
