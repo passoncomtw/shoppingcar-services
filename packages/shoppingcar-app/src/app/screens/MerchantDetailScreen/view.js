@@ -4,8 +4,8 @@ import { Avatar, Card, IconButton } from "react-native-paper";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome5";
 import WaterfallFlow from "react-native-waterfall-flow";
 
-const Item = ({ merchantId, item, handleAddProductIntoShoppingcar }) => (
-  <Card style={{ margin: 10 }} onPress={() => alert("店家產品列表")}>
+const Item = ({ merchantId, navigation, item, handleAddProductIntoShoppingcar }) => (
+  <Card style={{ margin: 10 }} onPress={() => navigation.push("ProductDetail", { merchantId, productId: item.id })}>
     <Avatar.Image size={88} style={{ alignSelf: "center" }} source={require("../../../assets/girlLogo.jpg")} />
     <Card.Content>
       <Text variant="titleLarge" style={{ alignSelf: "center" }}>
@@ -31,7 +31,14 @@ const Item = ({ merchantId, item, handleAddProductIntoShoppingcar }) => (
   </Card>
 );
 
-const MerchantDetailScreen = ({ product, route, handleGetMerchantProducts, handleAddProductIntoShoppingcar }) => {
+const MerchantDetailScreen = ({
+  product,
+  route,
+  navigation,
+  handleGetMerchantProducts,
+  handleAddProductIntoShoppingcar,
+}) => {
+  console.log("🚀 ~ navigation:", navigation)
   const { merchantId } = route.params;
   useEffect(() => {
     handleGetMerchantProducts({ merchantId, pageSize: 10 });
@@ -55,7 +62,12 @@ const MerchantDetailScreen = ({ product, route, handleGetMerchantProducts, handl
         numColumns={2}
         data={product.items}
         renderItem={({ item }) => (
-          <Item merchantId={merchantId} item={item} handleAddProductIntoShoppingcar={handleAddProductIntoShoppingcar} />
+          <Item
+            merchantId={merchantId}
+            navigation={navigation}
+            item={item}
+            handleAddProductIntoShoppingcar={handleAddProductIntoShoppingcar}
+          />
         )}
         keyExtractor={(item) => item.id}
       />
