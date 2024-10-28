@@ -11,6 +11,7 @@ import OrdersScreen from "../screens/OrdersScreen";
 import ProductDetailScreen from "../screens/ProductDetailScreen";
 import SettingScreen from "../screens/SettingScreen";
 import ShoppingcarScreen from "../screens/ShoppingcarScreen";
+import OrderDetailScreen from "../screens/OrderDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -25,6 +26,7 @@ const HomeStackNavigator = () => (
 
 const OrderStackNavigator = () => (
   <Stack.Navigator>
+    <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
     <Stack.Screen name="Order" component={OrdersScreen} />
   </Stack.Navigator>
 );

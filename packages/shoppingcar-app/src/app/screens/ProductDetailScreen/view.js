@@ -1,12 +1,10 @@
-import { Avatar, Card, Text } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 import Background from "../../components/Background";
-
-const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
 
 const ProductDetailScreen = () => {
   return (
     <Background containerStyle={{ alignSelf: "center" }}>
-      <Card style={{ flex: 1, height: "100%" }}>
+        <Card style={{ flex: 1, height: "100%" }}>
         <Card.Cover style={{ marginLeft: 100, marginRight: 100 }} source={{ uri: "https://picsum.photos/700" }} />
         <Card.Content>
           <Text variant="titleLarge" style={{ fontWeight: "700" }}>
