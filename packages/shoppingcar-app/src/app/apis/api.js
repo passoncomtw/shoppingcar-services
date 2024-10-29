@@ -14,6 +14,8 @@ export const getMerchantProductsResult = (payload, customHeaders) => {
 };
 
 export const getOrdersResult = (payload, customHeaders) => fetchGetWithToken("app/orders", customHeaders, payload);
+export const getOrderDetailResult = (payload, customHeaders) =>
+  fetchGetWithToken(`app/orders/${payload.orderId}`, customHeaders);
 
 export const getUserDetailResult = (payload, customHeaders) => fetchGetWithToken("app/users", customHeaders, payload);
 

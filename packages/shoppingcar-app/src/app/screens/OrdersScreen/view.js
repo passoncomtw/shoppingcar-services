@@ -23,17 +23,17 @@ const EmptyOrder = () => (
 
 const OrderItem = (props) =>
   props.order.items.map((item) => (
-    <Card style={{ flex: 1, height: "100%" }}>
+    <Card key={`order-item-${item.id}`} style={{ flex: 1, height: "100%" }}>
       <Card.Title title="怪物糖果" left={LeftContent} />
       <Card.Content style={{ alignItems: "center" }}>
         <List.Item left={() => <Text>- 產品</Text>} right={() => <Text>${item.totalAmount}</Text>} />
-        <Button mode="contained" onPress={() => console.log("Pressed")}>
+        <Button mode="contained" onPress={() => props.navigation.push("OrderDetail", { orderId: item.id })}>
           訂單詳情
         </Button>
       </Card.Content>
     </Card>
   ));
-export default function OrdersScreen({ order, handleGetOrders }) {
+export default function OrdersScreen({ order, navigation, handleGetOrders }) {
   useEffect(() => {
     handleGetOrders();
   }, []);
@@ -42,7 +42,7 @@ export default function OrdersScreen({ order, handleGetOrders }) {
 
   return (
     <Background>
-      <OrderItem order={order} />
+      <OrderItem navigation={navigation} order={order} />
     </Background>
   );
 }

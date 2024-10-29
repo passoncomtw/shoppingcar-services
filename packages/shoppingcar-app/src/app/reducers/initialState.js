@@ -10,18 +10,23 @@ export const merchantState = {
     hasNextPage: false,
     hasPreviousPage: false,
     startCursor: "",
-    endCursor: ""
+    endCursor: "",
   },
 };
 
 export const orderState = {
+  detail: {
+    totalAmount: 0,
+    id: null,
+    orderItems: [],
+  },
   items: [],
   totalAmount: 0,
   pageInfo: {
     hasNextPage: false,
     hasPreviousPage: false,
     startCursor: "",
-    endCursor: ""
+    endCursor: "",
   },
 };
 
@@ -32,6 +37,6 @@ export const productState = {
     hasNextPage: false,
     hasPreviousPage: false,
     startCursor: "",
-    endCursor: ""
+    endCursor: "",
   },
 };
