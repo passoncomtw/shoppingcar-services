@@ -14,6 +14,17 @@ export const merchantState = {
   },
 };
 
+export const orderState = {
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: ""
+  },
+};
+
 export const productState = {
   items: [],
   totalAmount: 0,

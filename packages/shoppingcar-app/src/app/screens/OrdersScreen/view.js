@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Button, Card, List, Text } from "react-native-paper";
 import Background from "../../components/Background";
 
 const LeftContent = (props) => <Avatar.Image {...props} source={require("../../../assets/EmptyOrder.png")} />;
 
-const test = "a";
 const EmptyOrder = () => (
   <Background>
     <Card style={{ flex: 1, height: "100%" }}>
@@ -22,24 +21,28 @@ const EmptyOrder = () => (
   </Background>
 );
 
-const OrderItem = () => (
-  <Card style={{ flex: 1, height: "100%" }}>
-    <Card.Title title="怪物糖果" left={LeftContent} />
-    <Card.Content style={{ alignItems: "center" }}>
-      <List.Item title="更多產品" />
-      <List.Item left={() => <Text>1產品</Text>} right={() => <Text>$46.00</Text>} />
-      <Button mode="contained" onPress={() => console.log("Pressed")}>
-        訂單詳情
-      </Button>
-    </Card.Content>
-  </Card>
-);
-export default function OrdersScreen({ navigation }) {
-  if (test === "b") return <EmptyOrder />;
+const OrderItem = (props) =>
+  props.order.items.map((item) => (
+    <Card style={{ flex: 1, height: "100%" }}>
+      <Card.Title title="怪物糖果" left={LeftContent} />
+      <Card.Content style={{ alignItems: "center" }}>
+        <List.Item left={() => <Text>- 產品</Text>} right={() => <Text>${item.totalAmount}</Text>} />
+        <Button mode="contained" onPress={() => console.log("Pressed")}>
+          訂單詳情
+        </Button>
+      </Card.Content>
+    </Card>
+  ));
+export default function OrdersScreen({ order, handleGetOrders }) {
+  useEffect(() => {
+    handleGetOrders();
+  }, []);
+
+  if (order.items.length === 0) return <EmptyOrder />;
 
   return (
     <Background>
-      <OrderItem />
+      <OrderItem order={order} />
     </Background>
   );
 }

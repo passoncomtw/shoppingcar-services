@@ -11,6 +11,7 @@ export const basicAsyncActionTypes = [
   "GET_MERCHANTS",
   "GET_MERCHANT_PRODUCTS",
   "GET_USER_DETAIL",
+  "GET_ORDERS",
   "ADD_PRODUCT_INTO_SHOPPINGCAR",
 ];
 
