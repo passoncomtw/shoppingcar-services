@@ -26,8 +26,8 @@ const HomeStackNavigator = () => (
 
 const OrderStackNavigator = () => (
   <Stack.Navigator>
-    <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
     <Stack.Screen name="Order" component={OrdersScreen} />
+    <Stack.Screen name="OrderDetail" component={OrderDetailScreen} />
   </Stack.Navigator>
 );
 

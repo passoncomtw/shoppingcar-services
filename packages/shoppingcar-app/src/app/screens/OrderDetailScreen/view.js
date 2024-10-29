@@ -25,6 +25,7 @@ const OrderItem = () => (
     </Button>
   </Card>
 );
+
 export default function OrderDetailScreen({ navigation }) {
   return (
     <Background>
