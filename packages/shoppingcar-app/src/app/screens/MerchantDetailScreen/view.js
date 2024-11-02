@@ -38,7 +38,6 @@ const MerchantDetailScreen = ({
   handleGetMerchantProducts,
   handleAddProductIntoShoppingcar,
 }) => {
-  console.log("🚀 ~ navigation:", navigation)
   const { merchantId } = route.params;
   useEffect(() => {
     handleGetMerchantProducts({ merchantId, pageSize: 10 });

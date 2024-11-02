@@ -3,6 +3,10 @@ export const authState = {
   user: {},
 };
 
+export const shoppingcarState = {
+  item: {},
+};
+
 export const merchantState = {
   items: [],
   totalAmount: 0,

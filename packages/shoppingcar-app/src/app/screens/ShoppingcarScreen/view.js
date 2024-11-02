@@ -1,4 +1,5 @@
-import React from "react";
+import isEmpty from "lodash/isEmpty";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Avatar, Button, Card, Divider, IconButton, List, Text } from "react-native-paper";
 import Background from "../../components/Background";
@@ -7,9 +8,12 @@ const test = "a";
 
 const LeftContent = (props) => <Avatar.Image {...props} source={require("../../../assets/EmptyOrder.png")} />;
 
-const ShoppingcarItem = () => (
+const ShoppingcarItem = (props) => (
   <Card style={{ flex: 1, height: "100%" }}>
-    <Card.Title title="怪物糖果" left={LeftContent} right={() => <Text>$46.00</Text>} />
+    <Text variant="titleLarge" style={{ fontWeight: "700" }}>
+      {props.item.merchant.name}
+    </Text>
+    <Card.Title title={props.item.product.name} left={LeftContent} right={() => <Text>${props.item.product.price}</Text>} />
     <Card.Content>
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
         <IconButton icon="plus" mode="outlined" onPress={() => console.log("Pressed")} />
@@ -18,10 +22,6 @@ const ShoppingcarItem = () => (
       </View>
       <List.Item left={() => <Text>共計</Text>} right={() => <Text>$46.00</Text>} />
     </Card.Content>
-    <List.Item left={() => <Text>付款總額</Text>} right={() => <Text>$46.00</Text>} />
-    <Button mode="contained" onPress={() => console.log("Pressed")}>
-      結帳
-    </Button>
   </Card>
 );
 
@@ -40,16 +40,19 @@ const EmptyShoppingcar = () => (
   </Background>
 );
 
-const ShoppingcarItems = () => (
+const ShoppingcarItems = (props) => (
   <Background>
-    <Text variant="titleLarge" style={{ fontWeight: "700" }}>
-      糖果愛好者
-    </Text>
-    <ShoppingcarItem />
+    {props.shoppingcar.item.shoppingcarItems.map((item) => {
+      return <ShoppingcarItem key={`shoppingcar-item-${item.id}`} item={item} />;
+    })}
+    <List.Item left={() => <Text>付款總額</Text>} right={() => <Text>${props.shoppingcar.item.totalAmount}</Text>} />
+    <Button mode="contained" onPress={() => console.log("Pressed")}>
+      結帳
+    </Button>
   </Background>
 );
 
-const OrderResult = () => (
+const OrderResult = ({ shoppingcar }) => (
   <Background>
     <Card style={{ flex: 1, height: "100%" }}>
       <Card.Title title="訂單代碼" />
@@ -59,17 +62,21 @@ const OrderResult = () => (
         <List.Item left={() => <Text>地址</Text>} right={() => <Text>-</Text>} />
       </Card.Content>
       <Divider />
-      <List.Item left={() => <Text>訂單總計</Text>} right={() => <Text>$46.00</Text>} />
+      <List.Item left={() => <Text>訂單總計</Text>} right={() => <Text>${shoppingcar.item.totalAmount}</Text>} />
       <Button mode="contained" onPress={() => console.log("Pressed")}>
         回到首頁
       </Button>
     </Card>
   </Background>
 );
-const ShoppingcarScreen = () => {
-  if (test === "b") return <EmptyShoppingcar />;
-  if (test === "c") return <ShoppingcarItems />;
-  return <OrderResult />;
+const ShoppingcarScreen = (props) => {
+  useEffect(() => {
+    props.handleGetShoppingcar();
+  }, []);
+
+  if (isEmpty(props.shoopingcar?.item)) return <EmptyShoppingcar />;
+  if (test === "c") return <OrderResult shoppingcar={props.shoppingcar} />;
+  return <ShoppingcarItems shoppingcar={props.shoppingcar} />;
 };
 
 export default ShoppingcarScreen;

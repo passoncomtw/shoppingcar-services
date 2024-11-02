@@ -23,3 +23,5 @@ export const addProductIntoShoppingcarResult = (payload, customHeaders) =>
   fetchPostWithToken(`app/shoppingcars/${payload.merchantId}/products/${payload.productId}`, customHeaders, {
     amount: payload.amount,
   });
+export const getShoppingcarResult = (payload, customHeaders) =>
+  fetchGetWithToken("app/shoppingcars", customHeaders, payload);
