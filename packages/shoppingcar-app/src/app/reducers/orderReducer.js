@@ -4,6 +4,8 @@ import { orderState } from "./initialState";
 
 export default function reducer(order = cloneDeep(orderState), { type, payload }) {
   switch (type) {
+    case types.SIGNOUT:
+      return cloneDeep(orderState);
     case types.GET_ORDERS_SUCCESS:
       return {
         ...order,

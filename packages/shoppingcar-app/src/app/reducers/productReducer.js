@@ -4,6 +4,8 @@ import { productState } from './initialState';
 
 export default function reducer(merchant = cloneDeep(productState), { type, payload }) {
   switch (type) {
+    case types.SIGNOUT:
+      return cloneDeep(productState);
     case types.GET_MERCHANT_PRODUCTS_SUCCESS:
       return {
         // items: merchant.items.concat(payload.items),

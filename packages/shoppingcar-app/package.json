@@ -22,6 +22,7 @@
     "react-native-status-bar-height": "^2.6.0",
     "react-native-svg": "15.3.0",
     "react-native-svg-transformer": "1.3.0",
+    "react-native-toast-message": "^2.2.1",
     "react-native-vector-icons": "^10.1.0",
     "react-native-waterfall-flow": "^1.1.5",
     "react-native-web": "^0.19.11"
