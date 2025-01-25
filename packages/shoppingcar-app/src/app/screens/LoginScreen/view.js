@@ -1,31 +1,26 @@
-import React, {useState} from 'react';
-import {TouchableOpacity, StyleSheet, View} from 'react-native';
-import {Text} from 'react-native-paper';
-import Background from '../../components/Background';
-import Logo from '../../components/Logo';
-import Header from '../../components/Header';
-import Button from '../../components/Button';
-import TextInput from '../../components/TextInput';
-import {theme} from '../../constants/core/theme';
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import Background from "../../components/Background";
+import Button from "../../components/Button";
+import TextInput from "../../components/TextInput";
+import { theme } from "../../constants/core/theme";
 
 export default function LoginScreen(props) {
-  const {navigation, handleSubmit} = props;
-  const [phone, setPhone] = useState({value: '', error: ''});
-  const [password, setPassword] = useState({value: '', error: ''});
+  const { handleSubmit } = props;
+  const [phone, setPhone] = useState({ value: "", error: "" });
+  const [password, setPassword] = useState({ value: "", error: "" });
 
   const onLoginPressed = () => {
-    handleSubmit({phone: phone.value, password: password.value});
+    handleSubmit({ phone: phone.value, password: password.value, errorMessage: "使用者密碼錯誤或是不存在" });
   };
 
   return (
     <Background>
-      <Logo />
-      <Header>Welcome back.</Header>
       <TextInput
         label="Phone"
         returnKeyType="next"
         value={phone.value}
-        onChangeText={(text) => setPhone({value: text, error: ''})}
+        onChangeText={(text) => setPhone({ value: text, error: "" })}
         error={!!phone.error}
         errorText={phone.error}
         autoCapitalize="none"
@@ -37,7 +32,7 @@ export default function LoginScreen(props) {
         label="Password"
         returnKeyType="done"
         value={password.value}
-        onChangeText={(text) => setPassword({value: text, error: ''})}
+        onChangeText={(text) => setPassword({ value: text, error: "" })}
         error={!!password.error}
         errorText={password.error}
         secureTextEntry
@@ -45,24 +40,24 @@ export default function LoginScreen(props) {
       <Button mode="contained" onPress={onLoginPressed}>
         Login
       </Button>
-      <View style={styles.row}>
+      {/* <View style={styles.row}>
         <Text>Don’t have an account? </Text>
-        <TouchableOpacity onPress={() => navigation.replace('RegisterScreen')}>
+        <TouchableOpacity onPress={() => navigation.replace("RegisterScreen")}>
           <Text style={styles.link}>Sign up</Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
     </Background>
   );
 }
 
 const styles = StyleSheet.create({
   forgotPassword: {
-    width: '100%',
-    alignItems: 'flex-end',
+    width: "100%",
+    alignItems: "flex-end",
     marginBottom: 24,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 4,
   },
   forgot: {
@@ -70,7 +65,7 @@ const styles = StyleSheet.create({
     color: theme.colors.secondary,
   },
   link: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: theme.colors.primary,
   },
 });

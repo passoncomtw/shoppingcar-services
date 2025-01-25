@@ -1,4 +1,4 @@
-import Sequelize from 'sequelize';
+import Sequelize from "sequelize";
 import config from "~/database/config/config";
 
 const db = {};
@@ -26,7 +26,23 @@ const productModelFunc = require("./productModelFunc");
 const ProductModel = productModelFunc(sequelize, Sequelize.DataTypes);
 db.Product = ProductModel;
 
-Object.keys(db).forEach(modelName => {
+const shoppingcarModel = require("./shoppingcarModelFunc");
+const ShoppingcarModel = shoppingcarModel(sequelize, Sequelize.DataTypes);
+db.Shoppingcar = ShoppingcarModel;
+
+const shoppingcarItemModel = require("./shoppingcarItemsModelFunc");
+const ShoppingcarItemModel = shoppingcarItemModel(sequelize, Sequelize.DataTypes);
+db.ShoppingcarItem = ShoppingcarItemModel;
+
+const orderModelFunc = require("./orderModelFunc");
+const orderModel = orderModelFunc(sequelize, Sequelize.DataTypes);
+db.Order = orderModel;
+
+const orderItemModelFunc = require("./orderItemModelFunc");
+const orderItemModel = orderItemModelFunc(sequelize, Sequelize.DataTypes);
+db.OrderItem = orderItemModel;
+
+Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

@@ -1,12 +1,12 @@
-import { connect } from 'react-redux';
-import { getMerchantsAction } from '../../actions/merchantActions';
-import MerchantsScreen from './view';
+import { connect } from "react-redux";
+import { getMerchantsAction } from "../../actions/merchantActions";
+import MerchantsScreen from "./view";
 
-const mapStateToProps = ({merchant}) => {
-  return {merchant};
+const mapStateToProps = ({ merchant }) => {
+  return { merchant };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   handleGetMerchants: (payload) => {
     dispatch(getMerchantsAction(payload));
   },

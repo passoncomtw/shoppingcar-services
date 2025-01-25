@@ -4,9 +4,10 @@ import { merchantState } from './initialState';
 
 export default function reducer(merchant = cloneDeep(merchantState), { type, payload }) {
   switch (type) {
+    case types.SIGNOUT:
+      return cloneDeep(merchantState);
     case types.GET_MERCHANTS_SUCCESS:
       return {
-        // items: merchant.items.concat(payload.items),
         items: payload.items,
         totalAmount: payload.totalCount,
         pageInfo: payload.pageInfo,

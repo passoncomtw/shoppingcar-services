@@ -7,6 +7,5 @@ export function* signinSaga({payload}) {
     actionType: types.SIGNIN,
     apiResult: signinResult,
     payload,
-    action: types.SIGNIN,
   });
 }

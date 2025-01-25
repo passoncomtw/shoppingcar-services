@@ -26,15 +26,16 @@ import {
   Outlet,
   useLocation,
 } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { SignOutAction } from '../../actions/authActions';
 
 const LinkItems = [
   { name: '商家系統', icon: FiArchive, path: "/merchants" },
   { name: '會員系統', icon: FiUser, path: "/users" },
   { name: '商品系統', icon: FiLayers, path: "/products" },
-  { name: '購物車系統', icon: FiDatabase, path: "/merchants" },
-  { name: '訂單系統', icon: FiMessageSquare, path: "/merchants" },
-  { name: '系統設定', icon: FiSettings, path: "/merchants" },
+  { name: '購物車系統', icon: FiDatabase, path: "/shoppingcars" },
+  { name: '訂單系統', icon: FiMessageSquare, path: "/orders" },
+  { name: '系統設定', icon: FiSettings, path: "/settings" },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -61,6 +62,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
 };
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  
   return (
     <>
       <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
@@ -97,7 +100,7 @@ const Navbar = () => {
                   <MenuDivider />
                   <MenuItem>Your Servers</MenuItem>
                   <MenuItem>Account Settings</MenuItem>
-                  <MenuItem>Logout</MenuItem>
+                  <MenuItem onClick={() => dispatch(SignOutAction())}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </Stack>

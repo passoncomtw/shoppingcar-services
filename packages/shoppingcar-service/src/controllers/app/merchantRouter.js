@@ -1,11 +1,11 @@
-import {responseErrWithMsg, responseOk} from "~/helpers/response";
+import { responseErrWithMsg, responseOk } from "~/helpers/response";
 import { getMerchantsResult } from "~/services/merchantServices";
-import {getProductsByMerchantIdResult, getProductResult} from "~/services/productServices";
+import { getProductInformationIdResult, getProductsByMerchantIdResult } from "~/services/productServices";
 
 /**
  * @typedef AppMerchantInformation
  * @property {number} id.required
- *  - console merchant Id
+ *  - app merchant Id
  *  - eg: 1
  * @property {string} name.required
  *   - merchant name
@@ -21,7 +21,7 @@ import {getProductsByMerchantIdResult, getProductResult} from "~/services/produc
 /**
  * @typedef AppProductInformation
  * @property {Number} id.required
- *  - console product Id
+ *  - app product Id
  *  - eg: 1
  * @property {String} name.required
  *   - product name
@@ -42,14 +42,24 @@ import {getProductsByMerchantIdResult, getProductResult} from "~/services/produc
  *   - product subtitle
  *   - eg: product subtitle
  * @property {AppMerchantInformation.model} merchant.required
- * - console merchant infromation
+ * - app merchant infromation
  */
 
+/**
+ * @typedef AppMerchantsResponse
+ * @property {Array<AppMerchantInformation>} items.required
+ *   - merchant items
+ * @property {integer} totalCount.required
+ *   - Total Count
+ *   - eg: 100
+ * @property {PageInfoItem.model} pageInfo.required
+ *   - 分頁資訊
+ */
 
 /**
  * @typedef AppProductsResponse
  * @property {Array<AppProductInformation>} items.required
- *   - merchant items
+ *   - merchant products
  * @property {integer} totalCount.required
  *   - Total Count
  *   - eg: 100
@@ -60,11 +70,11 @@ import {getProductsByMerchantIdResult, getProductResult} from "~/services/produc
 /**
  * @typedef AppProductResponse
  * @property {AppProductInformation.model} item.required
- * - app product infromation
+ *   - product information
  */
 
 /**
- * Get Merchant API.
+ * Get Merchants API.
  * @group AppMerchants
  * @route GET /app/merchants
  * @param {Number} pageSize.query
@@ -73,26 +83,26 @@ import {getProductsByMerchantIdResult, getProductResult} from "~/services/produc
  * @param {String} endCursor.query
  *   - 結束的標的 pageInfo.endCursor
  *   - eg: 10
- * @returns {ConsoleMerchantsResponse.model} 200 - success, return requested data
+ * @returns {AppMerchantsResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
  * @returns {Error} 500 - unexpected error
  * @security JWT
- * @typedef ConsoleMerchantsResponse
+ * @typedef AppMerchantsResponse
  * @property {{integer}} code - response code - eg: 200
  */
 const getMerchantsRoute = async (req, res) => {
   try {
     const result = await getMerchantsResult(req.query);
-    return responseOk(res,  result);
-  } catch(error) {
+    return responseOk(res, result);
+  } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
 
 /**
  * Get Products By Merchant ID API.
- * @group AppProduct
+ * @group AppProducts
  * @route GET /app/merchants/{merchantId}/products
  * @param {String} merchantId.path
  *   - 商家 ID
@@ -103,33 +113,33 @@ const getMerchantsRoute = async (req, res) => {
  * @param {String} endCursor.query
  *   - 結束的標的 pageInfo.endCursor
  *   - eg: 10
- * @returns {ConsoleProductsResponse.model} 200 - success, return requested data
+ * @returns {AppProductsResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
  * @returns {String} 404 - required data not found
  * @returns {Error} 500 - unexpected error
  * @security JWT
- * @typedef ConsoleProductsResponse
+ * @typedef AppProductsResponse
  * @property {{integer}} code - response code - eg: 200
  */
 const getProductsByMerchantIdRouter = async (req, res) => {
   try {
     const { merchantId } = req.params;
     const result = await getProductsByMerchantIdResult(merchantId, req.query);
-    return responseOk(res,  result);
+    return responseOk(res, result);
   } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
 
 /**
- * Get Product By Merchant ID And Product ID API.
- * @group AppProduct
+ * Get Product information By Merchant ID API.
+ * @group AppProducts
  * @route GET /app/merchants/{merchantId}/products/{productId}
  * @param {String} merchantId.path
  *   - 商家 ID
  *   - eg: 1
  * @param {String} productId.path
- *   - 商品 ID
+ *   - 商家 ID
  *   - eg: 1
  * @returns {AppProductResponse.model} 200 - success, return requested data
  * @returns {String} 400 - invalid request params/query/body
@@ -139,17 +149,16 @@ const getProductsByMerchantIdRouter = async (req, res) => {
  * @typedef AppProductResponse
  * @property {{integer}} code - response code - eg: 200
  */
-const getProductRouter = async (req, res) => {
+const getProductInformationRouter = async (req, res) => {
   try {
     const { merchantId, productId } = req.params;
-    const result = await getProductResult({merchant_id: merchantId, id: productId});
-    console.log("🚀 ~ getProductRouter ~ result:", result)
-    return responseOk(res,  {item: result});
+    const result = await getProductInformationIdResult({ id: productId, merchantId });
+    return responseOk(res, { item: result });
   } catch (error) {
     return responseErrWithMsg(res, error.message);
   }
 };
 
-module.exports.getProductsByMerchantIdRouter= getProductsByMerchantIdRouter;
-module.exports.getProductRouter = getProductRouter;
+module.exports.getProductsByMerchantIdRouter = getProductsByMerchantIdRouter;
+module.exports.getProductInformationRouter = getProductInformationRouter;
 module.exports.getMerchantsRoute = getMerchantsRoute;

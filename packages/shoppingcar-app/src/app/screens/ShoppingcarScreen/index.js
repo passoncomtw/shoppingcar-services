@@ -1,11 +1,15 @@
-import { connect } from 'react-redux';
-import ShoppingcarScreen from './view';
+import { connect } from "react-redux";
+import { getShoppingcarAction } from "../../actions/shoppingcarActions";
+import ShoppingcarScreen from "./view";
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = ({ shoppingcar }) => {
+  return { shoppingcar };
 };
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
+  handleGetShoppingcar: (payload) => {
+    dispatch(getShoppingcarAction(payload));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ShoppingcarScreen);
