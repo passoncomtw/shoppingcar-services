@@ -1,0 +1,34 @@
+name: deploy-shoppingcar-api-production
+
+on:
+  push:
+    branches:
+      - develop
+# on:
+#   pull_request:
+#     types: 
+#       - closed
+#     branches:
+#       - main
+#     paths:
+#       - 'apps/token-admin-api/**'
+#       - '.github/workflows/deploy-token-admin-api.yaml'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: shoppingcar-service
+  DOCKER_HUB_WORKSPACE: passon
+  SERVER_WORK_DIRECTORY: shoppingcar-services
+
+jobs:
+  copy-file-to-server:
+    # if: github.event.pull_request.merged == true
+    runs-on: mac-mini-build
+    # runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: sync files to server
+      run: |
+        kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success."
+        rsync -avh ./ root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/${{ secrets.SERVER_WORK_DIRECTORY }}
+        
