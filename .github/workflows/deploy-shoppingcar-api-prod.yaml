@@ -30,5 +30,16 @@ jobs:
     - name: sync files to server
       run: |
         kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success."
+        echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./.env
         rsync -avh ./ root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/shoppingcar-services
-        
+  start_pm2_shoppingcar-service:
+    # if: github.event.pull_request.merged == true
+    needs: [copy-file-to-server]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy newest code to dev machine
+        uses: ./.github/actions/run-deploy
+        with:
+          host-name: ${{ secrets.DEV_BACKEND_HOST }}
+          ssh-key: ${{ secrets.SSH_KEY_PROD_VALUE }}
