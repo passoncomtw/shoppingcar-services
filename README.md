@@ -57,3 +57,11 @@ renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={
 ```
 $ cp ./npmpackages/@redux-devtools ./node_modulex
 ```
+
+### Run shoppingcar app
+
+```
+$ cd ./packages/shoppingcar-app && npx pod-install
+$ cd ../..
+$ nx start shoppingcar-app
+```
