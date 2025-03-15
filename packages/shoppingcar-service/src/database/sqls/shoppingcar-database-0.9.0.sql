@@ -156,7 +156,7 @@ CREATE TABLE "public"."backend_users" (
     "account" varchar(30) NOT NULL, -- COMMENT '後台使用者帳號'
     "password" varchar(255) NOT NULL, -- COMMENT '後台使用者密碼'
     "created_at" TIMESTAMP default current_timestamp,
-    "updated_at" TIMESTAMP default null,
+    "updated_at" TIMESTAMP default null
 );
 
 create trigger tri_bu_backend_users_updated_at
