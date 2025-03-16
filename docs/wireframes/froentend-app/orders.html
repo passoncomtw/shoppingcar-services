@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車應用 - 我的訂單</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #560CCE;
+            --secondary-color: #414757;
+            --error-color: #f13a59;
+            --text-color: #000000;
+            --background-color: #F5F5F5;
+            --card-color: #FFFFFF;
+            --border-color: #E0E0E0;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .ios-frame {
+            width: 375px;
+            height: 812px;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            border: 10px solid black;
+            box-sizing: content-box;
+        }
+        
+        .ios-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 30px;
+            background-color: black;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+        
+        .app-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: var(--background-color);
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            padding-top: 15px;
+            color: white;
+        }
+        
+        .status-bar .time {
+            font-weight: bold;
+        }
+        
+        .status-bar .icons {
+            display: flex;
+        }
+        
+        .status-bar .icons .icon {
+            margin-left: 8px;
+        }
+        
+        .app-header {
+            background-color: var(--primary-color);
+            padding: 0 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+        
+        .app-header h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+        
+        .app-header .header-action {
+            display: flex;
+            align-items: center;
+        }
+        
+        .app-header .header-action .icon {
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        
+        .tab-navigation {
+            display: flex;
+            background-color: white;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .tab-item {
+            flex: 1;
+            text-align: center;
+            padding: 16px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            position: relative;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .tab-item.active {
+            color: var(--primary-color);
+        }
+        
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 1.5px;
+        }
+        
+        .orders-container {
+            padding: 12px;
+            padding-bottom: 80px;
+        }
+        
+        .order-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .merchant-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .merchant-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            margin-right: 8px;
+            background-image: url('https://via.placeholder.com/100x100/FF5722/FFFFFF?text=店');
+        }
+        
+        .merchant-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .order-status {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
+        .status-pending {
+            background-color: #FFC107;
+            color: white;
+        }
+        
+        .status-paid {
+            background-color: #2196F3;
+            color: white;
+        }
+        
+        .status-shipping {
+            background-color: #FF9800;
+            color: white;
+        }
+        
+        .status-completed {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .status-cancelled {
+            background-color: #9E9E9E;
+            color: white;
+        }
+        
+        .order-content {
+            padding: 16px;
+        }
+        
+        .order-items {
+            display: flex;
+            margin-bottom: 16px;
+        }
+        
+        .order-item-image {
+            width: 64px;
+            height: 64px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+        
+        .order-summary {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: var(--secondary-color);
+        }
+        
+        .order-total {
+            font-weight: 500;
+            color: var(--text-color);
+        }
+        
+        .order-actions {
+            display: flex;
+            justify-content: flex-end;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .order-button {
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        
+        .button-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .button-secondary {
+            background-color: white;
+            color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .order-list-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            text-align: center;
+            padding: 24px;
+        }
+        
+        .empty-icon {
+            font-size: 64px;
+            color: var(--secondary-color);
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+        
+        .empty-message {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        
+        .empty-description {
+            font-size: 14px;
+            color: var(--secondary-color);
+            margin-bottom: 24px;
+        }
+        
+        .button {
+            height: 44px;
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            min-width: 160px;
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--secondary-color);
+            text-decoration: none;
+            flex: 1;
+        }
+        
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-item .material-icons {
+            font-size: 24px;
+        }
+        
+        .nav-item span {
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        
+        .order-date {
+            font-size: 12px;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+        
+        .order-number {
+            font-size: 12px;
+            color: var(--secondary-color);
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-frame">
+        <div class="ios-notch"></div>
+        <div class="app-container">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <span class="icon">📶</span>
+                    <span class="icon">📳</span>
+                    <span class="icon">🔋</span>
+                </div>
+            </div>
+            
+            <div class="app-header">
+                <h1>我的訂單</h1>
+                <div class="header-action">
+                    <span class="material-icons icon">search</span>
+                </div>
+            </div>
+            
+            <div class="tab-navigation">
+                <div class="tab-item active">全部</div>
+                <div class="tab-item">待付款</div>
+                <div class="tab-item">待發貨</div>
+                <div class="tab-item">待收貨</div>
+                <div class="tab-item">已完成</div>
+            </div>
+            
+            <div class="orders-container">
+                <!-- 訂單列表 -->
+                <a href="order-detail.html" class="order-card">
+                    <div class="order-header">
+                        <div class="merchant-info">
+                            <div class="merchant-avatar"></div>
+                            <div class="merchant-name">怪物糖果</div>
+                        </div>
+                        <div class="order-status status-pending">待付款</div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-date">下單時間：2023-11-15 16:30</div>
+                        <div class="order-items">
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/FF5722/FFFFFF?text=巧克力');"></div>
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/2196F3/FFFFFF?text=香蕉');"></div>
+                        </div>
+                        <div class="order-summary">
+                            <div>共2件商品</div>
+                            <div class="order-total">合計：NT$1,050</div>
+                        </div>
+                        <div class="order-number">訂單號：#2023111501</div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="order-button button-secondary">取消訂單</button>
+                        <button class="order-button button-primary">立即付款</button>
+                    </div>
+                </a>
+                
+                <a href="order-detail.html" class="order-card">
+                    <div class="order-header">
+                        <div class="merchant-info">
+                            <div class="merchant-avatar" style="background-image: url('https://via.placeholder.com/100x100/4CAF50/FFFFFF?text=吃');"></div>
+                            <div class="merchant-name">吃貨零食</div>
+                        </div>
+                        <div class="order-status status-paid">已付款</div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-date">下單時間：2023-11-14 13:45</div>
+                        <div class="order-items">
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/4CAF50/FFFFFF?text=餅乾');"></div>
+                        </div>
+                        <div class="order-summary">
+                            <div>共1件商品</div>
+                            <div class="order-total">合計：NT$280</div>
+                        </div>
+                        <div class="order-number">訂單號：#2023111402</div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="order-button button-secondary">查看詳情</button>
+                    </div>
+                </a>
+                
+                <a href="order-detail.html" class="order-card">
+                    <div class="order-header">
+                        <div class="merchant-info">
+                            <div class="merchant-avatar"></div>
+                            <div class="merchant-name">怪物糖果</div>
+                        </div>
+                        <div class="order-status status-shipping">運送中</div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-date">下單時間：2023-11-13 10:20</div>
+                        <div class="order-items">
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/E91E63/FFFFFF?text=草莓');"></div>
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/FF9800/FFFFFF?text=芒果');"></div>
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/2196F3/FFFFFF?text=香蕉');"></div>
+                        </div>
+                        <div class="order-summary">
+                            <div>共3件商品</div>
+                            <div class="order-total">合計：NT$450</div>
+                        </div>
+                        <div class="order-number">訂單號：#2023111303</div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="order-button button-secondary">查看物流</button>
+                        <button class="order-button button-primary">確認收貨</button>
+                    </div>
+                </a>
+                
+                <a href="order-detail.html" class="order-card">
+                    <div class="order-header">
+                        <div class="merchant-info">
+                            <div class="merchant-avatar" style="background-image: url('https://via.placeholder.com/100x100/9C27B0/FFFFFF?text=甜');"></div>
+                            <div class="merchant-name">甜點天堂</div>
+                        </div>
+                        <div class="order-status status-completed">已完成</div>
+                    </div>
+                    <div class="order-content">
+                        <div class="order-date">下單時間：2023-11-10 15:10</div>
+                        <div class="order-items">
+                            <div class="order-item-image" style="background-image: url('https://via.placeholder.com/200x200/9C27B0/FFFFFF?text=蛋糕');"></div>
+                        </div>
+                        <div class="order-summary">
+                            <div>共1件商品</div>
+                            <div class="order-total">合計：NT$320</div>
+                        </div>
+                        <div class="order-number">訂單號：#2023111004</div>
+                    </div>
+                    <div class="order-actions">
+                        <button class="order-button button-secondary">評價</button>
+                        <button class="order-button button-secondary">再次購買</button>
+                    </div>
+                </a>
+                
+                <!-- 空訂單狀態 (default: display: none) -->
+                <div class="order-list-empty" style="display: none;">
+                    <div class="empty-icon">
+                        <span class="material-icons">receipt_long</span>
+                    </div>
+                    <div class="empty-message">您還沒有訂單</div>
+                    <div class="empty-description">趕快去選購您喜愛的商品吧！</div>
+                    <a href="merchants.html" class="button">開始購物</a>
+                </div>
+            </div>
+            
+            <!-- 底部導航 -->
+            <div class="bottom-nav">
+                <a href="merchants.html" class="nav-item">
+                    <span class="material-icons">home</span>
+                    <span>首頁</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="material-icons">search</span>
+                    <span>搜尋</span>
+                </a>
+                <a href="shoppingcar.html" class="nav-item">
+                    <span class="material-icons">shopping_cart</span>
+                    <span>購物車</span>
+                </a>
+                <a href="orders.html" class="nav-item active">
+                    <span class="material-icons">receipt</span>
+                    <span>訂單</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <span class="material-icons">person</span>
+                    <span>我的</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

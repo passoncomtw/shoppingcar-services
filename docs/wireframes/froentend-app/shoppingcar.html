@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車應用 - 購物車</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #560CCE;
+            --secondary-color: #414757;
+            --error-color: #f13a59;
+            --text-color: #000000;
+            --background-color: #F5F5F5;
+            --card-color: #FFFFFF;
+            --border-color: #E0E0E0;
+        }
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .ios-frame {
+            width: 375px;
+            height: 812px;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+            border: 10px solid black;
+            box-sizing: content-box;
+        }
+        
+        .ios-notch {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 30px;
+            background-color: black;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+            z-index: 10;
+        }
+        
+        .app-container {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            background-color: var(--background-color);
+            position: relative;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            padding-top: 15px;
+            color: white;
+        }
+        
+        .status-bar .time {
+            font-weight: bold;
+        }
+        
+        .status-bar .icons {
+            display: flex;
+        }
+        
+        .status-bar .icons .icon {
+            margin-left: 8px;
+        }
+        
+        .app-header {
+            background-color: var(--primary-color);
+            padding: 0 20px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 56px;
+        }
+        
+        .app-header h1 {
+            font-size: 20px;
+            margin: 0;
+        }
+        
+        .app-header .header-action {
+            display: flex;
+            align-items: center;
+        }
+        
+        .app-header .header-action .icon {
+            margin-left: 16px;
+            cursor: pointer;
+        }
+        
+        .cart-merchant {
+            background-color: white;
+            margin: 12px 0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .merchant-header {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .merchant-checkbox {
+            margin-right: 12px;
+        }
+        
+        .merchant-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+            margin-right: 8px;
+            background-image: url('https://via.placeholder.com/100x100/FF5722/FFFFFF?text=店');
+        }
+        
+        .merchant-name {
+            font-weight: 500;
+            font-size: 16px;
+        }
+        
+        .merchant-tag {
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 10px;
+            padding: 2px 4px;
+            border-radius: 2px;
+            margin-left: 8px;
+        }
+        
+        .cart-item {
+            display: flex;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-checkbox {
+            margin-right: 12px;
+            display: flex;
+            align-items: flex-start;
+            padding-top: 30px;
+        }
+        
+        .item-image {
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        
+        .item-details {
+            flex: 1;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            margin: 0 0 4px 0;
+            font-size: 14px;
+        }
+        
+        .item-variant {
+            font-size: 12px;
+            color: var(--secondary-color);
+            margin: 0 0 8px 0;
+        }
+        
+        .item-price-qty {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-price {
+            font-weight: 500;
+            color: var(--error-color);
+        }
+        
+        .qty-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            height: 24px;
+        }
+        
+        .qty-btn {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--background-color);
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .qty-input {
+            width: 32px;
+            text-align: center;
+            border: none;
+            height: 24px;
+            font-size: 12px;
+        }
+        
+        .cart-container {
+            padding: 12px;
+        }
+        
+        .cart-summary {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 80px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .summary-row.total {
+            margin-top: 12px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            font-weight: 500;
+        }
+        
+        .summary-row.total .summary-value {
+            color: var(--error-color);
+            font-size: 18px;
+        }
+        
+        .shopping-notes {
+            background-color: white;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .notes-title {
+            font-weight: 500;
+            margin: 0 0 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .notes-title .material-icons {
+            font-size: 18px;
+            margin-right: 4px;
+            color: var(--primary-color);
+        }
+        
+        .notes-input {
+            width: 100%;
+            height: 64px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 8px;
+            font-size: 14px;
+            resize: none;
+        }
+        
+        .empty-cart {
+            background-color: white;
+            border-radius: 8px;
+            padding: 48px 24px;
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .empty-cart-icon {
+            font-size: 64px;
+            color: var(--secondary-color);
+            opacity: 0.5;
+            margin-bottom: 16px;
+        }
+        
+        .empty-cart h2 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0 0 8px 0;
+        }
+        
+        .empty-cart p {
+            font-size: 14px;
+            color: var(--secondary-color);
+            margin: 0 0 24px 0;
+        }
+        
+        .button {
+            height: 44px;
+            border-radius: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .button-primary {
+            background-color: var(--primary-color);
+            color: white;
+            width: 80%;
+            margin: 0 auto;
+        }
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+            z-index: 100;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--secondary-color);
+            text-decoration: none;
+            flex: 1;
+        }
+        
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+        
+        .nav-item .material-icons {
+            font-size: 24px;
+        }
+        
+        .nav-item span {
+            font-size: 12px;
+            margin-top: 2px;
+        }
+        
+        .checkout-bar {
+            position: fixed;
+            bottom: 56px;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-top: 1px solid var(--border-color);
+            z-index: 100;
+        }
+        
+        .select-all {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-right: 16px;
+        }
+        
+        .select-all input {
+            margin-right: 8px;
+        }
+        
+        .checkout-total {
+            flex: 1;
+            text-align: right;
+            padding-right: 12px;
+        }
+        
+        .checkout-price {
+            color: var(--error-color);
+            font-weight: 500;
+            font-size: 18px;
+        }
+        
+        .checkout-count {
+            font-size: 12px;
+            color: var(--secondary-color);
+        }
+        
+        .checkout-button {
+            background-color: var(--error-color);
+            color: white;
+            height: 40px;
+            border-radius: 20px;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="ios-frame">
+        <div class="ios-notch"></div>
+        <div class="app-container">
+            <div class="status-bar">
+                <span class="time">9:41</span>
+                <div class="icons">
+                    <span class="icon">📶</span>
+                    <span class="icon">📳</span>
+                    <span class="icon">🔋</span>
+                </div>
+            </div>
+            
+            <div class="app-header">
+                <h1>購物車</h1>
+                <div class="header-action">
+                    <span class="material-icons icon">more_vert</span>
+                </div>
+            </div>
+            
+            <div class="cart-container">
+                <!-- 購物車有商品的狀態 -->
+                <div>
+                    <div class="cart-merchant">
+                        <div class="merchant-header">
+                            <input type="checkbox" class="merchant-checkbox" checked>
+                            <div class="merchant-avatar"></div>
+                            <div class="merchant-name">怪物糖果</div>
+                            <div class="merchant-tag">優惠</div>
+                        </div>
+                        
+                        <div class="cart-item">
+                            <div class="item-checkbox">
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="item-image" style="background-image: url('https://via.placeholder.com/200x200/FF5722/FFFFFF?text=巧克力');"></div>
+                            <div class="item-details">
+                                <h3 class="item-name">巧克力怪獸餅乾</h3>
+                                <p class="item-variant">規格：原味、10片裝</p>
+                                <div class="item-price-qty">
+                                    <div class="item-price">NT$350</div>
+                                    <div class="qty-control">
+                                        <div class="qty-btn">-</div>
+                                        <input type="text" value="2" class="qty-input">
+                                        <div class="qty-btn">+</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item">
+                            <div class="item-checkbox">
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="item-image" style="background-image: url('https://via.placeholder.com/200x200/2196F3/FFFFFF?text=香蕉');"></div>
+                            <div class="item-details">
+                                <h3 class="item-name">香蕉口味糖果棒</h3>
+                                <p class="item-variant">規格：香蕉味、20支裝</p>
+                                <div class="item-price-qty">
+                                    <div class="item-price">NT$200</div>
+                                    <div class="qty-control">
+                                        <div class="qty-btn">-</div>
+                                        <input type="text" value="1" class="qty-input">
+                                        <div class="qty-btn">+</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cart-merchant">
+                        <div class="merchant-header">
+                            <input type="checkbox" class="merchant-checkbox" checked>
+                            <div class="merchant-avatar" style="background-image: url('https://via.placeholder.com/100x100/4CAF50/FFFFFF?text=吃');"></div>
+                            <div class="merchant-name">吃貨零食</div>
+                        </div>
+                        
+                        <div class="cart-item">
+                            <div class="item-checkbox">
+                                <input type="checkbox" checked>
+                            </div>
+                            <div class="item-image" style="background-image: url('https://via.placeholder.com/200x200/4CAF50/FFFFFF?text=餅乾');"></div>
+                            <div class="item-details">
+                                <h3 class="item-name">抹茶夾心餅乾</h3>
+                                <p class="item-variant">規格：抹茶味、12片裝</p>
+                                <div class="item-price-qty">
+                                    <div class="item-price">NT$280</div>
+                                    <div class="qty-control">
+                                        <div class="qty-btn">-</div>
+                                        <input type="text" value="1" class="qty-input">
+                                        <div class="qty-btn">+</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="shopping-notes">
+                        <h3 class="notes-title">
+                            <span class="material-icons">edit_note</span>
+                            購物備註
+                        </h3>
+                        <textarea class="notes-input" placeholder="有什麼需要告訴商家的嗎？"></textarea>
+                    </div>
+                    
+                    <div class="cart-summary">
+                        <div class="summary-row">
+                            <div class="summary-label">商品金額</div>
+                            <div class="summary-value">NT$1,180</div>
+                        </div>
+                        <div class="summary-row">
+                            <div class="summary-label">運費</div>
+                            <div class="summary-value">NT$0</div>
+                        </div>
+                        <div class="summary-row">
+                            <div class="summary-label">折扣</div>
+                            <div class="summary-value">-NT$100</div>
+                        </div>
+                        <div class="summary-row total">
+                            <div class="summary-label">總計</div>
+                            <div class="summary-value">NT$1,080</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 空購物車狀態 (default: display: none) -->
+                <div class="empty-cart" style="display: none;">
+                    <div class="empty-cart-icon">
+                        <span class="material-icons">shopping_cart</span>
+                    </div>
+                    <h2>購物車是空的</h2>
+                    <p>快去選購一些商品吧！</p>
+                    <a href="merchants.html" class="button button-primary">去探索商家</a>
+                </div>
+            </div>
+            
+            <!-- 結帳欄 -->
+            <div class="checkout-bar">
+                <div class="select-all">
+                    <input type="checkbox" checked>
+                    <span>全選</span>
+                </div>
+                <div class="checkout-total">
+                    <div class="checkout-price">NT$1,080</div>
+                    <div class="checkout-count">已選 4 件商品</div>
+                </div>
+                <a href="checkout.html" class="checkout-button">結帳</a>
+            </div>
+            
+            <!-- 底部導航 -->
+            <div class="bottom-nav">
+                <a href="merchants.html" class="nav-item">
+                    <span class="material-icons">home</span>
+                    <span>首頁</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="material-icons">search</span>
+                    <span>搜尋</span>
+                </a>
+                <a href="shoppingcar.html" class="nav-item active">
+                    <span class="material-icons">shopping_cart</span>
+                    <span>購物車</span>
+                </a>
+                <a href="orders.html" class="nav-item">
+                    <span class="material-icons">receipt</span>
+                    <span>訂單</span>
+                </a>
+                <a href="setting.html" class="nav-item">
+                    <span class="material-icons">person</span>
+                    <span>我的</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 
