@@ -3,7 +3,7 @@ name: deploy-shoppingcar-api-production
 on:
   push:
     branches:
-      - develop
+      - ci_paused
 # on:
 #   pull_request:
 #     types: 
