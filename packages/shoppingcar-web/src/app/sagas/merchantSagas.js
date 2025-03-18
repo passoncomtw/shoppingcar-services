@@ -1,4 +1,4 @@
-import { createMerchantResult, getMerchantItemsResult, getMerchantsResult } from "../apis/api";
+import { createMerchantResult, getMerchantItemsResult, updateMerchantResult, getMerchantsResult } from "../apis/api";
 import types from "../constants/actionTypes";
 import fetchAPIResult from "../helpers/sagaHelper";
 
@@ -6,6 +6,15 @@ export function* createMerchantSaga({ payload: { onSuccess, ...payload } }) {
   return yield fetchAPIResult({
     actionType: types.CREATE_MERCHANT,
     apiResult: createMerchantResult,
+    payload,
+    onSuccess,
+  });
+}
+
+export function* updateMerchantSaga({ payload: { onSuccess, ...payload } }) {
+  return yield fetchAPIResult({
+    actionType: types.UPDATE_MERCHANT,
+    apiResult: updateMerchantResult,
     payload,
     onSuccess,
   });

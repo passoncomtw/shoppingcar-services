@@ -13,6 +13,9 @@ import { getUserByUserIdResult } from "~/services/userServices";
  * @property {string} phone.required
  *   - user phone
  *   - eg: 0987654321
+  * @property {string} createdAt.required
+ *   - 建立時間
+ *   - eg: 2024-09-18T23:05:24.254Z
  */
 
 /**

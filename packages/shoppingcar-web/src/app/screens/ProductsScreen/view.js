@@ -31,7 +31,7 @@ const ProductsScreen = (props) => {
           </Thead>
           <Tbody>
             {props.productItems.map((productItem) => (
-              <Tr>
+              <Tr key={`product-item-${productItem.id}`}>
                 <Td>{productItem.name}</Td>
                 <Td>{productItem.merchant.name}</Td>
                 <Td>
@@ -41,7 +41,7 @@ const ProductsScreen = (props) => {
                 <Td>{productItem.stockAmount}</Td>
                 <Td>-</Td>
                 <Td>
-                  <Button>編輯</Button>
+                  <Button as="a" href={`/products/update/${productItem.id}`}>編輯</Button>
                 </Td>
               </Tr>
             ))}

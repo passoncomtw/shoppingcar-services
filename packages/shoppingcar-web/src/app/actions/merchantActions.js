@@ -5,6 +5,11 @@ export const createMerchantAction = payload => ({
   payload,
 });
 
+export const updateMerchantsAction = payload => ({
+  type: types.UPDATE_MERCHANT,
+  payload,
+});
+
 export const getMerchantsAction = payload => ({
   type: types.GET_MERCHANTS,
   payload,

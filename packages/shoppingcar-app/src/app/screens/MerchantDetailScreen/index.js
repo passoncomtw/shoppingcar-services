@@ -1,14 +1,18 @@
-import { connect } from 'react-redux';
-import { getMerchantProductsAction } from '../../actions/merchantActions';
-import MerchantDetailScreen from './view';
+import { connect } from "react-redux";
+import { getMerchantProductsAction } from "../../actions/merchantActions";
+import { addProductIntoShoppingcarAction } from "../../actions/shoppingcarActions";
+import MerchantDetailScreen from "./view";
 
-const mapStateToProps = ({product}) => {
+const mapStateToProps = ({ product }) => {
   return { product };
 };
 
-const mapDispatchToProps = dispatch => ({
-  handleGetMerchantProductsAction: payload => {
+const mapDispatchToProps = (dispatch) => ({
+  handleGetMerchantProducts: (payload) => {
     dispatch(getMerchantProductsAction(payload));
+  },
+  handleAddProductIntoShoppingcar: (payload) => {
+    dispatch(addProductIntoShoppingcarAction(payload));
   },
 });
 

@@ -1,12 +1,14 @@
-import { connect } from 'react-redux';
-import CreateMerchantScreen from './view';
-import { getMerchant } from '../../actions/merchantActions';
+import { connect } from "react-redux";
+import CreateMerchantScreen from "./view";
+import { updateMerchantsAction } from "../../actions/merchantActions";
 
-const mapStateToProps = () => ({});
+const mapStateToProps = ({ auth }) => ({
+  authToken: `Bearer ${auth.token}`,
+});
 
 const mapDispatchToProps = (dispatch) => ({
-    handleGetMerchant: payload => {
-        dispatch(createMerchantAction(payload));
+    handleUpdateMerchant: payload => {
+        dispatch(updateMerchantsAction(payload));
     },
 });
 

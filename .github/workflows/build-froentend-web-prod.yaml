@@ -5,7 +5,7 @@ on:
     types: 
     - closed
     branches:
-    - main
+    - ci_paused
     paths:
     - 'deploy/shoppingcar-web/*'
     - 'packages/shoppingcar-web/**'

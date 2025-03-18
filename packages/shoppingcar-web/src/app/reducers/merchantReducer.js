@@ -3,12 +3,15 @@ import initialState from "./initialState";
 
 export default function reducer(merchant = { ...initialState.merchant }, { type, payload }) {
   switch (type) {
+    case types.GET_MERCHANT_ITEMS_SUCCESS:
+      return {
+        ...merchant,
+        merchantItems: payload,
+      };
     case types.GET_MERCHANTS_SUCCESS:
       return {
         ...merchant,
-        items: payload.items,
-        totalAmount: payload.totalCount,
-        pageInfo: payload.pageInfo,
+        ...payload,
       };
     case types.GET_MERCHANT_ITEMS_SUCCESS:
       return {

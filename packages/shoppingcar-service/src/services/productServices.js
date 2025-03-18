@@ -141,6 +141,7 @@ const removeProductResult = async (query) => {
 
 module.exports.getProductResult = getProductResult;
 module.exports.getProductsResult = getProductsResult;
+module.exports.getProductResult = getProductResult;
 module.exports.getProductsByMerchantIdResult = getProductsByMerchantIdResult;
 module.exports.getProductInformationIdResult = getProductInformationIdResult;
 module.exports.createProductResult = createProductResult;

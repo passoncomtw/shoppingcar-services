@@ -6,7 +6,11 @@ export const getProductsAction = (payload) => ({
 });
 
 export const createProductAction = (payload) => ({
-    type: types.CREATE_PRODUCT,
-    payload,
-  });
-  
+  type: types.CREATE_PRODUCT,
+  payload,
+});
+
+export const updateProductAction = (payload) => ({
+  type: types.UPDATE_PRODUCT,
+  payload,
+});

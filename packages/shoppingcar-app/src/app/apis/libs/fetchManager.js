@@ -1,4 +1,4 @@
-import {DOMAIN} from '../../config/config';
+import { DOMAIN } from "../../config/config";
 
 const parseJsonString = (jsonStr) => {
   try {
@@ -32,10 +32,7 @@ const parseResponse = (response) => {
 
 const defaultFetch = (route, requestBody) => {
   return new Promise((resolve, reject) => {
-    fetch(`${DOMAIN}${route}`, requestBody)
-      .then(parseResponse)
-      .then(resolve)
-      .catch(reject);
+    fetch(`${DOMAIN}${route}`, requestBody).then(parseResponse).then(resolve).catch(reject);
   });
 };
 

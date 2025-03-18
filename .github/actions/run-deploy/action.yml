@@ -3,14 +3,17 @@ name: "Deployment"
 description: "Deploy newest code to the machine."
 
 inputs:
+  env-name:
+    description: 'Project folder name'
+    required: true
   folder-name:
     description: 'Project folder name'
     required: true
-  module-name:
-    description: '模組名稱'
+  db-config:
+    description: 'db config json string'
     required: true
-  secrets-env:
-    description: 'service env'
+  env-value:
+    description: 'env file value'
     required: true
   ssh-key:
     description: 'Ssh key for login the target machine'
@@ -21,19 +24,22 @@ inputs:
   branch-name:
     description: 'The branch you want to checkout with'
     required: true
+
 runs:
   using: "composite"
   steps:
-    - name: Pulling newest code and restart docker app
+    - name: Pulling newest code and restart pm2 app
       uses: fifsky/ssh-action@master
       with:
         command: |
-          export NVM_DIR=~/.nvm
-          source ~/.nvm/nvm.sh
-          cd ./${{ inputs.folder-name }}
-          echo "${{ inputs.secrets-env }}" > .env
-          docker-compose down --rmi all || echo "stop docker compose service"
-          docker-compose up -d
+          cd /opt/services/apps/${{ inputs.folder-name }}/
+          source ~/.zshrc
+          yarn install
+          pm2 restart ecosystem.config.js --env ${{ inputs.env-name }}
         host: ${{ inputs.host-name }}
         user: root
         key: ${{ inputs.ssh-key }}
+
+
+
+

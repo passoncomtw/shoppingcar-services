@@ -11,8 +11,8 @@ const merchantState = {
     hasNextPage: false,
     hasPreviousPage: false,
     startCursor: "",
-    endCursor: ""
-  }
+    endCursor: "",
+  },
 };
 
 const userState = {
@@ -22,8 +22,8 @@ const userState = {
     hasNextPage: false,
     hasPreviousPage: false,
     startCursor: "",
-    endCursor: ""
-  }
+    endCursor: "",
+  },
 };
 
 const productState = {
@@ -33,8 +33,30 @@ const productState = {
     hasNextPage: false,
     hasPreviousPage: false,
     startCursor: "",
-    endCursor: ""
-  }
+    endCursor: "",
+  },
+};
+
+const shoppingcarState = {
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: "",
+  },
+};
+
+const orderState = {
+  items: [],
+  totalAmount: 0,
+  pageInfo: {
+    hasNextPage: false,
+    hasPreviousPage: false,
+    startCursor: "",
+    endCursor: "",
+  },
 };
 
 const initialState = {
@@ -42,6 +64,8 @@ const initialState = {
   user: userState,
   product: productState,
   merchant: merchantState,
+  order: orderState,
+  shoppingcar: shoppingcarState,
 };
 
 export default initialState;

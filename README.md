@@ -51,3 +51,17 @@ renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={
 [react-native-get-random-values](https://github.com/LinusU/react-native-get-random-values)
 [@redux-devtools/remote](https://github.com/reduxjs/redux-devtools/tree/main/packages/redux-devtools-remote)
 [redux-devtool fixed issue](https://github.com/reduxjs/redux-devtools/issues/1382#issuecomment-1615995161)
+
+### update redux devtool code
+
+```
+$ cp ./npmpackages/@redux-devtools ./node_modulex
+```
+
+### Run shoppingcar app
+
+```
+$ cd ./packages/shoppingcar-app && npx pod-install
+$ cd ../..
+$ nx start shoppingcar-app
+```

@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車管理後台 - 商家詳情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- 瀏覽器模擬框架 開始 -->
+    <div class="mx-auto my-4 w-full max-w-6xl overflow-hidden rounded-lg border border-gray-300 shadow-lg">
+        <!-- 瀏覽器頂部 -->
+        <div class="flex items-center justify-between bg-gray-200 px-4 py-2">
+            <div class="flex space-x-2">
+                <div class="h-3 w-3 rounded-full bg-red-500"></div>
+                <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+            </div>
+            <div class="flex w-2/3 items-center rounded-md bg-white px-3 py-1">
+                <span class="text-gray-500 material-icons text-sm">lock</span>
+                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/merchants/1001</span>
+            </div>
+            <div class="flex space-x-2">
+                <span class="text-gray-500 material-icons">account_circle</span>
+                <span class="text-gray-500 material-icons">more_vert</span>
+            </div>
+        </div>
+
+        <!-- 頁面內容 -->
+        <div class="bg-white">
+            <!-- 側邊欄和主內容區 -->
+            <div class="flex">
+                <!-- 側邊欄 -->
+                <div class="w-64 bg-blue-800 text-white min-h-screen">
+                    <div class="p-4">
+                        <h1 class="text-xl font-bold">購物車管理後台</h1>
+                    </div>
+                    <nav class="mt-4">
+                        <a href="dashboard.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">dashboard</span> 儀表板
+                        </a>
+                        <a href="orders.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">shopping_cart</span> 訂單管理
+                        </a>
+                        <a href="merchants.html" class="block px-4 py-2 bg-blue-700">
+                            <span class="material-icons align-middle mr-2">store</span> 商家管理
+                        </a>
+                        <a href="products.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">inventory</span> 產品管理
+                        </a>
+                        <a href="users.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">people</span> 用戶管理
+                        </a>
+                        <div class="mt-8 px-4 py-2">
+                            <a href="login.html" class="flex items-center text-red-300 hover:text-red-100">
+                                <span class="material-icons align-middle mr-2">logout</span> 登出
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- 主內容區域 -->
+                <div class="flex-1 p-8">
+                    <!-- 頁面標題和返回按鈕 -->
+                    <div class="mb-8 flex justify-between items-center">
+                        <div class="flex items-center">
+                            <a href="merchants.html" class="mr-4 text-blue-600 hover:text-blue-800">
+                                <span class="material-icons">arrow_back</span>
+                            </a>
+                            <h1 class="text-2xl font-bold">編輯商家</h1>
+                        </div>
+                        <div class="flex space-x-3">
+                            <button class="bg-red-100 hover:bg-red-200 text-red-600 font-medium py-2 px-4 rounded inline-flex items-center">
+                                <span class="material-icons mr-1 text-sm">delete</span>
+                                刪除商家
+                            </button>
+                            <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded inline-flex items-center">
+                                <span class="material-icons mr-1 text-sm">pause_circle</span>
+                                停用商家
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 表單區域 -->
+                    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden mb-6">
+                        <!-- 頁籤 -->
+                        <div class="bg-gray-50 border-b border-gray-200">
+                            <nav class="flex">
+                                <a href="#" class="px-6 py-4 border-b-2 border-blue-500 font-medium text-sm text-blue-600">
+                                    基本資料
+                                </a>
+                                <a href="#" class="px-6 py-4 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    商品管理
+                                </a>
+                                <a href="#" class="px-6 py-4 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    交易記錄
+                                </a>
+                                <a href="#" class="px-6 py-4 border-b-2 border-transparent font-medium text-sm text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                                    設定
+                                </a>
+                            </nav>
+                        </div>
+
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                                <div class="sm:col-span-3">
+                                    <label for="merchant-name" class="block text-sm font-medium text-gray-700">商家名稱</label>
+                                    <div class="mt-1">
+                                        <input type="text" id="merchant-name" value="怪物糖果" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label for="merchant-id" class="block text-sm font-medium text-gray-700">商家 ID</label>
+                                    <div class="mt-1">
+                                        <input type="text" id="merchant-id" value="M-1001" disabled class="shadow-sm bg-gray-50 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-500">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-6">
+                                    <label for="email" class="block text-sm font-medium text-gray-700">電子郵件</label>
+                                    <div class="mt-1">
+                                        <input type="email" id="email" value="monster@example.com" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label for="phone" class="block text-sm font-medium text-gray-700">聯絡電話</label>
+                                    <div class="mt-1">
+                                        <input type="text" id="phone" value="02-2345-6789" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-3">
+                                    <label for="status" class="block text-sm font-medium text-gray-700">商家狀態</label>
+                                    <div class="mt-1">
+                                        <select id="status" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                            <option selected>啟用中</option>
+                                            <option>已停用</option>
+                                            <option>審核中</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-6">
+                                    <label for="address" class="block text-sm font-medium text-gray-700">地址</label>
+                                    <div class="mt-1">
+                                        <input type="text" id="address" value="台北市中山區中山北路123號" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-6">
+                                    <label for="description" class="block text-sm font-medium text-gray-700">商家描述</label>
+                                    <div class="mt-1">
+                                        <textarea id="description" rows="4" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border">怪物糖果是一家專門製作創意糖果的店家，提供各種口味和造型的糖果產品，適合所有年齡層的顧客。我們的糖果以獨特的外型和美味的口感而聞名，是送禮和自用的絕佳選擇。</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-6">
+                                    <label class="block text-sm font-medium text-gray-700">商家 Logo</label>
+                                    <div class="mt-1 flex items-center">
+                                        <div class="h-20 w-20 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+                                            <span class="material-icons text-3xl">store</span>
+                                        </div>
+                                        <button class="ml-5 bg-white py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm leading-4 font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                            變更
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-6">
+                                    <label class="block text-sm font-medium text-gray-700">商家橫幅圖片</label>
+                                    <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                                        <div class="space-y-1 text-center">
+                                            <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                            </svg>
+                                            <div class="flex text-sm text-gray-600">
+                                                <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-blue-500">
+                                                    <span>上傳檔案</span>
+                                                    <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                                                </label>
+                                                <p class="pl-1">或拖放至此</p>
+                                            </div>
+                                            <p class="text-xs text-gray-500">
+                                                PNG, JPG, GIF 最大 10MB
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="px-6 py-3 bg-gray-50 border-t border-gray-200 flex justify-end">
+                            <button class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 mr-3">
+                                取消
+                            </button>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                儲存變更
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 商家統計資料 -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                            <h3 class="font-medium border-b pb-2 mb-4">銷售統計</h3>
+                            <div class="h-64 bg-gray-100 rounded flex items-center justify-center">
+                                <div class="text-center">
+                                    <span class="material-icons text-3xl text-gray-400">bar_chart</span>
+                                    <p class="text-gray-500 mt-2">銷售統計圖表</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-4 rounded-lg shadow border border-gray-200">
+                            <h3 class="font-medium border-b pb-2 mb-4">熱門商品</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
+                                            <span class="material-icons text-gray-400 text-sm">image</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium">巧克力怪獸餅乾</p>
+                                            <p class="text-xs text-gray-500">售出 356 件</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm font-medium">$350</span>
+                                </div>
+
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
+                                            <span class="material-icons text-gray-400 text-sm">image</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium">香蕉口味糖果棒</p>
+                                            <p class="text-xs text-gray-500">售出 285 件</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm font-medium">$200</span>
+                                </div>
+
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
+                                            <span class="material-icons text-gray-400 text-sm">image</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-medium">草莓味泡泡糖</p>
+                                            <p class="text-xs text-gray-500">售出 212 件</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm font-medium">$100</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 瀏覽器模擬框架 結束 -->
+</body>
+</html> 

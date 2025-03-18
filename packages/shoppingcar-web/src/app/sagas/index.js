@@ -5,15 +5,19 @@ import { toCamelStyle } from "../helpers/format";
 
 import * as authSagas from "./authSagas";
 import * as merchantSagas from "./merchantSagas";
+import * as orderSagas from "./orderSagas";
 import * as productSagas from "./productSagas";
+import * as shoppingcarSagas from "./shoppingcarSagas";
 import * as userSagas from "./userSagas";
 import * as Watchers from "./watchers";
 
 const allSaga = {
   ...authSagas,
   ...userSagas,
+  ...orderSagas,
   ...productSagas,
   ...merchantSagas,
+  ...shoppingcarSagas,
 };
 
 const getMatchedSaga = (actionType) => {
