@@ -23,7 +23,7 @@ env:
 
 jobs:
   copy-file-to-server:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     runs-on: mac-mini-build
     steps:
     - uses: actions/checkout@v3
@@ -35,7 +35,7 @@ jobs:
         rsync -avh ./packages/${{ env.IMAGE_NAME }} root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/
         
   start_pm2_token-app-api-service:
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
     needs: [copy-file-to-server]
     runs-on: ubuntu-latest
     steps:
