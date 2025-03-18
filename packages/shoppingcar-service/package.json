@@ -5,6 +5,8 @@
   "version": "0.1.0",
   "scripts": {
     "test:CI": "CI=true npx jest test --color --reporters=jest-junit --forceExit --runInBand --coverage --coverageDirectory=output/coverage/jest --reporters default jest-stare",
+    "migrate:db:drop": "cd database && npx sequelize-cli db:migrate:undo:all && cd ..",
+    "reset:local:db": "yarn migrate:db:drop && yarn migrate:db && yarn db:seeder",
     "db:seeder": "cd database && npx sequelize-cli db:seed:all && cd .."
   },
   "dependencies": {

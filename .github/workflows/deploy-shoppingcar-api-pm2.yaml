@@ -31,8 +31,8 @@ jobs:
     - name: sync files to server
       run: |
         # kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success." 
-        echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./packages/${{ env.IMAGE_NAME }}/.env
-        rsync -avh ./packages/${{ env.IMAGE_NAME }} root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/
+        echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./.env
+        rsync -avh ./ root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/
         
   start_pm2_token-app-api-service:
     # if: github.event.pull_request.merged == true

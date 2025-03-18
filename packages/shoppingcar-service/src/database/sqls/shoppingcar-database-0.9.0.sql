@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS "public"."merchants";
 CREATE TABLE "public"."merchants" (
     "id" int generated always as identity primary key UNIQUE,
     "name" varchar(30) NOT NULL, -- COMMENT 商家名稱,
-    "password" varchar(30) NOT NULL, -- COMMENT 後台登入密碼,
+    "password" varchar(255) NOT NULL, -- COMMENT 後台登入密碼,
     "phone" varchar(30) NOT NULL UNIQUE, -- COMMENT 商家聯絡手機,
     "email" varchar(30) NOT NULL UNIQUE, -- COMMENT 商家 Email,
     "created_at" TIMESTAMP default current_timestamp,
