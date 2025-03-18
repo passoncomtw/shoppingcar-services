@@ -35,7 +35,8 @@ runs:
           cd /opt/services/apps/${{ inputs.folder-name }}/
           source ~/.zshrc
           yarn install
-          pm2 restart ecosystem.config.js --env ${{ inputs.env-name }}
+          ls
+          pm2 restart ecosystem.config.js
         host: ${{ inputs.host-name }}
         user: root
         key: ${{ inputs.ssh-key }}
