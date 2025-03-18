@@ -1,14 +1,19 @@
 name: deploy-shoppingcar-api-production
 
 on:
-  pull_request:
-    types: 
-      - closed
+  push:
     branches:
-      - main
-    paths:
-      - 'apps/shoppingcar-service/**'
-      - '.github/workflows/deploy-shoppingcar-api-pm2.yaml'
+      - develop
+
+# on:
+#   pull_request:
+#     types: 
+#       - closed
+#     branches:
+#       - main
+#     paths:
+#       - 'apps/shoppingcar-service/**'
+#       - '.github/workflows/deploy-shoppingcar-api-pm2.yaml'
 
 env:
   REGISTRY: ghcr.io
