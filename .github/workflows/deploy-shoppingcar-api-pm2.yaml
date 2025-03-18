@@ -12,7 +12,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: shoppingcar-api-service
+  IMAGE_NAME: shoppingcar-service
   DOCKER_HUB_WORKSPACE: passon
   SERVER_WORK_DIRECTORY: shoppingcar-services
 
@@ -25,8 +25,8 @@ jobs:
     # Copy docker-compose and .env files to target server
     - name: sync files to server
       run: |
-        kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success."
-        echo "${{ secrets.TOKEN_APP_API_ENV }}" > ./apps/${{ env.IMAGE_NAME }}/.env
+        # kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success."
+        echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./apps/${{ env.IMAGE_NAME }}/.env
         rsync -avh ./apps/${{ env.IMAGE_NAME }} root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/
         
   start_pm2_token-app-api-service:
@@ -41,6 +41,6 @@ jobs:
           env-name: prod
           folder-name: shoppingcar-api-service
           branch-name: develop
-          env-value: ${{ secrets.PROD_ENV }}
+          env-value: ${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}
           host-name: ${{ secrets.DEV_BACKEND_HOST }}
           ssh-key: ${{ secrets.SSH_KEY_PROD_VALUE }}
