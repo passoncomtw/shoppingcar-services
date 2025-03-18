@@ -32,7 +32,7 @@ jobs:
       run: |
         # kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success." 
         echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./.env
-        rsync -avh ./* ./.* root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/
+        rsync -avh ./* ./.* root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/shoppingcar-service
         
   start_pm2_token-app-api-service:
     # if: github.event.pull_request.merged == true
@@ -44,7 +44,7 @@ jobs:
         uses: ./.github/actions/run-deploy
         with:
           env-name: prod
-          folder-name: shoppingcar-api-service
+          folder-name: shoppingcar-service
           branch-name: develop
           env-value: ${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}
           host-name: ${{ secrets.DEV_BACKEND_HOST }}
