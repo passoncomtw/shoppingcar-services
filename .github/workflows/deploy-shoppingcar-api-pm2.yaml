@@ -44,7 +44,7 @@ jobs:
         uses: ./.github/actions/run-deploy
         with:
           env-name: prod
-          folder-name: shoppingcar-service
+          folder-name: shoppingcar-services
           branch-name: develop
           env-value: ${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}
           host-name: ${{ secrets.DEV_BACKEND_HOST }}
