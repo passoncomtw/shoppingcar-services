@@ -12,7 +12,7 @@ include_ext = ["go"]
 # 忽略這些檔案
 exclude_dir = ["assets", "tmp", "vendor", ".git", "redis_data", "migrations"]
 # 監聽檔案變更後執行的命令
-cmd = "go build -o ./tmp/main ."
+cmd = "go build -o ./tmp/main ./cmd/api"
 # 二進位執行文件，必須與 cmd 的編譯輸出一致
 bin = "tmp/main"
 # 清理檔案
@@ -43,6 +43,8 @@ exclude_file = []
 [log]
 # 顯示日誌時間
 time = true
+# 添加日誌文件
+file_name = "tmp/air_errors.log"
 
 # 顏色設置
 [color]

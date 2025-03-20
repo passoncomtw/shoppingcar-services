@@ -1,4 +1,4 @@
-.PHONY: build test lint run migrate swagger
+.PHONY: build test lint run migrate swagger air
 
 build:
 	go build -o bin/ ./cmd/...
@@ -20,3 +20,6 @@ migrate-up:
 
 migrate-down:
 	go run ./cmd/migration/main.go down
+
+air:
+	air
