@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
 	"github.com/passoncomtw/shoppingcar-services/internal/middleware"
@@ -29,6 +30,7 @@ func NewRouter(
 	authHandler *AuthHandler,
 	userHandler *UserHandler,
 	authService service.AuthService,
+	backendService service.BackendUserService,
 	wsHandler *websocketManager.WebSocketHandler,
 ) *gin.Engine {
 	r := gin.Default()
@@ -40,6 +42,32 @@ func NewRouter(
 	})
 
 	r.GET("/ws", wsHandler.HandleConnection)
+
+	// App API
+	appv1 := r.Group("/app")
+	{
+		appv1.POST("/login", authHandler.UserLogin)
+
+		// 需要 App 用戶認證的路由
+		authorized := appv1.Group("/")
+		authorized.Use(middleware.AppAuthMiddleware(authService))
+		{
+			authorized.POST("/logout", authHandler.UserLogout)
+		}
+	}
+
+	// 後台管理 API
+	console := r.Group("/console")
+	{
+		console.POST("/login", authHandler.ConsoleLogin)
+
+		// 需要後台用戶認證的路由
+		authorized := console.Group("/")
+		authorized.Use(middleware.ConsoleAuthMiddleware(backendService))
+		{
+			// 此處添加後台特有的路由
+		}
+	}
 
 	api := r.Group("/api/v1")
 	{

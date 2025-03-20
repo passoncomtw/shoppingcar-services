@@ -9,3 +9,21 @@ type LoginResponse struct {
 	Token string `json:"token"  example:"0987654321"`
 	User  User   `json:"user"`
 }
+
+// 後台用戶登入請求
+type ConsoleLoginRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+// 後台用戶信息
+type ConsoleUser struct {
+	ID      uint   `json:"id"`
+	Account string `json:"account"`
+}
+
+// 後台登入響應
+type ConsoleLoginResponse struct {
+	Token string      `json:"token"`
+	User  ConsoleUser `json:"user"`
+}

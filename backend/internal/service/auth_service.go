@@ -2,10 +2,11 @@ package service
 
 import (
 	"errors"
+	"time"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
 	redis "github.com/passoncomtw/shoppingcar-services/pkg/redisManager"
-	"time"
 
 	"context"
 
@@ -85,6 +86,12 @@ func (s *authService) ValidateToken(token string) (uint, error) {
 	if exp, ok := claims["exp"].(float64); ok {
 		if float64(time.Now().Unix()) > exp {
 			return 0, errors.New("令牌已過期")
+		}
+	}
+
+	if tokenType, ok := claims["type"].(string); ok {
+		if tokenType != "app" {
+			return 0, errors.New("無效的令牌類型")
 		}
 	}
 

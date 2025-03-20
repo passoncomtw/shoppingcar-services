@@ -11,6 +11,10 @@ var Module = fx.Options(
 			NewUserService,
 			fx.As(new(UserService)),
 		),
+		fx.Annotate(
+			NewBackendUserService,
+			fx.As(new(BackendUserService)),
+		),
 		NewAuthService,
 	),
 )

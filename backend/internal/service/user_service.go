@@ -2,9 +2,10 @@ package service
 
 import (
 	"errors"
+	"time"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -117,9 +118,10 @@ func (s *userService) Login(phone, password string) (string, interfaces.User, er
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"iat": time.Now().Unix(),
-		"exp": time.Now().Add(s.config.JWT.ExpiresIn).Unix(),
+		"sub":  user.ID,
+		"iat":  time.Now().Unix(),
+		"exp":  time.Now().Add(s.config.JWT.ExpiresIn).Unix(),
+		"type": "app",
 	})
 
 	signedToken, err := token.SignedString([]byte(s.config.JWT.Secret))
