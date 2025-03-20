@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/handler"
 	"github.com/passoncomtw/shoppingcar-services/internal/service"
@@ -13,8 +14,8 @@ import (
 	"go.uber.org/fx"
 )
 
-// @title           Passontw Auth Service API
-// @description     Passontw Auth Service API.
+// @title           Passontw Shopping Cart Service API
+// @description     Passontw Shopping Cart Service API.
 // @termsOfService  http://swagger.io/terms/
 
 // @contact.name   API Support
