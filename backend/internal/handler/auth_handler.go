@@ -2,9 +2,10 @@ package handler
 
 import (
 	"net/http"
+	"strings"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
 	"github.com/passoncomtw/shoppingcar-services/internal/service"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -22,7 +23,7 @@ func NewAuthHandler(authService service.AuthService, userService service.UserSer
 }
 
 // 用戶登入
-// @Summary 用戶登入
+// @Summary App 用戶登入
 // @Description 驗證用戶憑據並返回 JWT 令牌
 // @Tags auth
 // @Accept json
