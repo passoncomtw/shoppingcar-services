@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/service"
 	"github.com/passoncomtw/shoppingcar-services/pkg/databaseManager"
@@ -84,10 +85,8 @@ var WebSocketModule = fx.Options(
 	),
 )
 
-// LoggerModule 日誌模組
 var LoggerModule = fx.Provide(logger.NewLogger)
 
-// 整合的核心模組，包含所有基礎設施
 var Module = fx.Options(
 	nacosManager.Module,
 	DatabaseModule,

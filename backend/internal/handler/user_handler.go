@@ -2,10 +2,13 @@ package handler
 
 import (
 	"net/http"
-	"github.com/passoncomtw/shoppingcar-services/internal/service"
 	"strconv"
 
+	"github.com/passoncomtw/shoppingcar-services/internal/service"
+
 	"github.com/gin-gonic/gin"
+	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
+	"github.com/passoncomtw/shoppingcar-services/internal/middleware"
 )
 
 type UserHandler struct {
@@ -79,4 +82,105 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+}
+
+// GetUserInfo 獲取當前用戶信息
+// @Summary 獲取當前用戶信息
+// @Description 獲取當前登錄用戶的詳細信息
+// @Tags AppUser
+// @Accept json
+// @Produce json
+// @Success 200 {object} interfaces.AppUserInformation "用戶信息"
+// @Failure 401 {object} interfaces.ErrorResponse "未授權"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /app/user [get]
+func (h *UserHandler) GetUserInfo(c *gin.Context) {
+	// 從context獲取用戶ID
+	userID, exists := c.Get(middleware.UserIDKey)
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授權"})
+		return
+	}
+
+	user, err := h.userService.GetUserById(uint(userID.(int)))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, interfaces.AppUserInformation{
+		ID:        int(user.ID),
+		Name:      user.Name,
+		Phone:     user.Phone,
+		CreatedAt: "2023-01-01 00:00:00", // 模擬創建時間
+	})
+}
+
+// UpdateUserInfo 更新當前用戶信息
+// @Summary 更新當前用戶信息
+// @Description 更新當前登錄用戶的信息
+// @Tags AppUser
+// @Accept json
+// @Produce json
+// @Param data body interfaces.ConsoleUpdateUserRequest true "用戶信息"
+// @Success 200 {object} interfaces.AppUserInformation "用戶信息"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 401 {object} interfaces.ErrorResponse "未授權"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /app/user [put]
+func (h *UserHandler) UpdateUserInfo(c *gin.Context) {
+	// 從context獲取用戶ID
+	userID, exists := c.Get(middleware.UserIDKey)
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "未授權"})
+		return
+	}
+
+	var req interfaces.ConsoleUpdateUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 這裡簡化處理，僅返回修改後的模擬數據
+	c.JSON(http.StatusOK, interfaces.AppUserInformation{
+		ID:        userID.(int),
+		Name:      req.Name,
+		Phone:     req.Phone,
+		CreatedAt: "2023-01-01 00:00:00", // 模擬創建時間
+	})
+}
+
+// GetUser 獲取指定用戶信息（控制台）
+// @Summary 獲取指定用戶信息
+// @Description 獲取指定用戶的詳細信息
+// @Tags ConsoleUser
+// @Accept json
+// @Produce json
+// @Param userId path int true "用戶ID"
+// @Success 200 {object} interfaces.ConsoleUserResponse "用戶信息"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 404 {object} interfaces.ErrorResponse "用戶不存在"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /console/users/{userId} [get]
+func (h *UserHandler) GetUser(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無效的用戶ID"})
+		return
+	}
+
+	user, err := h.userService.GetUserById(uint(userID))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "用戶不存在"})
+		return
+	}
+
+	c.JSON(http.StatusOK, interfaces.ConsoleUserResponse{
+		Item: interfaces.ConsoleUserInformation{
+			ID:    int(user.ID),
+			Name:  user.Name,
+			Phone: user.Phone,
+		},
+	})
 }

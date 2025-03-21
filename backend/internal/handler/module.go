@@ -4,11 +4,15 @@ import (
 	"go.uber.org/fx"
 )
 
+// Module provides handlers.
 var Module = fx.Options(
 	fx.Provide(
-		NewUserHandler,
 		NewAuthHandler,
+		NewUserHandler,
+		NewMerchantHandler,
+		NewProductHandler,
+		NewShoppingcarHandler,
+		NewOrderHandler,
 		NewRouter,
 	),
-	fx.Invoke(StartServer),
 )

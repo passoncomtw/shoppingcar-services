@@ -17,6 +17,7 @@ type UserService interface {
 	GetUsers(page, pageSize int) (*interfaces.UsersResponse, error)
 	GetUserById(id uint) (*interfaces.User, error)
 	Login(phone, password string) (string, interfaces.User, error)
+	UpdateUser(id uint, req *interfaces.ConsoleUpdateUserRequest) (*interfaces.User, error)
 }
 
 type CreateUserParams struct {
@@ -61,6 +62,7 @@ func (s *userService) CreateUser(params *CreateUserParams) (*interfaces.User, er
 
 	return user, nil
 }
+
 func (s *userService) GetUsers(page, pageSize int) (*interfaces.UsersResponse, error) {
 	if page <= 0 {
 		page = 1
@@ -130,4 +132,48 @@ func (s *userService) Login(phone, password string) (string, interfaces.User, er
 	}
 
 	return signedToken, user, nil
+}
+
+// UpdateUser 更新用戶信息
+func (s *userService) UpdateUser(id uint, req *interfaces.ConsoleUpdateUserRequest) (*interfaces.User, error) {
+	// 檢查用戶是否存在
+	user, err := s.GetUserById(id)
+	if err != nil {
+		return nil, errors.New("用戶不存在")
+	}
+
+	// 更新用戶數據
+	updates := make(map[string]interface{})
+	if req.Name != "" {
+		// 檢查名稱是否已被使用
+		var count int64
+		if err := s.db.Model(&interfaces.User{}).Where("name = ? AND id != ?", req.Name, id).Count(&count).Error; err != nil {
+			return nil, err
+		}
+		if count > 0 {
+			return nil, errors.New("該用戶名已被使用")
+		}
+		updates["name"] = req.Name
+		user.Name = req.Name
+	}
+
+	if req.Phone != "" {
+		var count int64
+		if err := s.db.Model(&interfaces.User{}).Where("phone = ? AND id != ?", req.Phone, id).Count(&count).Error; err != nil {
+			return nil, err
+		}
+		if count > 0 {
+			return nil, errors.New("該電話號碼已被使用")
+		}
+		updates["phone"] = req.Phone
+		user.Phone = req.Phone
+	}
+
+	if len(updates) > 0 {
+		if err := s.db.Model(&interfaces.User{}).Where("id = ?", id).Updates(updates).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return user, nil
 }

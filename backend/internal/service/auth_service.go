@@ -17,6 +17,7 @@ type AuthService interface {
 	Login(phone, password string) (string, interfaces.User, error)
 	Logout(token string) error
 	ValidateToken(token string) (uint, error)
+	ValidateConsoleToken(token string) (uint, error)
 }
 
 type authService struct {
@@ -66,6 +67,43 @@ func (s *authService) Logout(token string) error {
 }
 
 func (s *authService) ValidateToken(token string) (uint, error) {
+	exists, err := s.redisClient.Exists(context.Background(), "blacklist:"+token)
+	if err != nil {
+		return 0, err
+	}
+	if exists {
+		return 0, errors.New("令牌已被撤銷")
+	}
+
+	claims := jwt.MapClaims{}
+	_, err = jwt.ParseWithClaims(token, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(s.config.JWT.Secret), nil
+	})
+
+	if err != nil {
+		return 0, err
+	}
+
+	if exp, ok := claims["exp"].(float64); ok {
+		if float64(time.Now().Unix()) > exp {
+			return 0, errors.New("令牌已過期")
+		}
+	}
+
+	if tokenType, ok := claims["type"].(string); ok {
+		if tokenType != "app" {
+			return 0, errors.New("無效的令牌類型")
+		}
+	}
+
+	if sub, ok := claims["sub"].(float64); ok {
+		return uint(sub), nil
+	}
+
+	return 0, errors.New("無效的令牌聲明")
+}
+
+func (s *authService) ValidateConsoleToken(token string) (uint, error) {
 	exists, err := s.redisClient.Exists(context.Background(), "blacklist:"+token)
 	if err != nil {
 		return 0, err
