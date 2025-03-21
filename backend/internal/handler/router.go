@@ -41,10 +41,11 @@ func NewRouter(
 	r.Use(configureCORS())
 
 	// 設置swagger
-	docs.SwaggerInfo.BasePath = "/api"
+	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Title = "Shopping Car API"
 	docs.SwaggerInfo.Description = "購物車系統API文檔"
 	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = cfg.Server.APIHost
 
 	r.GET("/health", func(c *gin.Context) {
 		c.JSON(http.StatusOK, SuccessResponse{Message: "Service is healthy"})
@@ -109,8 +110,9 @@ func NewRouter(
 		configureAuthenticatedRoutes(api, authHandler, userHandler, authService)
 	}
 
-	// Swagger路由
-	api.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	// Swagger路由 - 移到根路徑，便於訪問
+	url := ginSwagger.URL("/swagger/doc.json") // 使用相對路徑
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	return r
 }
