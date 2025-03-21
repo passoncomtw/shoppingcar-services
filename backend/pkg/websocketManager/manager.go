@@ -94,47 +94,160 @@ func NewManager(authFunc func(token string) (uint, error)) *Manager {
 func (manager *Manager) Start(ctx context.Context) {
 	log.Println("WebSocket Manager: Starting...")
 
+	// 創建獨立的上下文確保完整的生命週期
+	if ctx == nil {
+		var cancel context.CancelFunc
+		ctx, cancel = context.WithCancel(context.Background())
+		defer cancel()
+		log.Println("WebSocket Manager: Using fallback background context")
+	}
+
+	// 恢復panic以防止整個服務崩潰
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("WebSocket Manager: Recovered from panic: %v", r)
+		}
+	}()
+
 	// 非活躍連接檢查定時器
 	inactivityTicker := time.NewTicker(1 * time.Minute)
 	defer inactivityTicker.Stop()
 
-	for {
+	log.Println("WebSocket Manager: Running main event loop")
+	running := true
+
+	for running {
 		select {
 		case <-ctx.Done():
-			log.Println("WebSocket Manager: Shutting down...")
-			// 關閉所有客戶端連接
-			manager.mutex.Lock()
-			for _, client := range manager.clients {
-				close(client.Send)
-				if client.closeChan != nil {
-					close(client.closeChan)
-				}
-				if client.heartbeatTicker != nil {
-					client.heartbeatTicker.Stop()
-				}
-				client.Conn.Close()
-			}
-			manager.mutex.Unlock()
-			return
+			log.Println("WebSocket Manager: Context cancelled, shutting down...")
+			manager.cleanupAllConnections()
+			running = false
 
-		case client := <-manager.register:
+		case client, ok := <-manager.register:
+			if !ok {
+				log.Println("WebSocket Manager: Register channel closed")
+				continue
+			}
+
 			manager.mutex.Lock()
 			manager.clients[client.ID] = client
 			manager.mutex.Unlock()
 			log.Printf("WebSocket Manager: Client %s registered\n", client.ID)
 
-		case client := <-manager.unregister:
-			if _, ok := manager.clients[client.ID]; ok {
-				manager.mutex.Lock()
+		case client, ok := <-manager.unregister:
+			if !ok {
+				log.Println("WebSocket Manager: Unregister channel closed")
+				continue
+			}
 
-				// 從用戶-客戶端映射中移除
-				if client.IsAuthed {
-					delete(manager.userClients[client.UserID], client.ID)
-					// 如果用戶沒有其他客戶端連接，則刪除用戶映射
-					if len(manager.userClients[client.UserID]) == 0 {
-						delete(manager.userClients, client.UserID)
-					}
-				}
+			manager.removeClient(client)
+
+		case message, ok := <-manager.broadcast:
+			if !ok {
+				log.Println("WebSocket Manager: Broadcast channel closed")
+				continue
+			}
+
+			manager.broadcastMessage(message)
+
+		case <-inactivityTicker.C:
+			manager.cleanupInactiveConnections()
+		}
+	}
+
+	log.Println("WebSocket Manager: Event loop terminated")
+}
+
+// 清理所有連接
+func (manager *Manager) cleanupAllConnections() {
+	manager.mutex.Lock()
+	defer manager.mutex.Unlock()
+
+	log.Printf("WebSocket Manager: Cleaning up all %d connections", len(manager.clients))
+
+	for _, client := range manager.clients {
+		if client.heartbeatTicker != nil {
+			client.heartbeatTicker.Stop()
+		}
+
+		if client.closeChan != nil {
+			close(client.closeChan)
+		}
+
+		client.Conn.Close()
+		close(client.Send)
+	}
+
+	// 清空映射
+	manager.clients = make(map[string]*Client)
+	manager.userClients = make(map[uint]map[string]bool)
+}
+
+// 移除指定客戶端
+func (manager *Manager) removeClient(client *Client) {
+	if _, ok := manager.clients[client.ID]; !ok {
+		return
+	}
+
+	manager.mutex.Lock()
+	defer manager.mutex.Unlock()
+
+	// 從用戶-客戶端映射中移除
+	if client.IsAuthed {
+		delete(manager.userClients[client.UserID], client.ID)
+		// 如果用戶沒有其他客戶端連接，則刪除用戶映射
+		if len(manager.userClients[client.UserID]) == 0 {
+			delete(manager.userClients, client.UserID)
+		}
+	}
+
+	// 停止心跳
+	if client.heartbeatTicker != nil {
+		client.heartbeatTicker.Stop()
+	}
+
+	// 關閉信號通道
+	if client.closeChan != nil {
+		close(client.closeChan)
+	}
+
+	// 關閉連接
+	client.Conn.Close()
+
+	// 關閉發送通道
+	close(client.Send)
+
+	// 從客戶端列表中刪除
+	delete(manager.clients, client.ID)
+
+	log.Printf("WebSocket Manager: Client %s unregistered\n", client.ID)
+}
+
+// 廣播消息到所有客戶端
+func (manager *Manager) broadcastMessage(message []byte) {
+	manager.mutex.RLock()
+	defer manager.mutex.RUnlock()
+
+	failedClients := make([]string, 0)
+
+	for id, client := range manager.clients {
+		select {
+		case client.Send <- message:
+			// 消息已送入通道
+		default:
+			// 發送通道已滿或已關閉，記錄待移除的客戶端
+			failedClients = append(failedClients, id)
+		}
+	}
+
+	// 如果有發送失敗的客戶端，解鎖後移除它們
+	if len(failedClients) > 0 {
+		manager.mutex.RUnlock()
+		manager.mutex.Lock()
+
+		for _, id := range failedClients {
+			if client, exists := manager.clients[id]; exists {
+				log.Printf("WebSocket Manager: Removing client %s due to full send buffer", id)
 
 				// 停止心跳
 				if client.heartbeatTicker != nil {
@@ -146,85 +259,75 @@ func (manager *Manager) Start(ctx context.Context) {
 					close(client.closeChan)
 				}
 
+				// 關閉連接
+				client.Conn.Close()
+
+				// 從用戶映射中移除
+				if client.IsAuthed {
+					delete(manager.userClients[client.UserID], id)
+					if len(manager.userClients[client.UserID]) == 0 {
+						delete(manager.userClients, client.UserID)
+					}
+				}
+
 				// 關閉發送通道
 				close(client.Send)
+
 				// 從客戶端列表中刪除
-				delete(manager.clients, client.ID)
-
-				manager.mutex.Unlock()
-				log.Printf("WebSocket Manager: Client %s unregistered\n", client.ID)
+				delete(manager.clients, id)
 			}
-
-		case message := <-manager.broadcast:
-			// 廣播消息給所有客戶端
-			manager.mutex.RLock()
-			for id, client := range manager.clients {
-				select {
-				case client.Send <- message:
-				default:
-					client.connMutex.Lock()
-					if client.heartbeatTicker != nil {
-						client.heartbeatTicker.Stop()
-					}
-					if client.closeChan != nil {
-						close(client.closeChan)
-					}
-					client.Conn.Close()
-					client.connMutex.Unlock()
-
-					manager.mutex.RUnlock()
-					manager.mutex.Lock()
-
-					// 從用戶-客戶端映射中移除
-					if client.IsAuthed {
-						delete(manager.userClients[client.UserID], client.ID)
-						if len(manager.userClients[client.UserID]) == 0 {
-							delete(manager.userClients, client.UserID)
-						}
-					}
-
-					close(client.Send)
-					delete(manager.clients, id)
-					manager.mutex.Unlock()
-					manager.mutex.RLock()
-					log.Printf("WebSocket Manager: Client %s removed (failed to send)\n", id)
-				}
-			}
-			manager.mutex.RUnlock()
-
-		case <-inactivityTicker.C:
-			// 定期檢查非活躍連接
-			threshold := time.Now().Add(-inactivityTimeout)
-			manager.mutex.Lock()
-			for id, client := range manager.clients {
-				if client.LastActivity.Before(threshold) {
-					log.Printf("WebSocket Manager: Client %s inactive for too long, closing connection\n", id)
-					client.connMutex.Lock()
-					if client.heartbeatTicker != nil {
-						client.heartbeatTicker.Stop()
-					}
-					if client.closeChan != nil {
-						close(client.closeChan)
-					}
-					client.Conn.Close()
-					client.connMutex.Unlock()
-
-					close(client.Send)
-
-					// 從用戶-客戶端映射中移除
-					if client.IsAuthed {
-						delete(manager.userClients[client.UserID], client.ID)
-						if len(manager.userClients[client.UserID]) == 0 {
-							delete(manager.userClients, client.UserID)
-						}
-					}
-
-					delete(manager.clients, id)
-					log.Printf("WebSocket Manager: Client %s removed due to inactivity\n", id)
-				}
-			}
-			manager.mutex.Unlock()
 		}
+
+		manager.mutex.Unlock()
+		manager.mutex.RLock()
+	}
+}
+
+// 清理非活躍連接
+func (manager *Manager) cleanupInactiveConnections() {
+	threshold := time.Now().Add(-inactivityTimeout)
+
+	manager.mutex.Lock()
+	defer manager.mutex.Unlock()
+
+	inactiveCount := 0
+
+	for id, client := range manager.clients {
+		if client.LastActivity.Before(threshold) {
+			inactiveCount++
+			log.Printf("WebSocket Manager: Client %s inactive for too long, closing connection", id)
+
+			// 停止心跳
+			if client.heartbeatTicker != nil {
+				client.heartbeatTicker.Stop()
+			}
+
+			// 關閉信號通道
+			if client.closeChan != nil {
+				close(client.closeChan)
+			}
+
+			// 關閉連接
+			client.Conn.Close()
+
+			// 從用戶映射中移除
+			if client.IsAuthed {
+				delete(manager.userClients[client.UserID], id)
+				if len(manager.userClients[client.UserID]) == 0 {
+					delete(manager.userClients, client.UserID)
+				}
+			}
+
+			// 關閉發送通道
+			close(client.Send)
+
+			// 從客戶端列表中刪除
+			delete(manager.clients, id)
+		}
+	}
+
+	if inactiveCount > 0 {
+		log.Printf("WebSocket Manager: Removed %d inactive connections", inactiveCount)
 	}
 }
 
@@ -501,5 +604,38 @@ func (client *Client) attemptReconnect() {
 
 // 關閉連接
 func (manager *Manager) Shutdown() {
+	log.Println("WebSocket Manager: Shutdown initiated, closing all connections...")
+
+	// 通知所有客戶端關閉
+	manager.mutex.Lock()
+	clientCount := len(manager.clients)
+
+	for id, client := range manager.clients {
+		log.Printf("WebSocket Manager: Closing connection for client %s", id)
+
+		if client.heartbeatTicker != nil {
+			client.heartbeatTicker.Stop()
+		}
+
+		if client.closeChan != nil {
+			close(client.closeChan)
+		}
+
+		// 向客戶端發送關閉消息
+		closeMsg := websocket.FormatCloseMessage(websocket.CloseNormalClosure, "Server shutting down")
+		_ = client.Conn.WriteControl(websocket.CloseMessage, closeMsg, time.Now().Add(time.Second))
+
+		client.Conn.Close()
+		close(client.Send)
+	}
+
+	// 清空客戶端映射
+	manager.clients = make(map[string]*Client)
+	manager.userClients = make(map[uint]map[string]bool)
+	manager.mutex.Unlock()
+
+	// 關閉管理器的shutdown通道
 	close(manager.shutdown)
+
+	log.Printf("WebSocket Manager: Successfully closed %d connections", clientCount)
 }

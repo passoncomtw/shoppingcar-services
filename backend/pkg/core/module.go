@@ -2,6 +2,7 @@ package core
 
 import (
 	"context"
+	"log"
 
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/service"
@@ -71,13 +72,25 @@ var WebSocketModule = fx.Options(
 	// 啟動 WebSocket 管理器
 	fx.Invoke(
 		func(lc fx.Lifecycle, manager *websocketManager.Manager) {
+			// 使用背景上下文而不是從生命週期鉤子獲取的上下文
+			var ctx context.Context
+			var cancel context.CancelFunc
+
 			lc.Append(fx.Hook{
-				OnStart: func(ctx context.Context) error {
+				OnStart: func(startCtx context.Context) error {
+					// 創建獨立的背景上下文，不受生命週期鉤子上下文影響
+					ctx, cancel = context.WithCancel(context.Background())
 					go manager.Start(ctx)
+					log.Println("WebSocket Manager: Started with independent context")
 					return nil
 				},
-				OnStop: func(ctx context.Context) error {
+				OnStop: func(stopCtx context.Context) error {
+					// 關閉管理器並取消上下文
+					log.Println("WebSocket Manager: Stopping gracefully")
 					manager.Shutdown()
+					if cancel != nil {
+						cancel()
+					}
 					return nil
 				},
 			})
