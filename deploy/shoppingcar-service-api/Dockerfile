@@ -16,6 +16,9 @@ RUN go mod download
 # 複製源代碼
 COPY backend/ ./
 
+# 生成 Swagger 文檔
+RUN swag init -g cmd/api/main.go -o docs
+
 # 構建應用
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/api
 
