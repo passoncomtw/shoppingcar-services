@@ -1,11 +1,11 @@
 # 構建階段
-FROM golang:1.23-alpine AS builder
+FROM golang:1.23.7-bookworm AS builder
 
 # 設置工作目錄
 WORKDIR /app
 
 # 安裝必要的工具
-RUN apk add --no-cache git
+RUN apt-get update && apt-get install -y git
 
 # 複製 go mod 和 go sum 文件
 COPY backend/go.mod backend/go.sum ./
@@ -16,17 +16,20 @@ RUN go mod download
 # 複製源代碼
 COPY backend/ ./
 
+# 安裝 swag
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+
 # 生成 Swagger 文檔
-RUN /go/bin/swag init -g cmd/api/main.go -o docs
+RUN $GOPATH/bin/swag init -g cmd/api/main.go -o docs
 
 # 構建應用
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main ./cmd/api
 
 # 最終階段
-FROM alpine:latest
+FROM debian:bookworm-slim
 
 # 安裝相關依賴
-RUN apk --no-cache add ca-certificates tzdata
+RUN apt-get update && apt-get install -y ca-certificates tzdata && rm -rf /var/lib/apt/lists/*
 
 # 設置工作目錄
 WORKDIR /app
@@ -42,4 +45,4 @@ ENV PORT=3000 \
 EXPOSE 3000
 
 # 運行應用
-CMD ["./main"] 
+CMD ["./main"]
