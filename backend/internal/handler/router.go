@@ -8,7 +8,6 @@ import (
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
 	"github.com/passoncomtw/shoppingcar-services/internal/middleware"
 	"github.com/passoncomtw/shoppingcar-services/internal/service"
-	"github.com/passoncomtw/shoppingcar-services/pkg/websocketManager"
 
 	"github.com/gin-gonic/gin"
 	docs "github.com/passoncomtw/shoppingcar-services/docs"
@@ -36,7 +35,7 @@ func NewRouter(
 	orderHandler *OrderHandler,
 	authService service.AuthService,
 	backendService service.BackendUserService,
-	wsHandler *websocketManager.WebSocketHandler,
+	// wsHandler *websocketManager.WebSocketHandler,
 ) *gin.Engine {
 	r := gin.Default()
 	r.Use(configureCORS())
@@ -51,7 +50,7 @@ func NewRouter(
 		c.JSON(http.StatusOK, SuccessResponse{Message: "Service is healthy"})
 	})
 
-	r.GET("/ws", wsHandler.HandleConnection)
+	// r.GET("/ws", wsHandler.HandleConnection)
 
 	// App API
 	appv1 := r.Group("/app")
