@@ -21,6 +21,7 @@ type UserService interface {
 }
 
 type CreateUserParams struct {
+	Name     string `json:"name" binding:"required"`
 	Password string `json:"password" binding:"required"`
 	Phone    string `json:"phone" binding:"required,phone"`
 }

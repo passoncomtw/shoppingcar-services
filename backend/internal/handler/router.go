@@ -89,6 +89,7 @@ func NewRouter(
 		{
 			authorized.GET("/users", userHandler.GetUsers)
 			authorized.GET("/users/:userId", userHandler.GetUser)
+			authorized.POST("/users", userHandler.CreateConsoleUser)
 			authorized.POST("/merchants", merchantHandler.CreateMerchant)
 			authorized.PUT("/merchants/:merchantId", merchantHandler.UpdateMerchant)
 			authorized.GET("/merchants/:merchantId", merchantHandler.GetMerchant)

@@ -211,3 +211,58 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 		},
 	})
 }
+
+// CreateConsoleUser 從後台創建用戶
+// @Summary 從後台創建新用戶
+// @Description 管理員從後台系統創建新用戶
+// @Tags ConsoleUser
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param data body interfaces.ConsoleCreateUserRequest true "用戶信息"
+// @Success 201 {object} interfaces.ConsoleUserResponse "創建成功"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 401 {object} interfaces.ErrorResponse "未授權"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /console/users [post]
+func (h *UserHandler) CreateConsoleUser(c *gin.Context) {
+	var req interfaces.ConsoleCreateUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 創建用戶參數
+	params := &service.CreateUserParams{
+		Password: req.Password,
+		Phone:    req.Phone,
+	}
+
+	// 調用服務層創建用戶
+	user, err := h.userService.CreateUser(params)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 如果需要，更新用戶名
+	if req.Name != "" {
+		updateReq := &interfaces.ConsoleUpdateUserRequest{
+			Name: req.Name,
+		}
+		user, err = h.userService.UpdateUser(uint(user.ID), updateReq)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+	}
+
+	// 返回創建的用戶信息
+	c.JSON(http.StatusCreated, interfaces.ConsoleUserResponse{
+		Item: interfaces.ConsoleUserInformation{
+			ID:    user.ID,
+			Name:  user.Name,
+			Phone: user.Phone,
+		},
+	})
+}
