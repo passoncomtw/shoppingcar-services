@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
@@ -163,22 +162,37 @@ func (s *shoppingcarService) GetShoppingcarByUser(userID int) (*interfaces.AppSh
 	}, nil
 }
 
-// 添加產品到購物車
+// AppendProduct 添加產品到購物車，使用事務確保數據一致性
 func (s *shoppingcarService) AppendProduct(userID, merchantID, productID int, amount int) (*interfaces.AppShoppingcarInformation, error) {
-	// 驗證商家和產品是否存在
-	product, err := s.productService.GetAppProduct(merchantID, productID)
-	if err != nil {
-		return nil, err
+	// 使用事務確保操作的原子性
+	tx := s.db.Begin()
+	if tx.Error != nil {
+		return nil, tx.Error
 	}
-	fmt.Printf("product: %v", product)
-	// 檢查產品庫存
-	// if product.StockAmount < amount {
-	// 	return nil, errors.New("產品庫存不足")
-	// }
+
+	// 確保事務最終會提交或回滾
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 驗證商家和產品是否存在，並檢查庫存
+	var product Product
+	if err := tx.Where("id = ?", productID).First(&product).Error; err != nil {
+		tx.Rollback()
+		return nil, errors.New("產品不存在")
+	}
+
+	// 檢查產品庫存是否足夠
+	if product.StockAmount < amount {
+		tx.Rollback()
+		return nil, errors.New("產品庫存不足")
+	}
 
 	// 獲取或創建購物車
 	var shoppingcar Shoppingcar
-	if err := s.db.Where("user_id = ?", userID).First(&shoppingcar).Error; err != nil {
+	if err := tx.Where("user_id = ?", userID).First(&shoppingcar).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 創建新的購物車
 			shoppingcar = Shoppingcar{
@@ -186,41 +200,86 @@ func (s *shoppingcarService) AppendProduct(userID, merchantID, productID int, am
 				ProductCount: 0,
 				TotalAmount:  0,
 			}
-			if err := s.db.Create(&shoppingcar).Error; err != nil {
+			if err := tx.Create(&shoppingcar).Error; err != nil {
+				tx.Rollback()
 				return nil, err
 			}
 		} else {
+			tx.Rollback()
 			return nil, err
 		}
 	}
 
-	// 檢查購物車中是否已有該產品
+	// 更新購物車項目
 	var existingItem ShoppingcarItem
-	if err := s.db.Where("shoppingcar_id = ? AND product_id = ? AND merchant_id = ?",
-		shoppingcar.ID, productID, merchantID).First(&existingItem).Error; err != nil {
+	var totalAmount float64 = 0
+	var productCount int = 0
+
+	// 檢查購物車中是否已有該產品
+	if err := tx.Where("shoppingcar_id = ? AND product_id = ?", shoppingcar.ID, productID).First(&existingItem).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			// 創建新的購物車項目
 			newItem := ShoppingcarItem{
 				ProductID:     productID,
-				MerchantID:    merchantID,
+				MerchantID:    product.MerchantID, // 使用從數據庫獲取的商家ID
 				ShoppingcarID: shoppingcar.ID,
 				Amount:        amount,
 			}
-			if err := s.db.Create(&newItem).Error; err != nil {
+			if err := tx.Create(&newItem).Error; err != nil {
+				tx.Rollback()
 				return nil, err
 			}
 		} else {
+			tx.Rollback()
 			return nil, err
 		}
 	} else {
 		// 更新現有項目的數量
 		newAmount := existingItem.Amount + amount
-		if err := s.db.Model(&existingItem).Update("amount", newAmount).Error; err != nil {
+		if err := tx.Model(&existingItem).Update("amount", newAmount).Error; err != nil {
+			tx.Rollback()
 			return nil, err
 		}
 	}
 
-	// 重新獲取更新後的購物車信息
+	// 計算購物車的總數量和總價
+	var items []ShoppingcarItem
+	if err := tx.Where("shoppingcar_id = ?", shoppingcar.ID).Find(&items).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	// 更新總數量和總價
+	for _, item := range items {
+		var itemProduct Product
+		if err := tx.Where("id = ?", item.ProductID).First(&itemProduct).Error; err != nil {
+			continue // 如果找不到產品，忽略此項目
+		}
+		totalAmount += float64(item.Amount) * itemProduct.Price
+		productCount += item.Amount
+	}
+
+	// 更新購物車總額和產品數量
+	if err := tx.Model(&shoppingcar).Updates(map[string]interface{}{
+		"product_count": productCount,
+		"total_amount":  totalAmount,
+	}).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	// 減少產品庫存
+	if err := tx.Model(&product).Update("stock_amount", product.StockAmount-amount).Error; err != nil {
+		tx.Rollback()
+		return nil, err
+	}
+
+	// 提交事務
+	if err := tx.Commit().Error; err != nil {
+		return nil, err
+	}
+
+	// 獲取更新後的購物車信息
 	return s.GetShoppingcarByUser(userID)
 }
 

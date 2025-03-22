@@ -29,11 +29,17 @@ func NewShoppingcarHandler(shoppingcarService service.ShoppingcarService) *Shopp
 // @Produce json
 // @Security Bearer
 // @Param data body interfaces.AppAddProductToShoppingcarRequest true "產品信息"
-// @Success 200 {object} interfaces.AppShoppingcarResponse "購物車信息"
+// @Success 200 {object} interfaces.AppShoppingcarInformation "購物車信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 401 {object} interfaces.ErrorResponse "未授權"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/shoppingcar/products [post]
+// @Router /app/shoppingcars/{merchantId}/products/{productId} [post]
 func (h *ShoppingcarHandler) AppendProduct(c *gin.Context) {
+	// 從URL獲取路徑參數
+	merchantIDFromPath := c.Param("merchantId")
+	productIDFromPath := c.Param("productId")
+	merchantID, _ := strconv.Atoi(merchantIDFromPath)
+	productID, _ := strconv.Atoi(productIDFromPath)
 	// 從context獲取用戶ID
 	userID, exists := c.Get(middleware.UserIDKey)
 	if !exists {
@@ -48,7 +54,7 @@ func (h *ShoppingcarHandler) AppendProduct(c *gin.Context) {
 	}
 
 	// 這裡沒有商家ID參數，預設為0
-	shoppingcar, err := h.shoppingcarService.AppendProduct(userID.(int), 0, req.ProductID, req.Amount)
+	shoppingcar, err := h.shoppingcarService.AppendProduct(userID.(int), merchantID, productID, req.Amount)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -144,4 +150,50 @@ func (h *ShoppingcarHandler) GetShoppingcars(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, response)
+}
+
+// 添加產品到特定用戶的購物車
+// @Summary 添加產品到特定用戶的購物車
+// @Description 添加產品到特定用戶的購物車
+// @Tags AppShoppingcar
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param userId path int true "用戶ID"
+// @Param productId path int true "產品ID"
+// @Param data body interfaces.AddProductToShoppingcarRequest true "產品數量"
+// @Success 200 {object} interfaces.AppShoppingcarInformation "購物車信息"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 401 {object} interfaces.ErrorResponse "未授權"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /app/shoppingcar/{userId}/products/{productId} [post]
+func (h *ShoppingcarHandler) AddProductToUserShoppingcar(c *gin.Context) {
+	// 獲取路徑參數
+	userId, err := strconv.Atoi(c.Param("userId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無效的用戶ID"})
+		return
+	}
+
+	productId, err := strconv.Atoi(c.Param("productId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無效的產品ID"})
+		return
+	}
+
+	// 綁定請求數據
+	var req interfaces.AddProductToShoppingcarRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 調用服務方法添加產品到購物車
+	shoppingcar, err := h.shoppingcarService.AppendProduct(userId, 0, productId, req.Amount)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, shoppingcar)
 }

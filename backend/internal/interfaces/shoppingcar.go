@@ -35,8 +35,7 @@ type ShoppingcarWithUserInfo struct {
 
 // AppAddProductToShoppingcarRequest 添加產品到購物車請求
 type AppAddProductToShoppingcarRequest struct {
-	ProductID int `json:"productId" binding:"required,gt=0"`
-	Amount    int `json:"amount" binding:"required,gt=0"`
+	Amount int `json:"amount" binding:"required,gt=0"`
 }
 
 // AppShoppingcarResponse 購物車響應

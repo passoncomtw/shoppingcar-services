@@ -73,7 +73,6 @@ func NewMerchantService(db *gorm.DB, config *config.Config) MerchantService {
 	}
 }
 
-// CreateMerchant 創建商家
 func (s *DefaultMerchantService) CreateMerchant(req *interfaces.ConsoleCreateMerchantRequest) (*interfaces.Merchant, error) {
 	// 檢查電話號碼是否已存在
 	var existingMerchant Merchant

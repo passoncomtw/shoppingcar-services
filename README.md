@@ -6,6 +6,7 @@
 
 ```
 $ nx serve shoppingcar-service --verbose
+$ npx @redux-devtools/cli --port=8000 --open
 ```
 
 ### shoppingcar-web
@@ -55,7 +56,7 @@ renderTouchable = ({ key, ...props }: TouchableProps<Route>) => <Touchable key={
 ### update redux devtool code
 
 ```
-$ cp ./npmpackages/@redux-devtools ./node_modulex
+$ cp -a ./npmpackages/@redux-devtools ./node_modulex
 ```
 
 ### Run shoppingcar app

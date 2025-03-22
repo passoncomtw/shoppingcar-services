@@ -70,6 +70,7 @@ func NewRouter(
 			authorized.GET("/products/:productId", productHandler.GetAppProduct)
 			authorized.GET("/shoppingcar", shoppingcarHandler.GetShoppingcar)
 			authorized.POST("/shoppingcar/products", shoppingcarHandler.AppendProduct)
+			authorized.POST("/shoppingcar/:userId/products/:productId", shoppingcarHandler.AddProductToUserShoppingcar)
 			authorized.DELETE("/shoppingcar", shoppingcarHandler.ClearShoppingcar)
 			authorized.POST("/orders", orderHandler.CreateOrder)
 			authorized.GET("/orders", orderHandler.GetUserOrders)

@@ -24,13 +24,10 @@ type AppMerchant struct {
 
 // ConsoleCreateMerchantRequest 創建商家請求
 type ConsoleCreateMerchantRequest struct {
-	Name        string `json:"name" binding:"required"`
-	Description string `json:"description" binding:"required"`
-	Address     string `json:"address" binding:"required"`
-	Phone       string `json:"phone" binding:"required"`
-	Email       string `json:"email" binding:"required,email"`
-	Logo        string `json:"logo" binding:"required"`
-	Password    string `json:"password" binding:"required,min=6"`
+	Name     string `json:"name" binding:"required"`
+	Phone    string `json:"phone" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required,min=6"`
 }
 
 // ConsoleUpdateMerchantRequest 更新商家請求
