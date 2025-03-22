@@ -80,7 +80,6 @@ export default function* fetchAPIResult({
     });
 
     const resp = yield call(apiResult, params, newHeaders);
-    console.log("🚀 ~ resp:", resp)
     const { result: resData } = resp;
 
     if (isFunction(resultHandler)) {

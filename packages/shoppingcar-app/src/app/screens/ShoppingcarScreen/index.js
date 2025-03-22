@@ -2,9 +2,7 @@ import { connect } from "react-redux";
 import { getShoppingcarAction } from "../../actions/shoppingcarActions";
 import ShoppingcarScreen from "./view";
 
-const mapStateToProps = ({ shoppingcar }) => {
-  return { shoppingcar };
-};
+const mapStateToProps = ({ shoppingcar }) => ({ shoppingcar });
 
 const mapDispatchToProps = (dispatch) => ({
   handleGetShoppingcar: (payload) => {

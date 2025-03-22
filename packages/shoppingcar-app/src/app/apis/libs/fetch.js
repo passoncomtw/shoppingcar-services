@@ -27,7 +27,6 @@ const fetchGetBase = ({ url, qs, customHeaders = {} }) => {
 
 const fetchPostBase = ({ url, qs, method, body, customHeaders = {} }) => {
   const realUrl = getUrlWithQueryString(url, qs);
-  console.log("🚀 ~ fetchPostBase ~ realUrl:", realUrl)
   const requestOptions = getRequestOptions(method, customHeaders, body);
   return defaultFetch(realUrl, requestOptions);
 };
@@ -38,7 +37,6 @@ export const fetchGetWithToken = (url, customHeaders, qs = {}) =>
   fetchGetBase({ url, qs, customHeaders });
 
 export const fetchPost = (url, payload = {}, qs = {}, method = 'POST') => {
-  console.log("🚀 ~ fetchPost ~ url:", url)
   return fetchPostBase({
     method,
     url,
