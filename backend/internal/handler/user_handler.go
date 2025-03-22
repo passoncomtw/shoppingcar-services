@@ -51,14 +51,16 @@ func (h *UserHandler) CreateUser(c *gin.Context) {
 // 獲取用戶列表
 // @Summary 獲取所有用戶
 // @Description 返回系統中的所有用戶
-// @Tags users
+// @Tags ConsoleUser
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Success 200 {array} interfaces.UsersResponse "用戶列表"
+// @Param page query int false "頁碼，默認為1" example:"1"
+// @Param page_size query int false "每頁記錄數，默認為10" example:"10"
+// @Success 200 {object} interfaces.ConsoleGetUserResponse "用戶列表"
 // @Failure 401 {object} interfaces.ErrorResponse "未授權"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /api/v1/users [get]
+// @Router /console/users [get]
 func (h *UserHandler) GetUsers(c *gin.Context) {
 	// 從查詢參數中獲取分頁信息
 	pageStr := c.DefaultQuery("page", "1")
@@ -81,7 +83,29 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, response)
+	// 將 User 列表轉換為 ConsoleUserInformation 列表
+	var items []interfaces.ConsoleUserInformation
+	for _, user := range response.Users {
+		items = append(items, interfaces.ConsoleUserInformation{
+			ID:    user.ID,
+			Name:  user.Name,
+			Phone: user.Phone,
+		})
+	}
+
+	// 創建控制台響應格式
+	consoleResponse := interfaces.ConsoleGetUserResponse{
+		Items:      items,
+		TotalCount: response.Pagination.Total,
+		PageInfo: interfaces.PageInfo{
+			HasNextPage:     response.Pagination.HasNext,
+			HasPreviousPage: response.Pagination.HasPrevious,
+			StartCursor:     "", // 這個項目中暫時不使用游標
+			EndCursor:       "", // 這個項目中暫時不使用游標
+		},
+	}
+
+	c.JSON(http.StatusOK, consoleResponse)
 }
 
 // GetUserInfo 獲取當前用戶信息
@@ -159,6 +183,7 @@ func (h *UserHandler) UpdateUserInfo(c *gin.Context) {
 // @Tags ConsoleUser
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param userId path int true "用戶ID"
 // @Success 200 {object} interfaces.ConsoleUserResponse "用戶信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"

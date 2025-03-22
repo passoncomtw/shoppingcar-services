@@ -9,6 +9,7 @@ const UsersScreen = (props) => {
       pageSize: 10,
     });
   }, []);
+
   return (
     <Box bg="white">
       <Flex paddingRight={10} paddingTop={10} justify="right">
@@ -41,6 +42,7 @@ const UsersScreen = (props) => {
                 </Td>
               </Tr>
             ))}
+            
           </Tbody>
         </Table>
       </TableContainer>

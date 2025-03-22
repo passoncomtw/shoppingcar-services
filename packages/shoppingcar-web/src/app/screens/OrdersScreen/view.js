@@ -24,11 +24,11 @@ const OrdersScreen = (props) => {
           <Tbody>
             {props.orderItems.map((item, index) => (
               <Tr key={`${item.name}-${index}`}>
-                <Td>{item.user.name}</Td>
+                <Td>{item.userName}</Td>
                 <Td>
-                  <Text>{item.totalAmount}</Text>
+                  <Text>{item.total}</Text>
                 </Td>
-                <Td>{item.productCount}</Td>
+                <Td>{item.items}</Td>
                 <Td>
                   {/* <Button>清空購物車</Button> */}
                 </Td>

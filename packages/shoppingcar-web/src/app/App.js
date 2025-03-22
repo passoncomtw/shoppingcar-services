@@ -34,6 +34,7 @@ export default function App() {
         <Route path="/products" element={<ProductsScreen />} />
         <Route path="/shoppingcars" element={<ShoppingcarsScreen />} />
         <Route path="/orders" element={<OrdersScreen />} />
+        <Route path="/settings" element={<h1>設定</h1>} />
       </Route>
     </Routes>
   );
