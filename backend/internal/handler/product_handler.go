@@ -89,6 +89,18 @@ func (h *ProductHandler) UpdateProduct(c *gin.Context) {
 }
 
 // GetProduct 獲取商品詳情
+// @Summary 獲取商品詳情
+// @Description 獲取指定商品的詳細信息
+// @Tags ConsoleProduct
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param productId path int true "產品ID"
+// @Success 200 {object} interfaces.ConsoleProductResponse "商品詳情"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 404 {object} interfaces.ErrorResponse "商品不存在"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /console/products/{productId} [get]
 func (h *ProductHandler) GetProduct(c *gin.Context) {
 	productID, err := strconv.Atoi(c.Param("productId"))
 	if err != nil {
@@ -108,6 +120,18 @@ func (h *ProductHandler) GetProduct(c *gin.Context) {
 }
 
 // GetProducts 獲取商品列表
+// @Summary 獲取商品列表
+// @Description 獲取商品列表，支持分頁和按商家篩選
+// @Tags ConsoleProduct
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param page query int false "頁碼，默認為1" default(1)
+// @Param pageSize query int false "每頁記錄數，默認為10" default(10)
+// @Param merchantId query int false "商家ID，不傳則獲取所有商品"
+// @Success 200 {object} interfaces.ConsoleProductsResponse "商品列表"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /console/products [get]
 func (h *ProductHandler) GetProducts(c *gin.Context) {
 	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
 	page, _ := strconv.Atoi(c.Query("page"))
@@ -131,6 +155,19 @@ func (h *ProductHandler) GetProducts(c *gin.Context) {
 }
 
 // GetMerchantProducts 獲取指定商家的商品列表（App端）
+// @Summary 獲取指定商家的商品列表
+// @Description 獲取指定商家的商品列表，App端使用
+// @Tags AppProduct
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param merchantId path int true "商家ID"
+// @Param page query int false "頁碼，默認為1" default(1)
+// @Param pageSize query int false "每頁記錄數，默認為10" default(10)
+// @Success 200 {object} interfaces.AppProductsResponse "商品列表"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /app/merchants/{merchantId}/products [get]
 func (h *ProductHandler) GetMerchantProducts(c *gin.Context) {
 	merchantID, err := strconv.Atoi(c.Param("merchantId"))
 	if err != nil {
@@ -177,6 +214,18 @@ func (h *ProductHandler) GetMerchantProducts(c *gin.Context) {
 }
 
 // GetAppProduct 獲取App商品詳情
+// @Summary 獲取App商品詳情
+// @Description 獲取指定商品的詳細信息，App端使用
+// @Tags AppProduct
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param productId path int true "產品ID"
+// @Success 200 {object} interfaces.AppProductResponse "商品詳情"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 404 {object} interfaces.ErrorResponse "商品不存在"
+// @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
+// @Router /app/products/{productId} [get]
 func (h *ProductHandler) GetAppProduct(c *gin.Context) {
 	productID, err := strconv.Atoi(c.Param("productId"))
 	if err != nil {
