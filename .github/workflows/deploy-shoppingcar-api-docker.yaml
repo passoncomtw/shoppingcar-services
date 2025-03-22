@@ -12,7 +12,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: mac-mini-build
     steps:
       - name: 檢出代碼
         uses: actions/checkout@v3
