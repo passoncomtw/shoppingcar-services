@@ -12,8 +12,8 @@ type LoginResponse struct {
 
 // 後台用戶登入請求
 type ConsoleLoginRequest struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	Account  string `json:"account" example: "admin" binding:"required"`
+	Password string `json:"password" example:"a12345678" binding:"required"`
 }
 
 // 後台用戶信息

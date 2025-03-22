@@ -74,7 +74,7 @@ func (h *AuthHandler) ConsoleLogin(c *gin.Context) {
 		return
 	}
 
-	token, user, err := h.backendService.Login(req.Username, req.Password)
+	token, user, err := h.backendService.Login(req.Account, req.Password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
