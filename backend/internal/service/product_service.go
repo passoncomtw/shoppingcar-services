@@ -266,6 +266,7 @@ func (s *ProductServiceImpl) GetProducts(page, pageSize int) (*interfaces.Consol
 
 // GetProductsByMerchant 獲取指定商家的產品列表
 func (s *ProductServiceImpl) GetProductsByMerchant(merchantID, page, pageSize int) (*interfaces.ConsoleProductsResponse, error) {
+
 	// 檢查商家是否存在
 	merchant, err := s.merchantService.GetMerchant(merchantID)
 	if err != nil {
@@ -296,6 +297,7 @@ func (s *ProductServiceImpl) GetProductsByMerchant(merchantID, page, pageSize in
 	// 轉換為API模型
 	items := make([]interfaces.ProductWithMerchantInfo, 0, len(products))
 	for _, product := range products {
+
 		items = append(items, interfaces.ProductWithMerchantInfo{
 			ID:          product.ID,
 			Name:        product.Name,
@@ -313,15 +315,13 @@ func (s *ProductServiceImpl) GetProductsByMerchant(merchantID, page, pageSize in
 
 	// 計算總頁數
 	totalPages := (int(totalCount) + pageSize - 1) / pageSize
-
+	fmt.Printf("items: %v\n", items)
 	return &interfaces.ConsoleProductsResponse{
 		Items:      items,
 		TotalCount: totalCount,
 		PageInfo: interfaces.PageInfo{
 			HasNextPage:     page < totalPages,
 			HasPreviousPage: page > 1,
-			StartCursor:     "", // 暫不使用游標
-			EndCursor:       "", // 暫不使用游標
 		},
 	}, nil
 }

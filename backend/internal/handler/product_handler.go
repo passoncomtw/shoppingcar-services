@@ -187,18 +187,13 @@ func (h *ProductHandler) GetMerchantProducts(c *gin.Context) {
 	// 轉換為APP端產品列表
 	appProducts := make([]interfaces.AppProductInformation, 0)
 	for _, product := range products.Items {
-		appProduct, err := h.productService.GetAppProduct(product.ID, merchantID)
-		if err != nil {
-			continue // 跳過錯誤的產品
-		}
 
 		appProducts = append(appProducts, interfaces.AppProductInformation{
-			ID:          appProduct.ID,
-			Name:        appProduct.Name,
-			Price:       appProduct.Price,
-			StockAmount: appProduct.Stock,
-			Description: appProduct.Description,
-			Subtitle:    "", // 產品無Subtitle字段
+			ID:          product.ID,
+			Name:        product.Name,
+			Price:       product.Price,
+			StockAmount: product.StockAmount,
+			Description: product.Description,
 		})
 	}
 

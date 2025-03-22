@@ -81,11 +81,11 @@
   - 空購物車時顯示友好提示和購物引導
 
 #### 4.4.2 購物車API功能
-- 取得購物車資訊 (GET /app/shoppingcars)
+- 取得購物車資訊 (GET /app/shoppingcarss)
   - 根據當前登入的用戶ID獲取購物車信息
   - 返回購物車總金額、產品數量和產品詳情
 
-- 添加產品到購物車 (POST /app/shoppingcars/{merchantId}/products/{productId})
+- 添加產品到購物車 (POST /app/shoppingcarss/{merchantId}/products/{productId})
   - 將指定商家的產品添加到購物車
   - 可指定添加數量
   - 成功後返回更新後的購物車信息

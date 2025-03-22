@@ -33,7 +33,7 @@ func NewShoppingcarHandler(shoppingcarService service.ShoppingcarService) *Shopp
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 401 {object} interfaces.ErrorResponse "未授權"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/shoppingcars/{merchantId}/products/{productId} [post]
+// @Router /app/shoppingcarss/{merchantId}/products/{productId} [post]
 func (h *ShoppingcarHandler) AppendProduct(c *gin.Context) {
 	// 從URL獲取路徑參數
 	merchantIDFromPath := c.Param("merchantId")
@@ -73,7 +73,7 @@ func (h *ShoppingcarHandler) AppendProduct(c *gin.Context) {
 // @Success 200 {object} interfaces.AppShoppingcarResponse "購物車信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/shoppingcar [delete]
+// @Router /app/shoppingcars [delete]
 func (h *ShoppingcarHandler) ClearShoppingcar(c *gin.Context) {
 	// 從context獲取用戶ID
 	userID, exists := c.Get(middleware.UserIDKey)
@@ -108,7 +108,7 @@ func (h *ShoppingcarHandler) ClearShoppingcar(c *gin.Context) {
 // @Success 200 {object} interfaces.AppShoppingcarResponse "購物車信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/shoppingcar [get]
+// @Router /app/shoppingcars [get]
 func (h *ShoppingcarHandler) GetShoppingcar(c *gin.Context) {
 	// 從context獲取用戶ID
 	userID, exists := c.Get(middleware.UserIDKey)
@@ -117,13 +117,19 @@ func (h *ShoppingcarHandler) GetShoppingcar(c *gin.Context) {
 		return
 	}
 
-	shoppingcar, err := h.shoppingcarService.GetShoppingcarByUser(userID.(int))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if uid, ok := userID.(uint); ok {
+		shoppingcar, err := h.shoppingcarService.GetShoppingcarByUser(int(uid))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusOK, shoppingcar)
+	} else {
+		// 處理類型不匹配的情況
+		c.JSON(http.StatusBadRequest, gin.H{"error": "無效的用戶ID類型"})
 		return
 	}
-
-	c.JSON(http.StatusOK, shoppingcar)
 }
 
 // 獲取購物車列表（控制台）
@@ -166,7 +172,7 @@ func (h *ShoppingcarHandler) GetShoppingcars(c *gin.Context) {
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 401 {object} interfaces.ErrorResponse "未授權"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/shoppingcar/{userId}/products/{productId} [post]
+// @Router /app/shoppingcars/{userId}/products/{productId} [post]
 func (h *ShoppingcarHandler) AddProductToUserShoppingcar(c *gin.Context) {
 	// 獲取路徑參數
 	userId, err := strconv.Atoi(c.Param("userId"))

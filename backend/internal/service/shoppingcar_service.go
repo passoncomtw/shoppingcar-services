@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
@@ -76,12 +77,12 @@ func NewShoppingcarService(
 
 // 獲取用戶購物車信息
 func (s *shoppingcarService) GetShoppingcarByUser(userID int) (*interfaces.AppShoppingcarInformation, error) {
-	// 獲取用戶信息
+	fmt.Println("---------userID: %v", userID)
 	user, err := s.userService.GetUserById(uint(userID))
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("user: %v", user)
 	// 檢查用戶是否有購物車，如果沒有則創建
 	var shoppingcar Shoppingcar
 	if err := s.db.Where("user_id = ?", userID).First(&shoppingcar).Error; err != nil {
@@ -95,11 +96,12 @@ func (s *shoppingcarService) GetShoppingcarByUser(userID int) (*interfaces.AppSh
 			if err := s.db.Create(&shoppingcar).Error; err != nil {
 				return nil, err
 			}
-		} else {
-			return nil, err
 		}
+		// else {
+		// 	return nil, err
+		// }
 	}
-
+	fmt.Println("===================shoppingcar: %v", shoppingcar)
 	// 獲取購物車項目
 	var shoppingcarItems []ShoppingcarItem
 	if err := s.db.Where("shoppingcar_id = ?", shoppingcar.ID).Find(&shoppingcarItems).Error; err != nil {
