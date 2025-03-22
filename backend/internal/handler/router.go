@@ -63,8 +63,8 @@ func NewRouter(
 		authorized.Use(middleware.AppAuthMiddleware(authService))
 		{
 			authorized.POST("/logout", authHandler.UserLogout)
-			authorized.GET("/user", userHandler.GetUserInfo)
-			authorized.PUT("/user", userHandler.UpdateUserInfo)
+			authorized.GET("/users", userHandler.GetUserInfo)
+			authorized.PUT("/users", userHandler.UpdateUserInfo)
 			authorized.GET("/merchants", merchantHandler.GetAppMerchants)
 			authorized.GET("/merchants/:merchantId/products", productHandler.GetMerchantProducts)
 			authorized.GET("/products/:productId", productHandler.GetAppProduct)

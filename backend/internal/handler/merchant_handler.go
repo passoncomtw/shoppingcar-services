@@ -26,6 +26,7 @@ func NewMerchantHandler(merchantService service.MerchantService) *MerchantHandle
 // @Tags ConsoleMerchant
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param data body interfaces.ConsoleCreateMerchantRequest true "商家信息"
 // @Success 200 {object} interfaces.ConsoleMerchantResponse "創建成功"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
@@ -55,6 +56,7 @@ func (h *MerchantHandler) CreateMerchant(c *gin.Context) {
 // @Tags ConsoleMerchant
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param merchantId path int true "商家ID"
 // @Param data body interfaces.ConsoleUpdateMerchantRequest true "商家信息"
 // @Success 200 {object} interfaces.ConsoleMerchantResponse "更新成功"
@@ -92,6 +94,7 @@ func (h *MerchantHandler) UpdateMerchant(c *gin.Context) {
 // @Tags ConsoleMerchant
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param merchantId path int true "商家ID"
 // @Success 200 {object} interfaces.ConsoleMerchantResponse "商家信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
@@ -122,6 +125,7 @@ func (h *MerchantHandler) GetMerchant(c *gin.Context) {
 // @Tags ConsoleMerchant
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param pageSize query int false "每頁數量"
 // @Param startCursor query string false "起始游標"
 // @Param endCursor query string false "結束游標"
@@ -147,6 +151,7 @@ func (h *MerchantHandler) GetMerchants(c *gin.Context) {
 // @Tags ConsoleMerchant
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} interfaces.ConsoleMerchantItemsResponse "商家項目列表"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
 // @Router /console/merchants/items [get]
@@ -166,6 +171,7 @@ func (h *MerchantHandler) GetMerchantItems(c *gin.Context) {
 // @Tags AppMerchants
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param pageSize query int false "每頁數量"
 // @Param endCursor query string false "結束游標"
 // @Success 200 {object} interfaces.AppMerchantsResponse "商家列表"

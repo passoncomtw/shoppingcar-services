@@ -29,6 +29,7 @@ func NewOrderHandler(orderService service.OrderService, shoppingcarService servi
 // @Tags AppOrders
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} interfaces.AppOrdersResponse "訂單列表"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
@@ -58,6 +59,7 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 // @Tags AppOrders
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param pageSize query int false "每頁數量"
 // @Param page query int false "頁碼"
 // @Success 200 {object} interfaces.AppOrdersResponse "訂單列表"
@@ -90,6 +92,7 @@ func (h *OrderHandler) GetUserOrders(c *gin.Context) {
 // @Tags AppOrders
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param orderId path int true "訂單ID"
 // @Success 200 {object} interfaces.AppOrderResponse "訂單詳情"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
@@ -127,6 +130,7 @@ func (h *OrderHandler) GetOrderDetail(c *gin.Context) {
 // @Tags ConsoleOrders
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param pageSize query int false "每頁數量"
 // @Param page query int false "頁碼"
 // @Success 200 {object} interfaces.ConsoleOrdersResponse "訂單列表"
@@ -151,6 +155,7 @@ func (h *OrderHandler) GetOrders(c *gin.Context) {
 // @Tags ConsoleOrders
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param orderId path int true "訂單ID"
 // @Success 200 {object} interfaces.ConsoleOrderResponse "訂單詳情"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
@@ -181,6 +186,7 @@ func (h *OrderHandler) GetOrder(c *gin.Context) {
 // @Tags ConsoleOrders
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param orderId path int true "訂單ID"
 // @Param data body interfaces.ConsoleUpdateOrderPaymentRequest true "支付狀態"
 // @Success 200 {object} interfaces.ConsoleOrderResponse "訂單詳情"

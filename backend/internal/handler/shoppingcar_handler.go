@@ -27,6 +27,7 @@ func NewShoppingcarHandler(shoppingcarService service.ShoppingcarService) *Shopp
 // @Tags AppShoppingcar
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param data body interfaces.AppAddProductToShoppingcarRequest true "產品信息"
 // @Success 200 {object} interfaces.AppShoppingcarResponse "購物車信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
@@ -62,6 +63,7 @@ func (h *ShoppingcarHandler) AppendProduct(c *gin.Context) {
 // @Tags AppShoppingcar
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} interfaces.AppShoppingcarResponse "購物車信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
@@ -96,6 +98,7 @@ func (h *ShoppingcarHandler) ClearShoppingcar(c *gin.Context) {
 // @Tags AppShoppingcar
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} interfaces.AppShoppingcarResponse "購物車信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
@@ -123,6 +126,7 @@ func (h *ShoppingcarHandler) GetShoppingcar(c *gin.Context) {
 // @Tags ConsoleShoppingcar
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param pageSize query int false "每頁數量"
 // @Param page query int false "頁碼"
 // @Success 200 {object} interfaces.ConsoleShoppingcarsResponse "購物車列表"

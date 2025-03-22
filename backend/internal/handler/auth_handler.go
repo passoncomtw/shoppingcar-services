@@ -61,6 +61,7 @@ func (h *AuthHandler) UserLogin(c *gin.Context) {
 // @Tags ConsoleAuthorization
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param data body interfaces.ConsoleLoginRequest true "後台登入信息"
 // @Success 200 {object} interfaces.ConsoleLoginResponse "登入成功"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"

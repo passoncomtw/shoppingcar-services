@@ -26,6 +26,7 @@ func NewProductHandler(productService service.ProductService) *ProductHandler {
 // @Tags ConsoleProduct
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param data body interfaces.ConsoleCreateProductRequest true "產品信息"
 // @Success 200 {object} interfaces.ConsoleProductResponse "創建成功"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
@@ -55,6 +56,7 @@ func (h *ProductHandler) CreateProduct(c *gin.Context) {
 // @Tags ConsoleProduct
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param productId path int true "產品ID"
 // @Param data body interfaces.ConsoleUpdateProductRequest true "產品信息"
 // @Success 200 {object} interfaces.ConsoleProductResponse "更新成功"

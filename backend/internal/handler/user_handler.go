@@ -90,10 +90,11 @@ func (h *UserHandler) GetUsers(c *gin.Context) {
 // @Tags AppUser
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} interfaces.AppUserInformation "用戶信息"
 // @Failure 401 {object} interfaces.ErrorResponse "未授權"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/user [get]
+// @Router /app/users [get]
 func (h *UserHandler) GetUserInfo(c *gin.Context) {
 	// 從context獲取用戶ID
 	userID, exists := c.Get(middleware.UserIDKey)
@@ -122,12 +123,13 @@ func (h *UserHandler) GetUserInfo(c *gin.Context) {
 // @Tags AppUser
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Param data body interfaces.ConsoleUpdateUserRequest true "用戶信息"
 // @Success 200 {object} interfaces.AppUserInformation "用戶信息"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 401 {object} interfaces.ErrorResponse "未授權"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
-// @Router /app/user [put]
+// @Router /app/users [put]
 func (h *UserHandler) UpdateUserInfo(c *gin.Context) {
 	// 從context獲取用戶ID
 	userID, exists := c.Get(middleware.UserIDKey)
