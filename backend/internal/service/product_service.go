@@ -315,7 +315,6 @@ func (s *ProductServiceImpl) GetProductsByMerchant(merchantID, page, pageSize in
 
 	// 計算總頁數
 	totalPages := (int(totalCount) + pageSize - 1) / pageSize
-	fmt.Printf("items: %v\n", items)
 	return &interfaces.ConsoleProductsResponse{
 		Items:      items,
 		TotalCount: totalCount,

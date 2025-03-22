@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
@@ -53,10 +52,6 @@ func (s *backendUserService) Login(account, password string) (string, BackendUse
 		}
 		return "", BackendUser{}, err
 	}
-
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-
-	fmt.Printf("hashedPassword: %s\n", string(hashedPassword))
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
 		return "", BackendUser{}, errors.New("帳號或密碼錯誤")
