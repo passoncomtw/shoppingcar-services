@@ -151,7 +151,6 @@ func (h *MerchantHandler) GetMerchants(c *gin.Context) {
 // @Tags ConsoleMerchant
 // @Accept json
 // @Produce json
-// @Security Bearer
 // @Success 200 {object} interfaces.ConsoleMerchantItemsResponse "商家項目列表"
 // @Failure 500 {object} interfaces.ErrorResponse "服務器錯誤"
 // @Router /console/merchants/items [get]

@@ -82,6 +82,7 @@ func NewRouter(
 	console := r.Group("/console")
 	{
 		console.POST("/login", authHandler.ConsoleLogin)
+		console.GET("/merchants/items", merchantHandler.GetMerchantItems)
 
 		// 需要後台用戶認證的路由
 		authorized := console.Group("/")
@@ -94,7 +95,6 @@ func NewRouter(
 			authorized.PUT("/merchants/:merchantId", merchantHandler.UpdateMerchant)
 			authorized.GET("/merchants/:merchantId", merchantHandler.GetMerchant)
 			authorized.GET("/merchants", merchantHandler.GetMerchants)
-			authorized.GET("/merchants/items", merchantHandler.GetMerchantItems)
 			authorized.POST("/products", productHandler.CreateProduct)
 			authorized.PUT("/products/:productId", productHandler.UpdateProduct)
 			authorized.GET("/products/:productId", productHandler.GetProduct)
