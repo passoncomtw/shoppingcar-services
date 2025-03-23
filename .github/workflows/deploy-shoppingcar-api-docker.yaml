@@ -1,14 +1,16 @@
 name: 部署購物車服務API
 
+
 on:
-  push:
+  pull_request:
+    types: 
+    - closed
     branches:
-      - develop
+    - main
     paths:
-      - 'backend/**'
-      - 'deploy/shoppingcar-service-api/**'
-      - '.github/workflows/deploy-shoppingcar-api-docker.yaml'
-  workflow_dispatch:
+    - 'backend/**'
+    - 'deploy/shoppingcar-service-api/**'
+    - '.github/workflows/deploy-shoppingcar-api-docker.yaml'
 
 jobs:
   build-and-deploy:
