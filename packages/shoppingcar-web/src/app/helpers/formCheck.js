@@ -10,3 +10,7 @@ const handleYupErrors = (errors) => {
 
 module.exports.handleYupSchema = handleYupSchema;
 module.exports.handleYupErrors = handleYupErrors;
+module.exports.default = {
+  handleYupSchema,
+  handleYupErrors,
+};

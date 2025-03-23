@@ -11,3 +11,8 @@ export const handleYupErrors = errors => {
     }
   }, {})
 }
+
+export default {
+  handleYupSchema,
+  handleYupErrors,
+};
