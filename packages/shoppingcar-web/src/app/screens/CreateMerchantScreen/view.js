@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createMerchantSchema } from "../../constants/yupSchemas/merchant";
-import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
+import formCheck from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
@@ -30,14 +30,14 @@ const CreateMerchantScreen = (props) => {
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(createMerchantSchema, formData);
+              const validatedPayload = await formCheck.handleYupSchema(createMerchantSchema, formData);
               setErrors({});
               props.handleCreateMerchant({
                 ...validatedPayload,
                 onSuccess: () => navigate("/merchants"),
               });
             } catch (error) {
-              const errors = handleYupErrors(error);
+              const errors = formCheck.handleYupErrors(error);
               setErrors(errors);
             }
           }}
