@@ -1,9 +1,12 @@
-import { Box, Button, Flex, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import Pagination from "../../components/Pagination";
+import TableSection from "../../components/TableSection";
 
 const MerchantsScreen = (props) => {
   const [page, setPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
+  const [filterValue, setFilterValue] = useState("");
+  
   useEffect(() => {
     props.handleGetMerchants({
       PageSize: 10,
@@ -12,59 +15,82 @@ const MerchantsScreen = (props) => {
 
   const { merchant } = props;
 
+  // 計算總頁數
+  const totalPages = Math.ceil(props.totalAmount / 10);
+
+  // 欄位定義
+  const columns = [
+    { key: "name", title: "帳號" },
+    { key: "name", title: "暱稱" },
+    { key: "email", title: "信箱" },
+    { key: "phone", title: "手機號碼" },
+  ];
+
+  // 將資料轉換為 TableSection 需要的格式
+  const tableData = merchant.items.map(item => ({
+    ...item,
+    editUrl: `/merchants/update/${item.id}`
+  }));
+
+  // 篩選選項
+  const filterOptions = [
+    { label: "正常", value: "active" },
+    { label: "已禁用", value: "disabled" }
+  ];
+
+  // 處理搜尋
+  const handleSearch = (text) => {
+    setSearchText(text);
+    // 實際的搜尋邏輯可在此實現
+    console.log("搜尋文字:", text);
+  };
+
+  // 處理篩選
+  const handleFilter = (value) => {
+    setFilterValue(value);
+    // 實際的篩選邏輯可在此實現
+    console.log("篩選值:", value);
+  };
+
+  // 處理分頁
+  const handlePageChange = (newPage) => {
+    if (newPage < page) {
+      props.handleGetMerchants({
+        pageSize: 10,
+        startCursor: props.pageInfo.startCursor,
+        onSuccess: () => setPage(newPage),
+      });
+    } else if (newPage > page) {
+      props.handleGetMerchants({
+        pageSize: 10,
+        endCursor: props.pageInfo.endCursor,
+        onSuccess: () => setPage(newPage),
+      });
+    }
+  };
+
+  // 處理新增
+  const handleAdd = () => {
+    window.location.href = "/merchants/create";
+  };
+
   return (
-    <Box bg="white">
-      <Flex paddingRight={10} paddingTop={10} justify="right">
-        <Button as="a" href="/merchants/create" style={{ textDecoration: "none" }}>
-          新增商家
-        </Button>
-      </Flex>
-      <TableContainer>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>帳號</Th>
-              <Th>暱稱</Th>
-              <Th>信箱</Th>
-              <Th>手機號碼</Th>
-              <Th>操作</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {merchant.items.map((item, index) => (
-              <Tr key={`${item.name}-${index}`}>
-                <Td>{item.name}</Td>
-                <Td>{item.name}</Td>
-                <Td>{item.email}</Td>
-                <Td>{item.phone}</Td>
-                <Td>
-                  <Button as="a" href={`/merchants/update/${item.id}`}>
-                    編輯
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-      </TableContainer>
-      <Pagination
-        page={page}
-        totalAmount={props.totalAmount}
+    <Box bg="gray.50" minH="100vh" p={6}>
+      <TableSection
+        title="商家管理"
+        searchPlaceholder="搜尋商家名稱、帳號或信箱..."
+        filterOptions={filterOptions}
+        columns={columns}
+        data={tableData}
+        onSearch={handleSearch}
+        onFilter={handleFilter}
+        onAdd={handleAdd}
+        addButtonText="新增商家"
+        currentPage={page}
+        totalPages={totalPages}
+        totalItems={props.totalAmount}
         pageSize={10}
-        handlePrePage={() =>
-          props.handleGetMerchants({
-            pageSize: 10,
-            startCursor: props.pageInfo.startCursor,
-            onSuccess: () => setPage(page - 1),
-          })
-        }
-        handleNextPage={() =>
-          props.handleGetMerchants({
-            pageSize: 10,
-            endCursor: props.pageInfo.endCursor,
-            onSuccess: () => setPage(page + 1),
-          })
-        }
+        onPageChange={handlePageChange}
       />
     </Box>
   );
