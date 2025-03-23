@@ -13,12 +13,7 @@ import {
   Checkbox,
   Link,
   Container,
-  HStack,
-  Circle,
-  InputGroup,
-  InputLeftElement
 } from "@chakra-ui/react";
-import { LockIcon, ExternalLinkIcon } from '@chakra-ui/icons';
 import { FaShoppingCart } from 'react-icons/fa';
 
 const LoginScreen = (props) => {

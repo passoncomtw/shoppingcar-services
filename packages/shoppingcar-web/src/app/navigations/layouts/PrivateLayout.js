@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SignOutAction } from '../../actions/authActions';
 
 const LinkItems = [
+  { name: '儀表板', icon: FiArchive, path: "/dashboard" },
   { name: '商家系統', icon: FiArchive, path: "/merchants" },
   { name: '會員系統', icon: FiUser, path: "/users" },
   { name: '商品系統', icon: FiLayers, path: "/products" },
@@ -151,7 +152,7 @@ const PrivateLayout = (props) => {
     <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
       <Navbar />
       <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
-      <div style={{paddingLeft: 260}}>
+      <div style={{paddingLeft: 250}}>
       <Outlet />
       </div>
     </Box>
