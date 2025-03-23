@@ -38,7 +38,7 @@ jobs:
           host: ${{ secrets.DEV_FROENT_HOST }}
           username: root
           port: 22
-          key: ${{ secrets.SSH_KEY_DEV_VALUE }}
+          key: ${{ secrets.SSH_KEY_PROD_VALUE }}
           source: dist/packages/shoppingcar-web
           target: /var/www/html/shoppingcar-web.passon.tw/
           strip_components: 3
