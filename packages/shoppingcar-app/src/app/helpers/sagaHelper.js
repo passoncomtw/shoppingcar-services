@@ -79,7 +79,8 @@ export default function* fetchAPIResult({
       headers,
     });
 
-    const { result: resData } = yield call(apiResult, params, newHeaders);
+    const resp = yield call(apiResult, params, newHeaders);
+    const { result: resData } = resp;
 
     if (isFunction(resultHandler)) {
       return yield put(okFetch(resultHandler(resData), actionType, successMessage));

@@ -121,3 +121,5 @@ test-report.xml
 
 # Configs
 **/shoppingcar-app/src/app/config/config.js
+
+.cursor

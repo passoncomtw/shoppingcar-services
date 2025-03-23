@@ -1,14 +1,24 @@
 package handler
 
 import (
+	"github.com/gin-gonic/gin"
+	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"go.uber.org/fx"
 )
 
+// Module provides handlers.
 var Module = fx.Options(
 	fx.Provide(
-		NewUserHandler,
 		NewAuthHandler,
+		NewUserHandler,
+		NewMerchantHandler,
+		NewProductHandler,
+		NewShoppingcarHandler,
+		NewOrderHandler,
 		NewRouter,
 	),
-	fx.Invoke(StartServer),
+	// 啟動HTTP服務器
+	fx.Invoke(func(router *gin.Engine, cfg *config.Config) {
+		StartServer(cfg, router)
+	}),
 )

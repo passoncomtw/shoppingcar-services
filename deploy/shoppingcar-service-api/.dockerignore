@@ -1,0 +1,26 @@
+# git相關
+.git
+.gitignore
+
+# 開發環境配置
+.env.example
+.air.toml
+.vscode
+.idea
+
+# 測試文件
+**/*_test.go
+
+# 臨時文件
+**/tmp/**
+
+# 日誌文件
+**/*.log
+
+# 已編譯的文件
+**/bin/**
+
+# 其他文件
+README.md
+.golangci.yml
+MONOREPO.md 

@@ -55,3 +55,43 @@ func NewUsersResponse(users []User, total int64, page, pageSize int) *UsersRespo
 		Pagination: NewPagination(total, page, pageSize),
 	}
 }
+
+// 控制台用戶信息
+type ConsoleUserInformation struct {
+	ID    int    `json:"id"`
+	Name  string `json:"name"`
+	Phone string `json:"phone"`
+}
+
+// 控制台創建用戶請求
+type ConsoleCreateUserRequest struct {
+	Name     string `json:"name" binding:"required"`
+	Phone    string `json:"phone" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
+// 控制台更新用戶請求
+type ConsoleUpdateUserRequest struct {
+	Name  string `json:"name,omitempty"`
+	Phone string `json:"phone,omitempty"`
+}
+
+// 控制台用戶響應
+type ConsoleUserResponse struct {
+	Item ConsoleUserInformation `json:"item"`
+}
+
+// 控制台用戶列表響應
+type ConsoleGetUserResponse struct {
+	Items      []ConsoleUserInformation `json:"items"`
+	TotalCount int64                    `json:"totalCount"`
+	PageInfo   PageInfo                 `json:"pageInfo"`
+}
+
+// App用戶信息
+type AppUserInformation struct {
+	ID        int    `json:"id"`
+	Name      string `json:"name"`
+	Phone     string `json:"phone"`
+	CreatedAt string `json:"createdAt"`
+}

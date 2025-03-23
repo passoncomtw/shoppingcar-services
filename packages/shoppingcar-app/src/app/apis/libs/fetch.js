@@ -36,13 +36,15 @@ export const fetchGet = (url, qs = {}) => fetchGetBase({ url, qs });
 export const fetchGetWithToken = (url, customHeaders, qs = {}) =>
   fetchGetBase({ url, qs, customHeaders });
 
-export const fetchPost = (url, payload = {}, qs = {}, method = 'POST') =>
-  fetchPostBase({
+export const fetchPost = (url, payload = {}, qs = {}, method = 'POST') => {
+  return fetchPostBase({
     method,
     url,
     qs,
     body: JSON.stringify(payload),
   });
+}
+  
 
 export const fetchPostWithToken = (
   url,

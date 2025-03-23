@@ -1,0 +1,36 @@
+linters:
+  enable:
+    - errcheck
+    - gosimple
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gosec
+    - gofmt
+    - revive
+    - misspell
+  disable:
+    - wsl
+
+linters-settings:
+  revive:
+    rules:
+      - name: exported
+        severity: warning
+        disabled: false
+        arguments:
+          - "disableStutteringCheck"
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - errcheck
+        - gosec
+
+run:
+  timeout: 5m
+  skip-dirs:
+    - vendor
+    - docs

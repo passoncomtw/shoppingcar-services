@@ -25,9 +25,9 @@ jobs:
     # Copy docker-compose and .env files to target server
     - name: sync files to server
       run: |
-        # kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success."
-        echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./apps/${{ env.IMAGE_NAME }}/.env
-        rsync -avh ./apps/${{ env.IMAGE_NAME }} root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/
+        # kill $(cat /var/run/rsyncd.pid) || echo "kill rsync process success." 
+        echo "${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}" > ./.env
+        rsync -avh ./** root@${{ secrets.DEV_BACKEND_HOST }}:/opt/services/apps/shoppingcar-services
         
   start_pm2_token-app-api-service:
     if: github.event.pull_request.merged == true
@@ -39,7 +39,7 @@ jobs:
         uses: ./.github/actions/run-deploy
         with:
           env-name: prod
-          folder-name: shoppingcar-api-service
+          folder-name: shoppingcar-services
           branch-name: develop
           env-value: ${{ secrets.SHOPPOINGCAR_SERVICE_ENV }}
           host-name: ${{ secrets.DEV_BACKEND_HOST }}

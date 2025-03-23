@@ -12,6 +12,17 @@ import {
   MenuDivider,
   Stack,
   Center,
+  Text,
+  Divider,
+  Image,
+  useDisclosure,
+  IconButton,
+  CloseButton,
+  Drawer,
+  DrawerContent,
+  HStack,
+  Tooltip,
+  VStack,
 } from '@chakra-ui/react';
 import {
   FiUser,
@@ -20,20 +31,30 @@ import {
   FiMessageSquare,
   FiSettings,
   FiLayers,
+  FiChevronRight,
+  FiMenu,
+  FiHome,
+  FiShoppingCart,
+  FiPackage,
+  FiGrid,
+  FiBell,
+  FiSearch,
 } from 'react-icons/fi';
 import {
   Navigate,
   Outlet,
   useLocation,
+  Link as RouterLink,
 } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SignOutAction } from '../../actions/authActions';
 
 const LinkItems = [
+  { name: '儀表板', icon: FiHome, path: "/dashboard" },
   { name: '商家系統', icon: FiArchive, path: "/merchants" },
   { name: '會員系統', icon: FiUser, path: "/users" },
-  { name: '商品系統', icon: FiLayers, path: "/products" },
-  { name: '購物車系統', icon: FiDatabase, path: "/shoppingcars" },
+  { name: '商品系統', icon: FiPackage, path: "/products" },
+  { name: '購物車系統', icon: FiShoppingCart, path: "/shoppingcars" },
   { name: '訂單系統', icon: FiMessageSquare, path: "/orders" },
   { name: '系統設定', icon: FiSettings, path: "/settings" },
 ];
@@ -45,13 +66,21 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
   return (
     <Box
-      bg={useColorModeValue('white', 'gray.900')}
-      borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      bg={useColorModeValue('blue.700', 'gray.900')}
+      borderRight="0"
       w={{ base: 'full', md: 60 }}
       pos="fixed"
       h="full"
+      color="white"
       {...rest}>
+      <Flex h="20" alignItems="center" justifyContent="center" mb={4}>
+        <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+          購物車管理
+        </Text>
+        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+      </Flex>
+      <Divider mb={4} borderColor="blue.600" />
+      
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}
@@ -63,97 +92,194 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const user = useSelector(({auth}) => auth.user);
+  const userName = user?.name || "管理員";
+  const { isOpen, onOpen, onClose } = useDisclosure();
   
   return (
     <>
-      <Box bg={useColorModeValue('gray.200', 'gray.900')} px={4}>
-        <Flex h={16} alignItems={'center'} justifyContent={'space-between'}>
-          <Box></Box>
-  
-          <Flex alignItems={'center'}>
-            <Stack direction={'row'} spacing={7}>
-              <Menu>
-                <MenuButton
-                  as={Button}
-                  rounded={'full'}
-                  variant={'link'}
-                  cursor={'pointer'}
-                  minW={0}>
+      <Flex
+        as="header"
+        pos="fixed"
+        top="0"
+        w="full"
+        h="16"
+        bg={useColorModeValue('blue.700', 'gray.900')}
+        color="white"
+        boxShadow="md"
+        zIndex="1000"
+        px={{ base: 4, md: 4 }}
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <HStack spacing={4}>
+          <IconButton
+            display={{ base: 'flex', md: 'none' }}
+            onClick={onOpen}
+            variant="outline"
+            colorScheme="whiteAlpha"
+            aria-label="open menu"
+            icon={<FiMenu />}
+          />
+          
+          <Icon
+            display={{ base: 'none', md: 'flex' }}
+            as={FiGrid}
+            fontSize="24px"
+            color="blue.200"
+          />
+          
+          <Text
+            fontSize="xl"
+            fontWeight="bold"
+          >
+            購物車管理系統
+          </Text>
+        </HStack>
+
+        <HStack spacing={4}>
+          <Tooltip label="搜索">
+            <IconButton
+              icon={<FiSearch />}
+              variant="ghost"
+              colorScheme="whiteAlpha"
+              fontSize="18px"
+              aria-label="搜索"
+            />
+          </Tooltip>
+          
+          <Tooltip label="通知">
+            <IconButton
+              icon={<FiBell />}
+              variant="ghost"
+              colorScheme="whiteAlpha"
+              fontSize="18px"
+              aria-label="通知"
+            />
+          </Tooltip>
+          
+          <Divider orientation="vertical" h="8" borderColor="blue.600" />
+          
+          <HStack spacing={3}>
+            <Text fontWeight="medium">
+              {userName}
+            </Text>
+            
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={'full'}
+                variant={'ghost'}
+                cursor={'pointer'}
+                minW={0}
+                _hover={{ bg: 'blue.600' }}
+              >
+                <Avatar
+                  size={'sm'}
+                  src={'https://avatars.dicebear.com/api/male/username.svg'}
+                  borderWidth="2px"
+                  borderColor="blue.400"
+                />
+              </MenuButton>
+              <MenuList alignItems={'center'} bg="white" color="gray.700">
+                <Center pt={4}>
                   <Avatar
-                    size={'sm'}
+                    size={'xl'}
                     src={'https://avatars.dicebear.com/api/male/username.svg'}
+                    borderWidth="2px"
+                    borderColor="blue.400"
                   />
-                </MenuButton>
-                <MenuList alignItems={'center'}>
-                  <br />
-                  <Center>
-                    <Avatar
-                      size={'2xl'}
-                      src={'https://avatars.dicebear.com/api/male/username.svg'}
-                    />
-                  </Center>
-                  <br />
-                  <Center>
-                    <p>Username</p>
-                  </Center>
-                  <br />
-                  <MenuDivider />
-                  <MenuItem>Your Servers</MenuItem>
-                  <MenuItem>Account Settings</MenuItem>
-                  <MenuItem onClick={() => dispatch(SignOutAction())}>Logout</MenuItem>
-                </MenuList>
-              </Menu>
-            </Stack>
-          </Flex>
-        </Flex>
-      </Box>
+                </Center>
+                <Center pt={2} pb={4}>
+                  <VStack>
+                    <Text fontWeight="bold">{userName}</Text>
+                    <Text fontSize="sm" color="gray.500">管理員</Text>
+                  </VStack>
+                </Center>
+                <MenuDivider />
+                <MenuItem 
+                  as={RouterLink} 
+                  to="/settings" 
+                  icon={<Icon as={FiSettings} />}
+                >
+                  系統設定
+                </MenuItem>
+                <MenuItem 
+                  onClick={() => dispatch(SignOutAction())} 
+                  icon={<Icon as={FiUser} />}
+                >
+                  登出
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </HStack>
+        </HStack>
+      </Flex>
+      
+      <Drawer
+        autoFocus={false}
+        isOpen={isOpen}
+        placement="left"
+        onClose={onClose}
+        returnFocusOnClose={false}
+        onOverlayClick={onClose}
+      >
+        <DrawerContent>
+          <SidebarContent onClose={onClose} />
+        </DrawerContent>
+      </Drawer>
     </>
   )
 };
 
 const NavItem = ({ icon, children, path, ...rest }) => {
+  const location = useLocation();
+  const isActive = location.pathname === path;
+  
   return (
     <Box
-      as="a"
-      href={path}
+      as={RouterLink}
+      to={path}
       style={{ textDecoration: 'none' }}
       _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
-        p="4"
-        mx="4"
-        borderRadius="lg"
+        p="3"
+        mx="3"
+        my="2"
+        borderRadius="md"
         role="group"
         cursor="pointer"
+        bg={isActive ? 'blue.600' : 'transparent'}
+        fontWeight={isActive ? 'bold' : 'normal'}
         _hover={{
-          bg: 'cyan.400',
-          color: 'white',
+          bg: 'blue.600',
         }}
         {...rest}>
         {icon && (
           <Icon
-            mr="4"
-            fontSize="16"
-            _groupHover={{
-              color: 'white',
-            }}
+            mr="3"
+            fontSize="18"
             as={icon}
           />
         )}
-        {children}
+        <Text flex="1">{children}</Text>
+        {isActive && <Icon as={FiChevronRight} />}
       </Flex>
     </Box>
   )
 };
 
 const PrivateLayout = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh" bg={useColorModeValue('gray.50', 'gray.900')}>
       <Navbar />
-      <SidebarContent onClose={() => onClose} display={{ base: 'none', md: 'block' }} />
-      <div style={{paddingLeft: 260}}>
-      <Outlet />
-      </div>
+      <SidebarContent display={{ base: 'none', md: 'block' }} />
+      <Box ml={{ base: 0, md: 60 }} p={4} pt="20">
+        <Outlet />
+      </Box>
     </Box>
   );
 };

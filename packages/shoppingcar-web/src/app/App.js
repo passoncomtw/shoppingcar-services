@@ -14,6 +14,7 @@ import UsersScreen from "./screens/UsersScreen";
 import UpdateProductScreen from "./screens/UpdateProductScreen";
 import ShoppingcarsScreen from "./screens/ShoppingcarsScreen";
 import OrdersScreen from "./screens/OrdersScreen";
+import DashboardScreen from "./screens/DashboardScreen";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/login" element={<LoginScreen />} />
       </Route>
       <Route exact element={<PrivateLayout />}>
+        <Route path="/dashboard" element={<DashboardScreen />} />
         <Route path="/merchants/update/:merchantId" element={<UpdateMerchantScreen />} />
         <Route path="/merchants/create" element={<CreateMerchantScreen />} />
         <Route path="/merchants" element={<MerchantsScreen />} />
@@ -34,6 +36,7 @@ export default function App() {
         <Route path="/products" element={<ProductsScreen />} />
         <Route path="/shoppingcars" element={<ShoppingcarsScreen />} />
         <Route path="/orders" element={<OrdersScreen />} />
+        <Route path="/settings" element={<h1>設定</h1>} />
       </Route>
     </Routes>
   );

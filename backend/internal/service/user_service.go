@@ -2,9 +2,10 @@ package service
 
 import (
 	"errors"
+	"time"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/config"
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
-	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
@@ -16,9 +17,11 @@ type UserService interface {
 	GetUsers(page, pageSize int) (*interfaces.UsersResponse, error)
 	GetUserById(id uint) (*interfaces.User, error)
 	Login(phone, password string) (string, interfaces.User, error)
+	UpdateUser(id uint, req *interfaces.ConsoleUpdateUserRequest) (*interfaces.User, error)
 }
 
 type CreateUserParams struct {
+	Name     string `json:"name" binding:"required"`
 	Password string `json:"password" binding:"required"`
 	Phone    string `json:"phone" binding:"required,phone"`
 }
@@ -60,6 +63,7 @@ func (s *userService) CreateUser(params *CreateUserParams) (*interfaces.User, er
 
 	return user, nil
 }
+
 func (s *userService) GetUsers(page, pageSize int) (*interfaces.UsersResponse, error) {
 	if page <= 0 {
 		page = 1
@@ -117,9 +121,10 @@ func (s *userService) Login(phone, password string) (string, interfaces.User, er
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"sub": user.ID,
-		"iat": time.Now().Unix(),
-		"exp": time.Now().Add(s.config.JWT.ExpiresIn).Unix(),
+		"sub":  user.ID,
+		"iat":  time.Now().Unix(),
+		"exp":  time.Now().Add(s.config.JWT.ExpiresIn).Unix(),
+		"type": "app",
 	})
 
 	signedToken, err := token.SignedString([]byte(s.config.JWT.Secret))
@@ -128,4 +133,48 @@ func (s *userService) Login(phone, password string) (string, interfaces.User, er
 	}
 
 	return signedToken, user, nil
+}
+
+// UpdateUser 更新用戶信息
+func (s *userService) UpdateUser(id uint, req *interfaces.ConsoleUpdateUserRequest) (*interfaces.User, error) {
+	// 檢查用戶是否存在
+	user, err := s.GetUserById(id)
+	if err != nil {
+		return nil, errors.New("用戶不存在")
+	}
+
+	// 更新用戶數據
+	updates := make(map[string]interface{})
+	if req.Name != "" {
+		// 檢查名稱是否已被使用
+		var count int64
+		if err := s.db.Model(&interfaces.User{}).Where("name = ? AND id != ?", req.Name, id).Count(&count).Error; err != nil {
+			return nil, err
+		}
+		if count > 0 {
+			return nil, errors.New("該用戶名已被使用")
+		}
+		updates["name"] = req.Name
+		user.Name = req.Name
+	}
+
+	if req.Phone != "" {
+		var count int64
+		if err := s.db.Model(&interfaces.User{}).Where("phone = ? AND id != ?", req.Phone, id).Count(&count).Error; err != nil {
+			return nil, err
+		}
+		if count > 0 {
+			return nil, errors.New("該電話號碼已被使用")
+		}
+		updates["phone"] = req.Phone
+		user.Phone = req.Phone
+	}
+
+	if len(updates) > 0 {
+		if err := s.db.Model(&interfaces.User{}).Where("id = ?", id).Updates(updates).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	return user, nil
 }

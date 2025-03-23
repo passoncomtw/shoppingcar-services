@@ -9,7 +9,7 @@ export default function reducer(shoppingcar = cloneDeep(shoppingcarState), { typ
     case types.GET_SHOPPINGCAR_SUCCESS:
       return {
         ...shoppingcar,
-        item: payload.item,
+        ...payload,
       };
     case types.GET_SHOPPINGCAR:
     case types.GET_SHOPPINGCAR_ERROR:

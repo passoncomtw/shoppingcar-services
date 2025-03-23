@@ -2,36 +2,43 @@ package handler
 
 import (
 	"net/http"
+	"strings"
+
 	"github.com/passoncomtw/shoppingcar-services/internal/interfaces"
 	"github.com/passoncomtw/shoppingcar-services/internal/service"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthHandler struct {
-	authService service.AuthService
-	userService service.UserService
+	authService    service.AuthService
+	userService    service.UserService
+	backendService service.BackendUserService
 }
 
-func NewAuthHandler(authService service.AuthService, userService service.UserService) *AuthHandler {
+func NewAuthHandler(
+	authService service.AuthService,
+	userService service.UserService,
+	backendService service.BackendUserService,
+) *AuthHandler {
 	return &AuthHandler{
-		authService: authService,
-		userService: userService,
+		authService:    authService,
+		userService:    userService,
+		backendService: backendService,
 	}
 }
 
 // 用戶登入
-// @Summary 用戶登入
+// @Summary App 用戶登入
 // @Description 驗證用戶憑據並返回 JWT 令牌
-// @Tags auth
+// @Tags AppAuthorization
 // @Accept json
 // @Produce json
 // @Param data body interfaces.LoginRequest true "登入信息"
 // @Success 200 {object} interfaces.LoginResponse "登入成功"
 // @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
 // @Failure 401 {object} interfaces.ErrorResponse "登入失敗"
-// @Router /api/v1/auth [post]
+// @Router /app/login [post]
 func (h *AuthHandler) UserLogin(c *gin.Context) {
 	var req interfaces.LoginRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -46,6 +53,40 @@ func (h *AuthHandler) UserLogin(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, interfaces.LoginResponse{Token: token, User: user})
+}
+
+// 後台登入
+// @Summary 後台控制台登入
+// @Description 驗證後台用戶憑據並返回 JWT 令牌
+// @Tags ConsoleAuthorization
+// @Accept json
+// @Produce json
+// @Security Bearer
+// @Param data body interfaces.ConsoleLoginRequest true "後台登入信息"
+// @Success 200 {object} interfaces.ConsoleLoginResponse "登入成功"
+// @Failure 400 {object} interfaces.ErrorResponse "請求錯誤"
+// @Failure 401 {object} interfaces.ErrorResponse "登入失敗"
+// @Router /console/login [post]
+func (h *AuthHandler) ConsoleLogin(c *gin.Context) {
+	var req interfaces.ConsoleLoginRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	token, user, err := h.backendService.Login(req.Account, req.Password)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, interfaces.ConsoleLoginResponse{
+		Token: token,
+		User: interfaces.ConsoleUser{
+			ID:      user.ID,
+			Account: user.Account,
+		},
+	})
 }
 
 // 用戶登出

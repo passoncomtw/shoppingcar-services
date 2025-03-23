@@ -1,7 +1,16 @@
 package interfaces
 
+// ErrorResponse 定義錯誤響應
 type ErrorResponse struct {
 	Error string `json:"error"`
+}
+
+// PageInfo 分頁信息
+type PageInfo struct {
+	HasNextPage     bool   `json:"hasNextPage"`
+	HasPreviousPage bool   `json:"hasPreviousPage"`
+	StartCursor     string `json:"startCursor"`
+	EndCursor       string `json:"endCursor"`
 }
 
 type SuccessResponse struct {

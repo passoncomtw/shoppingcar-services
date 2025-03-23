@@ -11,9 +11,9 @@ const LeftContent = (props) => <Avatar.Image {...props} source={require("../../.
 const ShoppingcarItem = (props) => (
   <Card style={{ flex: 1, height: "100%" }}>
     <Text variant="titleLarge" style={{ fontWeight: "700" }}>
-      {props.item.merchant.name}
+      {props.item.name}
     </Text>
-    <Card.Title title={props.item.product.name} left={LeftContent} right={() => <Text>${props.item.product.price}</Text>} />
+    <Card.Title title={props.item.name} left={LeftContent} right={() => <Text>${props.item.price}</Text>} />
     <Card.Content>
       <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
         <IconButton icon="plus" mode="outlined" onPress={() => console.log("Pressed")} />
@@ -42,10 +42,10 @@ const EmptyShoppingcar = () => (
 
 const ShoppingcarItems = (props) => (
   <Background>
-    {props.shoppingcar.item.shoppingcarItems.map((item) => {
+    {props.shoppingcar.shoppingcarItems.map((item) => {
       return <ShoppingcarItem key={`shoppingcar-item-${item.id}`} item={item} />;
     })}
-    <List.Item left={() => <Text>付款總額</Text>} right={() => <Text>${props.shoppingcar.item.totalAmount}</Text>} />
+    <List.Item left={() => <Text>付款總額</Text>} right={() => <Text>${props.shoppingcar.totalAmount}</Text>} />
     <Button mode="contained" onPress={() => console.log("Pressed")}>
       結帳
     </Button>
@@ -74,7 +74,7 @@ const ShoppingcarScreen = (props) => {
     props.handleGetShoppingcar();
   }, []);
 
-  if (isEmpty(props.shoopingcar?.item)) return <EmptyShoppingcar />;
+  if (isEmpty(props.shoppingcar.shoppingcarItems)) return <EmptyShoppingcar />;
   if (test === "c") return <OrderResult shoppingcar={props.shoppingcar} />;
   return <ShoppingcarItems shoppingcar={props.shoppingcar} />;
 };
