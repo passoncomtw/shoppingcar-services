@@ -7,7 +7,6 @@ import CreateUserScreen from "./screens/CreateUserScreen";
 import LoginScreen from "./screens/LoginScreen";
 import MerchantsScreen from "./screens/MerchantsScreen";
 import ProductsScreen from "./screens/ProductsScreen";
-import PublicScreen from "./screens/PublicScreen";
 import UpdateMerchantScreen from "./screens/UpdateMerchantScreen";
 import UpdateUserScreen from "./screens/UpdateUserScreen";
 import UsersScreen from "./screens/UsersScreen";
@@ -20,7 +19,7 @@ export default function App() {
   return (
     <Routes>
       <Route exact element={<PublicLayout />}>
-        <Route path="/" element={<PublicScreen />} />
+        <Route path="/" element={<LoginScreen />} />
         <Route path="/login" element={<LoginScreen />} />
       </Route>
       <Route exact element={<PrivateLayout />}>
