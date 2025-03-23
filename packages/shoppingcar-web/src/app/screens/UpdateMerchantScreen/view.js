@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMerchantResult } from "../../apis/api";
 import { updateMerchantSchema } from "../../constants/yupSchemas/merchant";
-import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
+import formCheck from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
@@ -40,7 +40,7 @@ const UpdateMerchantScreen = (props) => {
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(updateMerchantSchema, formData);
+              const validatedPayload = await formCheck.handleYupSchema(updateMerchantSchema, formData);
               setErrors({});
               props.handleUpdateMerchant({
                 merchantId,
@@ -48,7 +48,7 @@ const UpdateMerchantScreen = (props) => {
                 onSuccess: () => alert("編輯商店完成"),
               });
             } catch (error) {
-              const errors = handleYupErrors(error);
+              const errors = formCheck.handleYupErrors(error);
               setErrors(errors);
             }
           }}

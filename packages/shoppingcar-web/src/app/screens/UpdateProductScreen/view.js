@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getProductByIdResult } from "../../apis/api";
 import { updateProductSchema } from "../../constants/yupSchemas/product";
-import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
+import formCheck from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
@@ -72,7 +72,7 @@ const UpdateProductScreen = (props) => {
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(updateProductSchema, formData);
+              const validatedPayload = await formCheck.handleYupSchema(updateProductSchema, formData);
               setErrors({});
               props.handleUpdateProduct({
                 productId,
@@ -80,7 +80,7 @@ const UpdateProductScreen = (props) => {
                 onSuccess: () => alert("編輯商品成功"),
               });
             } catch (error) {
-              const errors = handleYupErrors(error);
+              const errors = formCheck.handleYupErrors(error);
               setErrors(errors);
             }
           }}

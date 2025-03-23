@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserByUserIdResult } from "../../apis/api";
 import { updateUserSchema } from "../../constants/yupSchemas/user";
-import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
+import formCheck from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
@@ -51,7 +51,7 @@ const UpdateUserScreen = (props) => {
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(updateUserSchema, formData);
+              const validatedPayload = await formCheck.handleYupSchema(updateUserSchema, formData);
               setErrors({});
               props.handleUpdateUser({
                 userId,
@@ -59,7 +59,7 @@ const UpdateUserScreen = (props) => {
                 onSuccess: () => alert("編輯會員成功"),
               });
             } catch (error) {
-              const errors = handleYupErrors(error);
+              const errors = formCheck.handleYupErrors(error);
               setErrors(errors);
             }
           }}

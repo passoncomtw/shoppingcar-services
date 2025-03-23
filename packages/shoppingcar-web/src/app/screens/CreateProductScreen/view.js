@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createProductSchema } from "../../constants/yupSchemas/product";
-import { handleYupErrors, handleYupSchema } from "../../helpers/formCheck";
+import formCheck from "../../helpers/formCheck";
 
 const INITIAL_FORMDATA = {
   name: "",
@@ -34,14 +34,14 @@ const CreateProductScreen = (props) => {
           initialValues={formData}
           onSubmit={async () => {
             try {
-              const validatedPayload = await handleYupSchema(createProductSchema, formData);
+              const validatedPayload = await formCheck.handleYupSchema(createProductSchema, formData);
               setErrors({});
               props.handleCreateProduct({
                 ...validatedPayload,
                 onSuccess: () => navigate("/products"),
               });
             } catch (error) {
-              const errors = handleYupErrors(error);
+              const errors = formCheck.handleYupErrors(error);
               setErrors(errors);
             }
             // props.handleCreateUser(values);
