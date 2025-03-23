@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車管理後台 - 新增/編輯會員</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- 瀏覽器模擬框架 開始 -->
+    <div class="mx-auto my-4 w-full max-w-6xl overflow-hidden rounded-lg border border-gray-300 shadow-lg">
+        <!-- 瀏覽器頂部 -->
+        <div class="flex items-center justify-between bg-gray-200 px-4 py-2">
+            <div class="flex space-x-2">
+                <div class="h-3 w-3 rounded-full bg-red-500"></div>
+                <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+            </div>
+            <div class="flex w-2/3 items-center rounded-md bg-white px-3 py-1">
+                <span class="text-gray-500 material-icons text-sm">lock</span>
+                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/users/edit/10001</span>
+            </div>
+            <div class="flex space-x-2">
+                <span class="text-gray-500 material-icons">account_circle</span>
+                <span class="text-gray-500 material-icons">more_vert</span>
+            </div>
+        </div>
+
+        <!-- 頁面內容 -->
+        <div class="bg-white">
+            <!-- 側邊欄和主內容區 -->
+            <div class="flex">
+                <!-- 側邊欄 -->
+                <div class="w-64 bg-blue-800 text-white min-h-screen">
+                    <div class="p-4">
+                        <h1 class="text-xl font-bold">購物車管理後台</h1>
+                    </div>
+                    <nav class="mt-4">
+                        <a href="dashboard.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">dashboard</span> 儀表板
+                        </a>
+                        <a href="orders.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">shopping_cart</span> 訂單管理
+                        </a>
+                        <a href="merchants.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">store</span> 商家管理
+                        </a>
+                        <a href="products.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">inventory_2</span> 產品管理
+                        </a>
+                        <a href="#" class="block px-4 py-2 bg-blue-700">
+                            <span class="material-icons align-middle mr-2">person</span> 會員管理
+                        </a>
+                        <a href="#" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">settings</span> 系統設定
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- 主內容區 -->
+                <div class="flex-1 p-8">
+                    <!-- 麵包屑導航 -->
+                    <div class="flex items-center text-sm mb-6">
+                        <a href="dashboard.html" class="text-gray-500 hover:text-blue-600">首頁</a>
+                        <span class="material-icons text-gray-400 mx-1 text-sm">chevron_right</span>
+                        <a href="#" class="text-gray-500 hover:text-blue-600">會員管理</a>
+                        <span class="material-icons text-gray-400 mx-1 text-sm">chevron_right</span>
+                        <span class="text-gray-700 font-medium">編輯會員</span>
+                    </div>
+
+                    <!-- 頁面標題 -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-800">編輯會員資料</h1>
+                            <p class="text-gray-600 mt-1">更新會員的個人資訊和帳戶設定</p>
+                        </div>
+                        <div class="flex space-x-3">
+                            <a href="#" class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                <span class="material-icons mr-1 text-sm">arrow_back</span>
+                                返回列表
+                            </a>
+                            <button class="flex items-center px-4 py-2 bg-red-50 border border-red-300 rounded-md text-red-700 hover:bg-red-100">
+                                <span class="material-icons mr-1 text-sm">block</span>
+                                停用帳戶
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 標籤頁選項 -->
+                    <div class="border-b border-gray-200 mb-6">
+                        <div class="flex -mb-px">
+                            <button class="text-blue-600 border-b-2 border-blue-600 py-2 px-4 font-medium">基本資料</button>
+                            <button class="text-gray-500 hover:text-gray-700 py-2 px-4 font-medium">帳戶資訊</button>
+                            <button class="text-gray-500 hover:text-gray-700 py-2 px-4 font-medium">購買記錄</button>
+                        </div>
+                    </div>
+
+                    <!-- 會員基本資料卡片 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
+                        <!-- 卡片標題 -->
+                        <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-800">基本資料</h2>
+                            <div class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">啟用中</div>
+                        </div>
+
+                        <!-- 表單內容 -->
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- 頭像區塊 (佔滿整行) -->
+                                <div class="lg:col-span-2 flex flex-col items-center justify-center py-4">
+                                    <div class="relative w-24 h-24 mb-4">
+                                        <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="會員頭像" class="w-full h-full rounded-full object-cover border-4 border-blue-100">
+                                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-1 shadow-md">
+                                            <span class="material-icons text-sm">edit</span>
+                                        </button>
+                                    </div>
+                                    <button class="text-blue-600 text-sm">變更頭像</button>
+                                </div>
+
+                                <!-- 姓名 -->
+                                <div>
+                                    <label for="user-name" class="block text-sm font-medium text-gray-700 mb-1">姓名 <span class="text-red-500">*</span></label>
+                                    <input type="text" id="user-name" value="陳小明" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+
+                                <!-- 電子郵件 -->
+                                <div>
+                                    <label for="user-email" class="block text-sm font-medium text-gray-700 mb-1">電子郵件 <span class="text-red-500">*</span></label>
+                                    <input type="email" id="user-email" value="ming.chen@example.com" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+
+                                <!-- 電話 -->
+                                <div>
+                                    <label for="user-phone" class="block text-sm font-medium text-gray-700 mb-1">電話號碼</label>
+                                    <input type="text" id="user-phone" value="0912-345-678" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+
+                                <!-- 性別 -->
+                                <div>
+                                    <label for="user-gender" class="block text-sm font-medium text-gray-700 mb-1">性別</label>
+                                    <select id="user-gender" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <option value="">選擇性別</option>
+                                        <option value="male">男性</option>
+                                        <option value="female" selected>女性</option>
+                                        <option value="other">其他</option>
+                                    </select>
+                                </div>
+
+                                <!-- 生日 -->
+                                <div>
+                                    <label for="user-birth" class="block text-sm font-medium text-gray-700 mb-1">生日</label>
+                                    <input type="date" id="user-birth" value="1990-05-15" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+
+                                <!-- 送貨地址 -->
+                                <div class="lg:col-span-2">
+                                    <label for="user-address" class="block text-sm font-medium text-gray-700 mb-1">送貨地址</label>
+                                    <input type="text" id="user-address" value="台北市信義區松高路1號" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 帳戶狀態卡片 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
+                        <!-- 卡片標題 -->
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-800">帳戶狀態</h2>
+                        </div>
+
+                        <!-- 表單內容 -->
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <!-- 會員等級 -->
+                                <div>
+                                    <label for="user-level" class="block text-sm font-medium text-gray-700 mb-1">會員等級</label>
+                                    <select id="user-level" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
+                                        <option value="regular">一般會員</option>
+                                        <option value="silver" selected>銀卡會員</option>
+                                        <option value="gold">金卡會員</option>
+                                        <option value="platinum">白金會員</option>
+                                    </select>
+                                </div>
+
+                                <!-- 註冊日期 -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">註冊日期</label>
+                                    <p class="text-gray-800 py-2">2022-03-15</p>
+                                </div>
+
+                                <!-- 帳戶狀態 -->
+                                <div class="lg:col-span-2 flex justify-between items-center">
+                                    <div>
+                                        <span class="text-sm font-medium text-gray-700">帳戶狀態</span>
+                                        <p class="text-xs text-gray-500 mt-1">設定會員帳戶是否啟用</p>
+                                    </div>
+                                    <label class="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" class="sr-only peer" checked>
+                                        <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
+                                        <span class="ml-3 text-sm font-medium text-gray-700">啟用中</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 備註卡片 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
+                        <!-- 卡片標題 -->
+                        <div class="px-6 py-4 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-800">管理員備註</h2>
+                        </div>
+
+                        <!-- 表單內容 -->
+                        <div class="p-6">
+                            <div>
+                                <label for="user-remark" class="block text-sm font-medium text-gray-700 mb-1">備註</label>
+                                <textarea id="user-remark" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">常客，每月消費約 $5,000 元。偏好收到有關女性服飾的優惠資訊。</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 表單按鈕 -->
+                    <div class="flex justify-end space-x-3">
+                        <a href="#" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                            取消
+                        </a>
+                        <button class="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700">
+                            儲存變更
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 瀏覽器模擬框架 結束 -->
+</body>
+</html> 

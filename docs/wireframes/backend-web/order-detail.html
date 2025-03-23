@@ -24,7 +24,7 @@
             </div>
             <div class="flex w-2/3 items-center rounded-md bg-white px-3 py-1">
                 <span class="text-gray-500 material-icons text-sm">lock</span>
-                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/orders/OR-2023-1128</span>
+                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/orders/SC20230915001</span>
             </div>
             <div class="flex space-x-2">
                 <span class="text-gray-500 material-icons">account_circle</span>
@@ -52,232 +52,365 @@
                             <span class="material-icons align-middle mr-2">store</span> 商家管理
                         </a>
                         <a href="products.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">inventory</span> 產品管理
+                            <span class="material-icons align-middle mr-2">inventory_2</span> 產品管理
                         </a>
-                        <a href="users.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">people</span> 用戶管理
+                        <a href="#" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">person</span> 會員管理
                         </a>
-                        <div class="mt-8 px-4 py-2">
-                            <a href="login.html" class="flex items-center text-red-300 hover:text-red-100">
-                                <span class="material-icons align-middle mr-2">logout</span> 登出
-                            </a>
-                        </div>
+                        <a href="#" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">settings</span> 系統設定
+                        </a>
                     </nav>
                 </div>
 
-                <!-- 主內容區域 -->
+                <!-- 主內容區 -->
                 <div class="flex-1 p-8">
-                    <!-- 頁面標題和返回按鈕 -->
-                    <div class="mb-8 flex justify-between items-center">
-                        <div class="flex items-center">
-                            <a href="orders.html" class="mr-4 text-blue-600 hover:text-blue-800">
-                                <span class="material-icons">arrow_back</span>
-                            </a>
-                            <h1 class="text-2xl font-bold">訂單詳情</h1>
+                    <!-- 麵包屑導航 -->
+                    <div class="flex items-center text-sm mb-6">
+                        <a href="dashboard.html" class="text-gray-500 hover:text-blue-600">首頁</a>
+                        <span class="material-icons text-gray-400 mx-1 text-sm">chevron_right</span>
+                        <a href="orders.html" class="text-gray-500 hover:text-blue-600">訂單管理</a>
+                        <span class="material-icons text-gray-400 mx-1 text-sm">chevron_right</span>
+                        <span class="text-gray-700 font-medium">訂單詳情</span>
+                    </div>
+
+                    <!-- 頁面標題和操作按鈕 -->
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h1 class="text-2xl font-bold text-gray-800">訂單 #SC20230915001</h1>
+                            <p class="text-gray-600 mt-1">2023/09/15 14:30 建立</p>
                         </div>
-                        <div class="flex">
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded inline-flex items-center mr-2">
+                        <div class="flex space-x-3">
+                            <button class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
                                 <span class="material-icons mr-1 text-sm">print</span>
                                 列印訂單
                             </button>
-                            <div class="relative">
-                                <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded inline-flex items-center">
-                                    <span class="material-icons mr-1 text-sm">more_vert</span>
-                                    更多操作
+                            <button class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
+                                <span class="material-icons mr-1 text-sm">email</span>
+                                發送給客戶
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 訂單狀態和快速操作 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                        <div class="flex flex-wrap justify-between items-center">
+                            <div class="flex items-center mb-3 md:mb-0">
+                                <span class="bg-green-500 w-3 h-3 rounded-full mr-2"></span>
+                                <span class="text-lg font-semibold">已出貨</span>
+                                <span class="ml-2 text-sm text-gray-500">更新於 2023/09/16 10:15</span>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <select class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 bg-white">
+                                    <option value="">更改訂單狀態</option>
+                                    <option value="pending">待處理</option>
+                                    <option value="processing">處理中</option>
+                                    <option value="shipped" selected>已出貨</option>
+                                    <option value="delivered">已送達</option>
+                                    <option value="completed">已完成</option>
+                                    <option value="cancelled">已取消</option>
+                                    <option value="refunded">已退款</option>
+                                </select>
+                                <button class="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700">
+                                    更新狀態
                                 </button>
-                                <!-- 下拉選單 (這裡不展開) -->
                             </div>
                         </div>
                     </div>
 
-                    <!-- 訂單狀態進度條 -->
-                    <div class="bg-white p-4 rounded-lg shadow border border-gray-200 mb-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white">
-                                    <span class="material-icons">check</span>
+                    <!-- 訂單進度追蹤 -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">訂單進度</h2>
+                        <div class="relative">
+                            <!-- 進度線 -->
+                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                            <!-- 進度項目 -->
+                            <div class="space-y-6 relative">
+                                <!-- 已完成步驟 -->
+                                <div class="flex">
+                                    <div class="flex-shrink-0 z-10">
+                                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">
+                                            <span class="material-icons text-sm">check</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-md font-medium">訂單已出貨</h3>
+                                        <p class="text-sm text-gray-500">2023/09/16 10:15</p>
+                                        <p class="text-sm text-gray-600 mt-1">包裹已由物流公司取件，追蹤編號: TW123456789</p>
+                                    </div>
                                 </div>
-                                <p class="mt-2 text-sm font-medium">已下單</p>
-                                <p class="text-xs text-gray-500">11/15 16:30</p>
-                            </div>
-                            <div class="flex-1 h-1 mx-2 bg-green-200"></div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center text-white">
-                                    <span class="material-icons">schedule</span>
+                                <!-- 已完成步驟 -->
+                                <div class="flex">
+                                    <div class="flex-shrink-0 z-10">
+                                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">
+                                            <span class="material-icons text-sm">check</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-md font-medium">訂單已處理</h3>
+                                        <p class="text-sm text-gray-500">2023/09/15 16:45</p>
+                                        <p class="text-sm text-gray-600 mt-1">商品已打包並準備出貨</p>
+                                    </div>
                                 </div>
-                                <p class="mt-2 text-sm font-medium">待付款</p>
-                                <p class="text-xs text-gray-500">處理中</p>
-                            </div>
-                            <div class="flex-1 h-1 mx-2 bg-gray-200"></div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-white">
-                                    <span class="material-icons">local_shipping</span>
+                                <!-- 已完成步驟 -->
+                                <div class="flex">
+                                    <div class="flex-shrink-0 z-10">
+                                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">
+                                            <span class="material-icons text-sm">check</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-md font-medium">付款成功</h3>
+                                        <p class="text-sm text-gray-500">2023/09/15 14:35</p>
+                                        <p class="text-sm text-gray-600 mt-1">已收到付款，交易編號: TX987654321</p>
+                                    </div>
                                 </div>
-                                <p class="mt-2 text-sm font-medium">商品出貨</p>
-                                <p class="text-xs text-gray-500">等待中</p>
-                            </div>
-                            <div class="flex-1 h-1 mx-2 bg-gray-200"></div>
-                            <div class="flex flex-col items-center">
-                                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-white">
-                                    <span class="material-icons">done_all</span>
-                                </div>
-                                <p class="mt-2 text-sm font-medium">完成</p>
-                                <p class="text-xs text-gray-500">等待中</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 訂單資訊和客戶資訊 -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <!-- 訂單資訊 -->
-                        <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
-                            <h2 class="text-lg font-medium mb-4 pb-2 border-b">訂單資訊</h2>
-                            <div class="space-y-3">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">訂單編號:</span>
-                                    <span class="font-medium">#OR-2023-1128</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">訂單日期:</span>
-                                    <span>2023-11-15 16:30</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">訂單狀態:</span>
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">待付款</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">支付方式:</span>
-                                    <span>信用卡支付</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">訂單總額:</span>
-                                    <span class="font-semibold">$2,450</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 客戶資訊 -->
-                        <div class="bg-white p-6 rounded-lg shadow border border-gray-200">
-                            <h2 class="text-lg font-medium mb-4 pb-2 border-b">客戶資訊</h2>
-                            <div class="flex items-center mb-4">
-                                <div class="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center mr-3">
-                                    <span class="material-icons">person</span>
-                                </div>
-                                <div>
-                                    <h3 class="font-medium">李小華</h3>
-                                    <p class="text-sm text-gray-500">會員 ID: 10045</p>
-                                </div>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">電子郵件:</span>
-                                    <span>lee@example.com</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">電話號碼:</span>
-                                    <span>0912-345-678</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span class="text-gray-600">送貨地址:</span>
-                                    <span>台北市信義區信義路5段7號</span>
+                                <!-- 已完成步驟 -->
+                                <div class="flex">
+                                    <div class="flex-shrink-0 z-10">
+                                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-green-500 text-white">
+                                            <span class="material-icons text-sm">check</span>
+                                        </div>
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-md font-medium">訂單已建立</h3>
+                                        <p class="text-sm text-gray-500">2023/09/15 14:30</p>
+                                        <p class="text-sm text-gray-600 mt-1">客戶已完成訂單並等待付款</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 訂單項目 -->
-                    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden mb-6">
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h2 class="text-lg font-medium">訂單項目</h2>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">單價</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">數量</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">小計</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
+                    <!-- 內容區分欄 -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- 左欄：客戶資訊和配送資訊 -->
+                        <div class="lg:col-span-1 space-y-6">
+                            <!-- 客戶資訊卡片 -->
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+                                    <h2 class="text-lg font-semibold text-gray-800">客戶資訊</h2>
+                                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm">查看詳情</a>
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-start mb-4">
+                                        <div class="flex-shrink-0">
+                                            <span class="material-icons text-gray-400">account_circle</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm font-medium text-gray-900">林小明</p>
+                                            <p class="text-sm text-gray-500">會員編號: CUS10005</p>
+                                            <p class="text-sm text-gray-500">註冊日期: 2023/01/15</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start mb-4">
+                                        <div class="flex-shrink-0">
+                                            <span class="material-icons text-gray-400">email</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm text-gray-500">xiaoming.lin@example.com</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <div class="flex-shrink-0">
+                                            <span class="material-icons text-gray-400">phone</span>
+                                        </div>
+                                        <div class="ml-3">
+                                            <p class="text-sm text-gray-500">0912-345-678</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 配送資訊卡片 -->
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-gray-200">
+                                    <h2 class="text-lg font-semibold text-gray-800">配送資訊</h2>
+                                </div>
+                                <div class="p-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">收件人</h3>
+                                            <p class="text-md">林小明</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">聯絡電話</h3>
+                                            <p class="text-md">0912-345-678</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">配送地址</h3>
+                                            <p class="text-md">台北市信義區松高路100號 5樓</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">配送方式</h3>
+                                            <p class="text-md">宅配</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">物流追蹤</h3>
+                                            <p class="text-md flex items-center">
+                                                <span>TW123456789</span>
+                                                <a href="#" class="ml-2 text-blue-600 hover:text-blue-800 text-sm">追蹤包裹</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 付款資訊卡片 -->
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-gray-200">
+                                    <h2 class="text-lg font-semibold text-gray-800">付款資訊</h2>
+                                </div>
+                                <div class="p-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">付款方式</h3>
+                                            <p class="text-md">信用卡 (Visa ****4567)</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">交易狀態</h3>
                                             <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">巧克力怪獸餅乾</div>
-                                                    <div class="text-sm text-gray-500">商品編號: P-10234</div>
-                                                </div>
+                                                <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+                                                <p class="text-md">已完成</p>
                                             </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$350</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">3</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,050</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">香蕉口味糖果棒</div>
-                                                    <div class="text-sm text-gray-500">商品編號: P-10567</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$200</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">5</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,000</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">草莓味泡泡糖</div>
-                                                    <div class="text-sm text-gray-500">商品編號: P-10789</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$100</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">4</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$400</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot class="bg-gray-50">
-                                    <tr>
-                                        <td colspan="3" class="px-6 py-3 text-right text-sm font-medium">小計</td>
-                                        <td class="px-6 py-3 text-sm">$2,450</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="px-6 py-3 text-right text-sm font-medium">運費</td>
-                                        <td class="px-6 py-3 text-sm">$0</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="px-6 py-3 text-right text-sm font-medium">總計</td>
-                                        <td class="px-6 py-3 text-sm font-semibold">$2,450</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">交易編號</h3>
+                                            <p class="text-md">TX987654321</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-sm font-medium text-gray-500">付款時間</h3>
+                                            <p class="text-md">2023/09/15 14:35</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- 操作按鈕 -->
-                    <div class="flex justify-end space-x-4">
-                        <button class="bg-yellow-500 hover:bg-yellow-600 text-white font-medium py-2 px-4 rounded inline-flex items-center">
-                            <span class="material-icons mr-1 text-sm">paid</span>
-                            更新為已付款
-                        </button>
-                        <button class="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded inline-flex items-center">
-                            <span class="material-icons mr-1 text-sm">cancel</span>
-                            取消訂單
-                        </button>
+                        <!-- 右欄：訂單商品和金額資訊 -->
+                        <div class="lg:col-span-2 space-y-6">
+                            <!-- 訂單商品卡片 -->
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-gray-200">
+                                    <h2 class="text-lg font-semibold text-gray-800">訂購商品</h2>
+                                </div>
+                                <div class="overflow-x-auto">
+                                    <table class="min-w-full divide-y divide-gray-200">
+                                        <thead class="bg-gray-50">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商品</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">單價</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">數量</th>
+                                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">小計</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="bg-white divide-y divide-gray-200">
+                                            <!-- 商品1 -->
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-12 w-12 rounded border border-gray-200 overflow-hidden">
+                                                            <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="產品圖" class="h-full w-full object-cover">
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">精品咖啡杯組</div>
+                                                            <div class="text-sm text-gray-500">SKU: CFE-CP-001</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">NT$1,200</div>
+                                                    <div class="text-sm text-gray-500 line-through">NT$1,500</div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">1</div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">NT$1,200</div>
+                                                </td>
+                                            </tr>
+                                            <!-- 商品2 -->
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="flex items-center">
+                                                        <div class="flex-shrink-0 h-12 w-12 rounded border border-gray-200 overflow-hidden">
+                                                            <img src="https://images.unsplash.com/photo-1577139511620-9359cc8c1e42?ixlib=rb-1.2.1&auto=format&fit=crop&w=100&q=80" alt="產品圖" class="h-full w-full object-cover">
+                                                        </div>
+                                                        <div class="ml-4">
+                                                            <div class="text-sm font-medium text-gray-900">手沖咖啡壺</div>
+                                                            <div class="text-sm text-gray-500">SKU: CFE-PT-002</div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">NT$1,800</div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">1</div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-900">NT$1,800</div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 訂單金額卡片 -->
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-gray-200">
+                                    <h2 class="text-lg font-semibold text-gray-800">訂單金額</h2>
+                                </div>
+                                <div class="p-6">
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">商品小計</span>
+                                            <span class="text-gray-900">NT$3,000</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">折扣</span>
+                                            <span class="text-red-600">-NT$300</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-600">運費</span>
+                                            <span class="text-gray-900">NT$100</span>
+                                        </div>
+                                        <div class="pt-3 border-t border-gray-200">
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-lg font-semibold text-gray-900">總計</span>
+                                                <span class="text-xl font-semibold text-gray-900">NT$2,800</span>
+                                            </div>
+                                            <div class="flex justify-end">
+                                                <span class="text-sm text-gray-500">含稅金 NT$133</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 備註卡片 -->
+                            <div class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+                                <div class="px-6 py-4 border-b border-gray-200">
+                                    <h2 class="text-lg font-semibold text-gray-800">備註</h2>
+                                </div>
+                                <div class="p-6">
+                                    <div class="mb-4">
+                                        <h3 class="text-sm font-medium text-gray-700 mb-2">客戶備註</h3>
+                                        <p class="text-sm text-gray-600 bg-gray-50 p-3 rounded">請在下午時段送達，謝謝！</p>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-medium text-gray-700 mb-2">內部備註</h3>
+                                        <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500" rows="3" placeholder="新增內部備註..."></textarea>
+                                        <div class="mt-2 flex justify-end">
+                                            <button class="px-3 py-1 bg-blue-600 rounded-md text-white text-sm hover:bg-blue-700">
+                                                儲存備註
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
