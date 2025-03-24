@@ -6,6 +6,7 @@
     <title>購物車應用 - 登入</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="common.css" rel="stylesheet">
     <style>
         :root {
             --primary-color: #560CCE;
@@ -196,50 +197,6 @@
             text-decoration: none;
             margin-left: 5px;
         }
-        
-        .social-login {
-            margin: 30px 0;
-        }
-        
-        .social-login .or-divider {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .social-login .or-divider .line {
-            flex: 1;
-            height: 1px;
-            background-color: var(--border-color);
-        }
-        
-        .social-login .or-divider .text {
-            padding: 0 16px;
-            color: var(--secondary-color);
-            font-size: 14px;
-        }
-        
-        .social-buttons {
-            display: flex;
-            justify-content: space-around;
-        }
-        
-        .social-button {
-            width: 50px;
-            height: 50px;
-            border-radius: 25px;
-            background-color: white;
-            border: 1px solid var(--border-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .social-button img {
-            width: 24px;
-            height: 24px;
-        }
     </style>
 </head>
 <body>
@@ -265,8 +222,8 @@
                 </div>
                 
                 <div class="input-field">
-                    <span class="material-icons">email</span>
-                    <input type="email" placeholder="電子郵件">
+                    <span class="material-icons">phone_iphone</span>
+                    <input type="tel" placeholder="手機號碼">
                 </div>
                 
                 <div class="input-field">
@@ -275,37 +232,14 @@
                 </div>
                 
                 <div class="forgot-password">
-                    <a href="#">忘記密碼？</a>
+                    <a href="forgot-password.html">忘記密碼？</a>
                 </div>
                 
-                <button class="login-button">登入</button>
+                <button class="login-button" onclick="window.location.href='home.html'">登入</button>
                 
                 <div class="signup-container">
                     <span>還沒有帳號？</span>
-                    <a href="#">立即註冊</a>
-                </div>
-                
-                <div class="social-login">
-                    <div class="or-divider">
-                        <div class="line"></div>
-                        <div class="text">或使用以下方式登入</div>
-                        <div class="line"></div>
-                    </div>
-                    
-                    <div class="social-buttons">
-                        <div class="social-button">
-                            <span class="material-icons" style="color: #3b5998;">facebook</span>
-                        </div>
-                        <div class="social-button">
-                            <span class="material-icons" style="color: #db4437;">email</span>
-                        </div>
-                        <div class="social-button">
-                            <span class="material-icons" style="color: #4285f4;">phone_iphone</span>
-                        </div>
-                        <div class="social-button">
-                            <span class="material-icons" style="color: #34a853;">chat</span>
-                        </div>
-                    </div>
+                    <a href="register-user.html">立即註冊</a>
                 </div>
             </div>
         </div>

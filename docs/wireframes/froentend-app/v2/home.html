@@ -6,6 +6,7 @@
     <title>購物車應用 - 首頁</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="common.css" rel="stylesheet">
     <style>
         :root {
             --primary-color: #560CCE;
@@ -110,28 +111,6 @@
             cursor: pointer;
         }
         
-        .search-bar {
-            padding: 12px 16px;
-            background-color: var(--primary-color);
-        }
-        
-        .search-input {
-            background-color: white;
-            border-radius: 24px;
-            display: flex;
-            align-items: center;
-            padding: 0 15px;
-            height: 40px;
-        }
-        
-        .search-input input {
-            border: none;
-            outline: none;
-            width: 100%;
-            margin-left: 10px;
-            font-size: 15px;
-        }
-        
         .banner {
             padding: 16px;
             height: 150px;
@@ -228,6 +207,8 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
         }
         
         .product-card .image {
@@ -286,11 +267,11 @@
             display: flex;
             overflow-x: auto;
             gap: 12px;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
         
         .merchant-row::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Edge */
+            display: none;
         }
         
         .merchant-card {
@@ -300,6 +281,8 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
         }
         
         .merchant-card .image {
@@ -417,14 +400,6 @@
                         <span class="material-icons icon">notifications</span>
                         <div class="badge">2</div>
                     </div>
-                    <span class="material-icons icon">shopping_cart</span>
-                </div>
-            </div>
-            
-            <div class="search-bar">
-                <div class="search-input">
-                    <span class="material-icons">search</span>
-                    <input type="text" placeholder="搜尋商品或商家">
                 </div>
             </div>
             
@@ -476,7 +451,7 @@
             </div>
             
             <div class="product-cards">
-                <div class="product-card">
+                <a href="product-detail.html" class="product-card">
                     <div class="image">
                         <img src="https://via.placeholder.com/160x120/FFC107/FFFFFF?text=產品1" alt="產品1">
                         <div class="favorite">
@@ -488,7 +463,7 @@
                         <p class="merchant">範例咖啡廳</p>
                         <p class="price">NT$ 450</p>
                     </div>
-                </div>
+                </a>
                 <div class="product-card">
                     <div class="image">
                         <img src="https://via.placeholder.com/160x120/4CAF50/FFFFFF?text=產品2" alt="產品2">
@@ -536,7 +511,7 @@
             </div>
             
             <div class="merchant-row">
-                <div class="merchant-card">
+                <a href="merchant-detail.html" class="merchant-card">
                     <div class="image">
                         <img src="https://via.placeholder.com/140x80/560CCE/FFFFFF?text=商家1" alt="商家1">
                     </div>
@@ -544,7 +519,7 @@
                         <h3 class="title">範例咖啡廳</h3>
                         <p class="category">咖啡廳 • 4.8⭐</p>
                     </div>
-                </div>
+                </a>
                 <div class="merchant-card">
                     <div class="image">
                         <img src="https://via.placeholder.com/140x80/009688/FFFFFF?text=商家2" alt="商家2">
@@ -599,25 +574,28 @@
                 </div>
             </div>
             
-            <!-- 底部空間，確保內容不被底部導航欄擋住 -->
             <div style="height: 80px;"></div>
             
             <div class="bottom-nav">
-                <a href="#" class="nav-item active">
+                <a href="home.html" class="nav-item active">
                     <span class="material-icons icon">home</span>
                     <span>首頁</span>
                 </a>
-                <a href="#" class="nav-item">
-                    <span class="material-icons icon">category</span>
-                    <span>分類</span>
+                <a href="merchants.html" class="nav-item">
+                    <span class="material-icons icon">search</span>
+                    <span>搜尋</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="shoppingcar.html" class="nav-item">
                     <span class="material-icons icon">shopping_cart</span>
                     <span>購物車</span>
                 </a>
-                <a href="#" class="nav-item">
+                <a href="orders.html" class="nav-item">
+                    <span class="material-icons icon">receipt</span>
+                    <span>訂單</span>
+                </a>
+                <a href="setting.html" class="nav-item">
                     <span class="material-icons icon">person</span>
-                    <span>個人</span>
+                    <span>我的</span>
                     <span class="member-badge">銀卡</span>
                 </a>
             </div>
