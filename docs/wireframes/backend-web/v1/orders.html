@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車管理後台 - 訂單管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- 瀏覽器模擬框架 開始 -->
+    <div class="mx-auto my-4 w-full max-w-6xl overflow-hidden rounded-lg border border-gray-300 shadow-lg">
+        <!-- 瀏覽器頂部 -->
+        <div class="flex items-center justify-between bg-gray-200 px-4 py-2">
+            <div class="flex space-x-2">
+                <div class="h-3 w-3 rounded-full bg-red-500"></div>
+                <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
+                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+            </div>
+            <div class="flex w-2/3 items-center rounded-md bg-white px-3 py-1">
+                <span class="text-gray-500 material-icons text-sm">lock</span>
+                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/orders</span>
+            </div>
+            <div class="flex space-x-2">
+                <span class="text-gray-500 material-icons">account_circle</span>
+                <span class="text-gray-500 material-icons">more_vert</span>
+            </div>
+        </div>
+
+        <!-- 頁面內容 -->
+        <div class="bg-white">
+            <!-- 側邊欄和主內容區 -->
+            <div class="flex">
+                <!-- 側邊欄 -->
+                <div class="w-64 bg-blue-800 text-white min-h-screen">
+                    <div class="p-4">
+                        <h1 class="text-xl font-bold">購物車管理後台</h1>
+                    </div>
+                    <nav class="mt-4">
+                        <a href="dashboard.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">dashboard</span> 儀表板
+                        </a>
+                        <a href="orders.html" class="block px-4 py-2 bg-blue-700">
+                            <span class="material-icons align-middle mr-2">shopping_cart</span> 訂單管理
+                        </a>
+                        <a href="merchants.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">store</span> 商家管理
+                        </a>
+                        <a href="products.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">inventory</span> 產品管理
+                        </a>
+                        <a href="users.html" class="block px-4 py-2 hover:bg-blue-700">
+                            <span class="material-icons align-middle mr-2">people</span> 用戶管理
+                        </a>
+                        <div class="mt-8 px-4 py-2">
+                            <a href="login.html" class="flex items-center text-red-300 hover:text-red-100">
+                                <span class="material-icons align-middle mr-2">logout</span> 登出
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+
+                <!-- 主內容區域 -->
+                <div class="flex-1 p-8">
+                    <!-- 頁面標題 -->
+                    <div class="mb-8 flex justify-between items-center">
+                        <h1 class="text-2xl font-bold">訂單管理</h1>
+                        <div>
+                            <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded inline-flex items-center">
+                                <span class="material-icons mr-1 text-sm">file_download</span>
+                                匯出訂單
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 篩選與搜索 -->
+                    <div class="bg-white p-4 rounded-lg shadow mb-6 border border-gray-200">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">訂單狀態</label>
+                                <select class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    <option>全部狀態</option>
+                                    <option>待付款</option>
+                                    <option>已付款</option>
+                                    <option>處理中</option>
+                                    <option>已完成</option>
+                                    <option>已取消</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">開始日期</label>
+                                <input type="date" class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">結束日期</label>
+                                <input type="date" class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">搜索</label>
+                                <div class="relative">
+                                    <input type="text" placeholder="訂單編號或用戶名" class="w-full border border-gray-300 rounded-md shadow-sm py-2 pl-10 pr-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                        <span class="material-icons text-gray-400 text-lg">search</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 flex justify-end">
+                            <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded mr-2">
+                                重置
+                            </button>
+                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
+                                篩選
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 訂單表格 -->
+                    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">訂單編號</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用戶</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商家</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">金額</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">狀態</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">下單時間</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">#OR-2023-1128</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                                                <span class="material-icons text-sm">person</span>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">李小華</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">怪物糖果</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$2,450</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">待付款</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-15 16:30</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="order-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">#OR-2023-1127</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                                                <span class="material-icons text-sm">person</span>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">張大明</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">怪物糖果</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,800</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-15 15:15</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="order-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">#OR-2023-1126</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                                                <span class="material-icons text-sm">person</span>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">林小玲</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">美味餅乾</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$920</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">已付款</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-15 14:20</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="order-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">#OR-2023-1125</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                                                <span class="material-icons text-sm">person</span>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">陳志明</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">吃貨零食</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,670</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">已取消</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-15 13:45</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="order-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 font-medium">#OR-2023-1124</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
+                                                <span class="material-icons text-sm">person</span>
+                                            </div>
+                                            <div class="text-sm font-medium text-gray-900">王小明</div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">怪物糖果</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$1,200</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">已完成</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2023-11-15 12:30</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="order-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">查看</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <!-- 分頁 -->
+                        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                                <div>
+                                    <p class="text-sm text-gray-700">
+                                        顯示第 <span class="font-medium">1</span> 至 <span class="font-medium">5</span> 項結果，共 <span class="font-medium">50</span> 項
+                                    </p>
+                                </div>
+                                <div>
+                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <span class="material-icons text-sm">chevron_left</span>
+                                        </a>
+                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
+                                            1
+                                        </a>
+                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                            2
+                                        </a>
+                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                            3
+                                        </a>
+                                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+                                            ...
+                                        </span>
+                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
+                                            10
+                                        </a>
+                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                                            <span class="material-icons text-sm">chevron_right</span>
+                                        </a>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 瀏覽器模擬框架 結束 -->
+</body>
+</html> 
