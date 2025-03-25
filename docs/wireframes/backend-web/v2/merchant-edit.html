@@ -3,340 +3,455 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>購物車管理後台 - 新增/編輯商家</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>後台管理系統 - 編輯商家</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #560CCE;
+            --secondary-color: #414757;
+            --error-color: #f13a59;
+            --text-color: #000000;
+            --background-color: #F5F5F5;
+            --card-color: #FFFFFF;
+            --border-color: #E0E0E0;
+        }
+        
         body {
             font-family: 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-header .logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .sidebar-header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .sidebar-menu {
+            padding: 16px 0;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: var(--background-color);
+        }
+        
+        .menu-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .menu-item .icon {
+            margin-right: 12px;
+        }
+        
+        .menu-item .label {
+            font-size: 14px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-menu .icon {
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: var(--secondary-color);
+        }
+        
+        .breadcrumb .current {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 14px;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: white;
+            color: var(--secondary-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .tab {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--secondary-color);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-badge.active {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .status-badge.inactive {
+            background-color: #FFEBEE;
+            color: #C62828;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- 瀏覽器模擬框架 開始 -->
-    <div class="mx-auto my-4 w-full max-w-6xl overflow-hidden rounded-lg border border-gray-300 shadow-lg">
-        <!-- 瀏覽器頂部 -->
-        <div class="flex items-center justify-between bg-gray-200 px-4 py-2">
-            <div class="flex space-x-2">
-                <div class="h-3 w-3 rounded-full bg-red-500"></div>
-                <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="material-icons">shopping_cart</span>
             </div>
-            <div class="flex w-2/3 items-center rounded-md bg-white px-3 py-1">
-                <span class="text-gray-500 material-icons text-sm">lock</span>
-                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/merchants/edit/1001</span>
-            </div>
-            <div class="flex space-x-2">
-                <span class="text-gray-500 material-icons">account_circle</span>
-                <span class="text-gray-500 material-icons">more_vert</span>
-            </div>
+            <h1>後台管理系統</h1>
         </div>
-
-        <!-- 頁面內容 -->
-        <div class="bg-white">
-            <!-- 側邊欄和主內容區 -->
-            <div class="flex">
-                <!-- 側邊欄 -->
-                <div class="w-64 bg-blue-800 text-white min-h-screen">
-                    <div class="p-4">
-                        <h1 class="text-xl font-bold">購物車管理後台</h1>
-                    </div>
-                    <nav class="mt-4">
-                        <a href="dashboard.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">dashboard</span> 儀表板
-                        </a>
-                        <a href="orders.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">shopping_cart</span> 訂單管理
-                        </a>
-                        <a href="merchants.html" class="block px-4 py-2 bg-blue-700">
-                            <span class="material-icons align-middle mr-2">store</span> 商家管理
-                        </a>
-                        <a href="products.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">inventory_2</span> 產品管理
-                        </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">person</span> 會員管理
-                        </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">settings</span> 系統設定
-                        </a>
-                    </nav>
-                </div>
-
-                <!-- 主內容區 -->
-                <div class="flex-1 p-8">
-                    <!-- 麵包屑導航 -->
-                    <div class="flex items-center text-sm mb-6">
-                        <a href="dashboard.html" class="text-gray-500 hover:text-blue-600">首頁</a>
-                        <span class="material-icons text-gray-400 mx-1 text-sm">chevron_right</span>
-                        <a href="merchants.html" class="text-gray-500 hover:text-blue-600">商家管理</a>
-                        <span class="material-icons text-gray-400 mx-1 text-sm">chevron_right</span>
-                        <span class="text-gray-700 font-medium">編輯商家</span>
-                    </div>
-
-                    <!-- 頁面標題 -->
-                    <div class="flex justify-between items-center mb-6">
-                        <div>
-                            <h1 class="text-2xl font-bold text-gray-800">編輯商家資料</h1>
-                            <p class="text-gray-600 mt-1">更新商家的詳細資訊和設定</p>
-                        </div>
-                        <div class="flex space-x-3">
-                            <a href="merchants.html" class="flex items-center px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                                <span class="material-icons mr-1 text-sm">arrow_back</span>
-                                返回列表
-                            </a>
-                            <button class="flex items-center px-4 py-2 bg-red-50 border border-red-300 rounded-md text-red-700 hover:bg-red-100">
-                                <span class="material-icons mr-1 text-sm">delete</span>
-                                刪除商家
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 標籤頁選項 -->
-                    <div class="border-b border-gray-200 mb-6">
-                        <div class="flex -mb-px">
-                            <button class="text-blue-600 border-b-2 border-blue-600 py-2 px-4 font-medium">基本資料</button>
-                            <button class="text-gray-500 hover:text-gray-700 py-2 px-4 font-medium">銀行與支付</button>
-                            <button class="text-gray-500 hover:text-gray-700 py-2 px-4 font-medium">媒體資源</button>
-                        </div>
-                    </div>
-
-                    <!-- 主要表單內容 -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
-                        <!-- 卡片標題 -->
-                        <div class="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-                            <h2 class="text-lg font-semibold text-gray-800">基本資料</h2>
-                            <div class="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded">營業中</div>
-                        </div>
-
-                        <!-- 表單內容 -->
-                        <div class="p-6">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <!-- 商家名稱 (佔滿整行) -->
-                                <div class="lg:col-span-2">
-                                    <label for="merchant-name" class="block text-sm font-medium text-gray-700 mb-1">商家名稱 <span class="text-red-500">*</span></label>
-                                    <input type="text" id="merchant-name" value="範例咖啡廳" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 地址 (佔滿整行) -->
-                                <div class="lg:col-span-2">
-                                    <label for="merchant-address" class="block text-sm font-medium text-gray-700 mb-1">地址 <span class="text-red-500">*</span></label>
-                                    <input type="text" id="merchant-address" value="台北市信義區松高路1號" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 電話 -->
-                                <div>
-                                    <label for="merchant-phone" class="block text-sm font-medium text-gray-700 mb-1">聯絡電話 <span class="text-red-500">*</span></label>
-                                    <input type="text" id="merchant-phone" value="02-1234-5678" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 電子郵件 -->
-                                <div>
-                                    <label for="merchant-email" class="block text-sm font-medium text-gray-700 mb-1">電子郵件</label>
-                                    <input type="email" id="merchant-email" value="contact@example.cafe" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 商家類別 -->
-                                <div>
-                                    <label for="merchant-category" class="block text-sm font-medium text-gray-700 mb-1">商家類別 <span class="text-red-500">*</span></label>
-                                    <select id="merchant-category" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                        <option value="">選擇類別</option>
-                                        <option value="restaurant" selected>餐廳</option>
-                                        <option value="cafe">咖啡廳</option>
-                                        <option value="retail">零售</option>
-                                        <option value="service">服務業</option>
-                                        <option value="other">其他</option>
-                                    </select>
-                                </div>
-
-                                <!-- 營業時間 -->
-                                <div>
-                                    <label for="merchant-hours" class="block text-sm font-medium text-gray-700 mb-1">營業時間</label>
-                                    <input type="text" id="merchant-hours" value="週一至週五 08:00-22:00，週末 10:00-20:00" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 商家描述 (佔滿整行) -->
-                                <div class="lg:col-span-2">
-                                    <label for="merchant-description" class="block text-sm font-medium text-gray-700 mb-1">商家描述</label>
-                                    <textarea id="merchant-description" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">提供精品咖啡和各式甜點的咖啡廳，環境舒適，也提供無線網路和座位供顧客使用筆電工作。</textarea>
-                                </div>
-
-                                <!-- 商家狀態 (佔滿整行) -->
-                                <div class="lg:col-span-2 flex justify-between items-center">
-                                    <div>
-                                        <span class="text-sm font-medium text-gray-700">商家狀態</span>
-                                        <p class="text-xs text-gray-500 mt-1">設定商家是否正在營業中</p>
-                                    </div>
-                                    <label class="relative inline-flex items-center cursor-pointer">
-                                        <input type="checkbox" value="" class="sr-only peer" checked>
-                                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-600"></div>
-                                        <span class="ml-3 text-sm font-medium text-gray-700">營業中</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 聯絡人資料卡片 -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
-                        <!-- 卡片標題 -->
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h2 class="text-lg font-semibold text-gray-800">聯絡人資料</h2>
-                        </div>
-
-                        <!-- 表單內容 -->
-                        <div class="p-6">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <!-- 聯絡人姓名 -->
-                                <div>
-                                    <label for="contact-name" class="block text-sm font-medium text-gray-700 mb-1">聯絡人姓名</label>
-                                    <input type="text" id="contact-name" value="王小明" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 聯絡人電話 -->
-                                <div>
-                                    <label for="contact-phone" class="block text-sm font-medium text-gray-700 mb-1">聯絡人電話</label>
-                                    <input type="text" id="contact-phone" value="0912-345-678" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 銀行與支付資料卡片 -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
-                        <!-- 卡片標題 -->
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h2 class="text-lg font-semibold text-gray-800">銀行與支付資料</h2>
-                        </div>
-
-                        <!-- 表單內容 -->
-                        <div class="p-6">
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <!-- 銀行名稱 -->
-                                <div>
-                                    <label for="bank-name" class="block text-sm font-medium text-gray-700 mb-1">銀行名稱</label>
-                                    <input type="text" id="bank-name" value="國泰世華銀行" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 分行 -->
-                                <div>
-                                    <label for="bank-branch" class="block text-sm font-medium text-gray-700 mb-1">分行</label>
-                                    <input type="text" id="bank-branch" value="信義分行" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 銀行帳號 -->
-                                <div>
-                                    <label for="bank-account" class="block text-sm font-medium text-gray-700 mb-1">銀行帳號</label>
-                                    <input type="text" id="bank-account" value="1234-5678-9012-3456" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 帳戶名稱 -->
-                                <div>
-                                    <label for="account-name" class="block text-sm font-medium text-gray-700 mb-1">帳戶名稱</label>
-                                    <input type="text" id="account-name" value="範例咖啡廳有限公司" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                </div>
-
-                                <!-- 接受的支付方式 -->
-                                <div class="lg:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700 mb-3">接受的支付方式</label>
-                                    <div class="grid grid-cols-2 gap-4">
-                                        <div class="flex items-center">
-                                            <input id="payment-credit" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
-                                            <label for="payment-credit" class="ml-2 text-sm font-medium text-gray-700">信用卡</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="payment-linepay" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
-                                            <label for="payment-linepay" class="ml-2 text-sm font-medium text-gray-700">LINE Pay</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="payment-transfer" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" checked>
-                                            <label for="payment-transfer" class="ml-2 text-sm font-medium text-gray-700">銀行轉帳</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="payment-cash" type="checkbox" class="w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-                                            <label for="payment-cash" class="ml-2 text-sm font-medium text-gray-700">貨到付款</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 媒體資源卡片 -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
-                        <!-- 卡片標題 -->
-                        <div class="px-6 py-4 border-b border-gray-200">
-                            <h2 class="text-lg font-semibold text-gray-800">媒體資源</h2>
-                        </div>
-
-                        <!-- 表單內容 -->
-                        <div class="p-6">
-                            <!-- 商家 Logo 上傳 -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">商家 Logo</label>
-                                <div class="flex items-center space-x-6">
-                                    <div class="w-24 h-24 relative">
-                                        <img src="https://via.placeholder.com/150/4F46E5/FFFFFF?text=CAFE" alt="商家Logo" class="w-full h-full rounded-lg object-cover border border-gray-200">
-                                        <button class="absolute bottom-0 right-0 bg-blue-600 text-white rounded-full p-1 shadow-md">
-                                            <span class="material-icons text-sm">edit</span>
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <button class="px-3 py-1.5 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">變更 Logo</button>
-                                        <p class="text-xs text-gray-500 mt-1">建議尺寸 400x400 像素，格式 JPG 或 PNG</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- 商家封面照片上傳 -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-gray-700 mb-2">商家封面照片</label>
-                                <div class="mb-3">
-                                    <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&h=400&q=80" alt="商家封面照片" class="w-full h-40 object-cover rounded-lg border border-gray-200">
-                                    <div class="flex justify-end mt-2">
-                                        <button class="px-3 py-1.5 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-50">變更封面照片</button>
-                                    </div>
-                                </div>
-                                <p class="text-xs text-gray-500">建議尺寸 1200x400 像素，格式 JPG 或 PNG</p>
-                            </div>
-
-                            <!-- 社群媒體連結 -->
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">社群媒體連結</label>
-                                <div class="space-y-3">
-                                    <!-- Facebook -->
-                                    <div class="flex items-center">
-                                        <div class="w-24 text-sm text-gray-700">Facebook</div>
-                                        <input type="text" value="https://facebook.com/examplecafe" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                    </div>
-                                    <!-- Instagram -->
-                                    <div class="flex items-center">
-                                        <div class="w-24 text-sm text-gray-700">Instagram</div>
-                                        <input type="text" value="https://instagram.com/examplecafe" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                    </div>
-                                    <!-- 網站 -->
-                                    <div class="flex items-center">
-                                        <div class="w-24 text-sm text-gray-700">官方網站</div>
-                                        <input type="text" value="https://example-cafe.com" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 表單按鈕 -->
-                    <div class="flex justify-end space-x-3">
-                        <a href="merchants.html" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                            取消
-                        </a>
-                        <button class="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700">
-                            儲存變更
-                        </button>
-                    </div>
-                </div>
-            </div>
+        
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item">
+                <span class="material-icons icon">dashboard</span>
+                <span class="label">儀表板</span>
+            </a>
+            <a href="orders.html" class="menu-item">
+                <span class="material-icons icon">receipt</span>
+                <span class="label">訂單管理</span>
+            </a>
+            <a href="merchants.html" class="menu-item active">
+                <span class="material-icons icon">storefront</span>
+                <span class="label">商家管理</span>
+            </a>
+            <a href="products.html" class="menu-item">
+                <span class="material-icons icon">inventory_2</span>
+                <span class="label">商品管理</span>
+            </a>
+            <a href="users.html" class="menu-item">
+                <span class="material-icons icon">people</span>
+                <span class="label">會員管理</span>
+            </a>
+            <a href="settings.html" class="menu-item">
+                <span class="material-icons icon">settings</span>
+                <span class="label">系統設定</span>
+            </a>
         </div>
     </div>
-    <!-- 瀏覽器模擬框架 結束 -->
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">編輯商家</h1>
+            <div class="user-menu">
+                <span class="material-icons icon">notifications</span>
+                <div class="user-avatar">
+                    <span class="material-icons">person</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="breadcrumb">
+            <a href="dashboard.html">首頁</a>
+            <span class="separator">></span>
+            <a href="merchants.html">商家管理</a>
+            <span class="separator">></span>
+            <span class="current">編輯商家</span>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active">基本資料</div>
+            <div class="tab">銀行與支付</div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">商家基本資料</h2>
+                <span class="status-badge active">營業中</span>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="merchant-name">商家名稱 <span style="color: var(--error-color)">*</span></label>
+                        <input type="text" id="merchant-name" value="範例咖啡廳">
+                    </div>
+                    <div class="form-group">
+                        <label for="merchant-email">電子郵件 <span style="color: var(--error-color)">*</span></label>
+                        <input type="email" id="merchant-email" value="cafe@example.com">
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="merchant-phone">聯絡電話 <span style="color: var(--error-color)">*</span></label>
+                        <input type="tel" id="merchant-phone" value="0912-345-678">
+                    </div>
+                    <div class="form-group">
+                        <label for="merchant-status">商家狀態</label>
+                        <select id="merchant-status">
+                            <option value="active" selected>啟用中</option>
+                            <option value="inactive">已停用</option>
+                            <option value="pending">審核中</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="merchant-address">地址 <span style="color: var(--error-color)">*</span></label>
+                    <input type="text" id="merchant-address" value="台北市信義區松高路1號">
+                </div>
+                
+                <div class="form-group">
+                    <label for="merchant-description">商家描述</label>
+                    <textarea id="merchant-description" rows="4">範例咖啡廳是一家提供精品咖啡和輕食的咖啡店，主打手沖咖啡和特色甜點，致力於提供最佳的咖啡體驗。</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>商家 Logo</label>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d" alt="商家Logo" style="width: 100px; height: 100px; border-radius: 8px; object-fit: cover;">
+                        <div style="flex: 1;">
+                            <button class="btn btn-secondary">變更Logo</button>
+                            <p style="margin: 8px 0 0 0; font-size: 12px; color: var(--secondary-color);">支援 JPG, PNG, GIF 格式，最大 2MB</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">銀行與支付資料</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="merchant-bank">銀行名稱 <span style="color: var(--error-color)">*</span></label>
+                        <input type="text" id="merchant-bank" value="國泰世華銀行">
+                    </div>
+                    <div class="form-group">
+                        <label for="merchant-branch">分行名稱</label>
+                        <input type="text" id="merchant-branch" value="信義分行">
+                    </div>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="merchant-account-name">戶名 <span style="color: var(--error-color)">*</span></label>
+                        <input type="text" id="merchant-account-name" value="範例咖啡有限公司">
+                    </div>
+                    <div class="form-group">
+                        <label for="merchant-account-number">帳號 <span style="color: var(--error-color)">*</span></label>
+                        <input type="text" id="merchant-account-number" value="12345678901234">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>接受付款方式</label>
+                    <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="payment-credit-card" style="width: auto; margin-right: 8px;" checked>
+                            <label for="payment-credit-card" style="margin: 0;">信用卡</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="payment-bank-transfer" style="width: auto; margin-right: 8px;" checked>
+                            <label for="payment-bank-transfer" style="margin: 0;">銀行轉帳</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <input type="checkbox" id="payment-mobile" style="width: auto; margin-right: 8px;" checked>
+                            <label for="payment-mobile" style="margin: 0;">行動支付</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-footer">
+            <button class="btn btn-secondary" onclick="window.location.href='merchants.html'">取消</button>
+            <button class="btn btn-primary">儲存變更</button>
+        </div>
+    </div>
 </body>
 </html> 

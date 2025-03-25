@@ -3,317 +3,572 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>購物車管理後台 - 產品管理</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>後台管理系統 - 商品管理</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #560CCE;
+            --secondary-color: #414757;
+            --error-color: #f13a59;
+            --text-color: #000000;
+            --background-color: #F5F5F5;
+            --card-color: #FFFFFF;
+            --border-color: #E0E0E0;
+        }
+        
         body {
             font-family: 'Noto Sans TC', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-color);
+            display: flex;
+        }
+        
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background-color: white;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-header .logo {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .sidebar-header h1 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 500;
+        }
+        
+        .sidebar-menu {
+            padding: 16px 0;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            background-color: var(--background-color);
+        }
+        
+        .menu-item.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .menu-item .icon {
+            margin-right: 12px;
+        }
+        
+        .menu-item .label {
+            font-size: 14px;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 20px;
+        }
+        
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        .page-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin: 0;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-menu .icon {
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+        }
+        
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+        
+        .breadcrumb a {
+            color: var(--secondary-color);
+            text-decoration: none;
+        }
+        
+        .breadcrumb .separator {
+            margin: 0 8px;
+            color: var(--secondary-color);
+        }
+        
+        .breadcrumb .current {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .search-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .search-container {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .search-input {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-input input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        
+        .search-input .material-icons {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+        
+        .search-select {
+            width: 180px;
+        }
+        
+        .search-select select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23414757' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+        }
+        
+        .search-button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .action-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .add-button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .table-container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .table-header {
+            display: grid;
+            grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr auto;
+            padding: 16px;
+            background-color: var(--background-color);
+            font-weight: 500;
+        }
+        
+        .table-row {
+            display: grid;
+            grid-template-columns: 80px 2fr 1fr 1fr 1fr 1fr auto;
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+        }
+        
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .product-image {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .product-name {
+            font-weight: 500;
+        }
+        
+        .product-sku {
+            font-size: 12px;
+            color: var(--secondary-color);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-badge.active {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+        }
+        
+        .status-badge.inactive {
+            background-color: #FFEBEE;
+            color: #C62828;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-button {
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .action-button.edit {
+            background-color: #E3F2FD;
+            color: #1565C0;
+        }
+        
+        .action-button.view {
+            background-color: #F3E5F5;
+            color: #6A1B9A;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 24px;
+        }
+        
+        .pagination-info {
+            font-size: 14px;
+            color: var(--secondary-color);
+        }
+        
+        .pagination-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .pagination-button {
+            padding: 6px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: white;
+            color: var(--secondary-color);
+            cursor: pointer;
+        }
+        
+        .pagination-button.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <!-- 瀏覽器模擬框架 開始 -->
-    <div class="mx-auto my-4 w-full max-w-6xl overflow-hidden rounded-lg border border-gray-300 shadow-lg">
-        <!-- 瀏覽器頂部 -->
-        <div class="flex items-center justify-between bg-gray-200 px-4 py-2">
-            <div class="flex space-x-2">
-                <div class="h-3 w-3 rounded-full bg-red-500"></div>
-                <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-                <div class="h-3 w-3 rounded-full bg-green-500"></div>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="material-icons">shopping_cart</span>
             </div>
-            <div class="flex w-2/3 items-center rounded-md bg-white px-3 py-1">
-                <span class="text-gray-500 material-icons text-sm">lock</span>
-                <span class="ml-2 text-sm text-gray-600">https://admin.shoppingcar.com/products</span>
-            </div>
-            <div class="flex space-x-2">
-                <span class="text-gray-500 material-icons">account_circle</span>
-                <span class="text-gray-500 material-icons">more_vert</span>
+            <h1>後台管理系統</h1>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item">
+                <span class="material-icons icon">dashboard</span>
+                <span class="label">儀表板</span>
+            </a>
+            <a href="orders.html" class="menu-item">
+                <span class="material-icons icon">receipt</span>
+                <span class="label">訂單管理</span>
+            </a>
+            <a href="merchants.html" class="menu-item">
+                <span class="material-icons icon">storefront</span>
+                <span class="label">商家管理</span>
+            </a>
+            <a href="products.html" class="menu-item active">
+                <span class="material-icons icon">inventory_2</span>
+                <span class="label">商品管理</span>
+            </a>
+            <a href="users.html" class="menu-item">
+                <span class="material-icons icon">people</span>
+                <span class="label">會員管理</span>
+            </a>
+            <a href="settings.html" class="menu-item">
+                <span class="material-icons icon">settings</span>
+                <span class="label">系統設定</span>
+            </a>
+        </div>
+    </div>
+    
+    <div class="main-content">
+        <div class="top-bar">
+            <h1 class="page-title">商品管理</h1>
+            <div class="user-menu">
+                <span class="material-icons icon">notifications</span>
+                <div class="user-avatar">
+                    <span class="material-icons">person</span>
+                </div>
             </div>
         </div>
-
-        <!-- 頁面內容 -->
-        <div class="bg-white">
-            <!-- 側邊欄和主內容區 -->
-            <div class="flex">
-                <!-- 側邊欄 -->
-                <div class="w-64 bg-blue-800 text-white min-h-screen">
-                    <div class="p-4">
-                        <h1 class="text-xl font-bold">購物車管理後台</h1>
-                    </div>
-                    <nav class="mt-4">
-                        <a href="dashboard.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">dashboard</span> 儀表板
-                        </a>
-                        <a href="orders.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">shopping_cart</span> 訂單管理
-                        </a>
-                        <a href="merchants.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">store</span> 商家管理
-                        </a>
-                        <a href="products.html" class="block px-4 py-2 bg-blue-700">
-                            <span class="material-icons align-middle mr-2">inventory</span> 產品管理
-                        </a>
-                        <a href="users.html" class="block px-4 py-2 hover:bg-blue-700">
-                            <span class="material-icons align-middle mr-2">people</span> 用戶管理
-                        </a>
-                        <div class="mt-8 px-4 py-2">
-                            <a href="login.html" class="flex items-center text-red-300 hover:text-red-100">
-                                <span class="material-icons align-middle mr-2">logout</span> 登出
-                            </a>
-                        </div>
-                    </nav>
+        
+        <div class="breadcrumb">
+            <a href="dashboard.html">首頁</a>
+            <span class="separator">></span>
+            <span class="current">商品管理</span>
+        </div>
+        
+        <div class="search-section">
+            <div class="search-container">
+                <div class="search-input">
+                    <span class="material-icons">search</span>
+                    <input type="text" placeholder="搜尋商品名稱或編號">
                 </div>
-
-                <!-- 主內容區域 -->
-                <div class="flex-1 p-8">
-                    <!-- 頁面標題 -->
-                    <div class="mb-8 flex justify-between items-center">
-                        <h1 class="text-2xl font-bold">產品管理</h1>
-                        <div>
-                            <a href="product-detail.html" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded inline-flex items-center">
-                                <span class="material-icons mr-1 text-sm">add</span>
-                                新增產品
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- 搜索與篩選 -->
-                    <div class="bg-white p-4 rounded-lg shadow mb-6 border border-gray-200">
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">搜索產品</label>
-                                <div class="relative">
-                                    <input type="text" placeholder="產品名稱、編號或關鍵字" class="w-full border border-gray-300 rounded-md shadow-sm py-2 pl-10 pr-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                        <span class="material-icons text-gray-400 text-lg">search</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">商家篩選</label>
-                                <select class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                    <option>全部商家</option>
-                                    <option>怪物糖果</option>
-                                    <option>美味餅乾</option>
-                                    <option>吃貨零食</option>
-                                    <option>甜點天堂</option>
-                                    <option>水果天地</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">產品狀態</label>
-                                <select class="w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
-                                    <option>全部狀態</option>
-                                    <option>上架中</option>
-                                    <option>已下架</option>
-                                    <option>庫存不足</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mt-4 flex justify-end">
-                            <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded mr-2">
-                                重置
-                            </button>
-                            <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded">
-                                篩選
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 產品表格 -->
-                    <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden mb-6">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">產品</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">商家</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">價格</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">庫存</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">狀態</th>
-                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200">
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">巧克力怪獸餅乾</div>
-                                                    <div class="text-xs text-gray-500">P-10234</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">怪物糖果</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$350</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">120</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">上架中</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">編輯</a>
-                                            <a href="#" class="text-red-600 hover:text-red-900">下架</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">香蕉口味糖果棒</div>
-                                                    <div class="text-xs text-gray-500">P-10567</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">怪物糖果</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$200</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">85</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">上架中</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">編輯</a>
-                                            <a href="#" class="text-red-600 hover:text-red-900">下架</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">草莓味泡泡糖</div>
-                                                    <div class="text-xs text-gray-500">P-10789</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">怪物糖果</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$100</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">8</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">庫存不足</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">編輯</a>
-                                            <a href="#" class="text-red-600 hover:text-red-900">下架</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">巧克力碎片餅乾</div>
-                                                    <div class="text-xs text-gray-500">P-20123</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">美味餅乾</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$280</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">62</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">上架中</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">編輯</a>
-                                            <a href="#" class="text-red-600 hover:text-red-900">下架</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <div class="flex items-center">
-                                                <div class="h-10 w-10 flex-shrink-0 rounded border border-gray-200 bg-gray-100 flex items-center justify-center mr-3">
-                                                    <span class="material-icons text-gray-400">image</span>
-                                                </div>
-                                                <div>
-                                                    <div class="text-sm font-medium text-gray-900">蘋果派</div>
-                                                    <div class="text-xs text-gray-500">P-30045</div>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">甜點天堂</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">$320</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">0</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">已下架</span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <a href="product-detail.html" class="text-blue-600 hover:text-blue-900 mr-3">編輯</a>
-                                            <a href="#" class="text-green-600 hover:text-green-900">上架</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <!-- 分頁 -->
-                        <div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                                <div>
-                                    <p class="text-sm text-gray-700">
-                                        顯示第 <span class="font-medium">1</span> 至 <span class="font-medium">5</span> 項結果，共 <span class="font-medium">150</span> 項
-                                    </p>
-                                </div>
-                                <div>
-                                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                            <span class="material-icons text-sm">chevron_left</span>
-                                        </a>
-                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-blue-50 text-sm font-medium text-blue-600 hover:bg-blue-100">
-                                            1
-                                        </a>
-                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                            2
-                                        </a>
-                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                            3
-                                        </a>
-                                        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
-                                            ...
-                                        </span>
-                                        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">
-                                            30
-                                        </a>
-                                        <a href="#" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
-                                            <span class="material-icons text-sm">chevron_right</span>
-                                        </a>
-                                    </nav>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 批量操作 -->
-                    <div class="bg-white p-4 rounded-lg shadow flex justify-between items-center border border-gray-200">
-                        <div class="text-sm text-gray-700">已選擇 <span class="font-medium text-blue-600">0</span> 個產品</div>
-                        <div class="flex space-x-3">
-                            <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded text-sm">
-                                批量設定價格
-                            </button>
-                            <button class="bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded text-sm">
-                                批量更新庫存
-                            </button>
-                            <button class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
-                                批量上架
-                            </button>
-                            <button class="bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded text-sm">
-                                批量下架
-                            </button>
-                        </div>
+                <div class="search-select">
+                    <select>
+                        <option value="">所有商家</option>
+                        <option value="1">範例咖啡廳</option>
+                        <option value="2">優質餐具店</option>
+                        <option value="3">生活雜貨鋪</option>
+                    </select>
+                </div>
+                <div class="search-select">
+                    <select>
+                        <option value="">所有狀態</option>
+                        <option value="active">上架中</option>
+                        <option value="inactive">已下架</option>
+                    </select>
+                </div>
+                <button class="search-button">搜尋</button>
+            </div>
+            
+            <div class="action-container">
+                <a href="product-create.html" class="add-button">
+                    <span class="material-icons">add</span>
+                    新增商品
+                </a>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <div class="table-header">
+                <div>圖片</div>
+                <div>商品資訊</div>
+                <div>商家</div>
+                <div>價格</div>
+                <div>庫存</div>
+                <div>狀態</div>
+                <div>操作</div>
+            </div>
+            
+            <div class="table-row">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d" alt="商品圖片" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-details">
+                        <div class="product-name">精品咖啡杯組</div>
+                        <div class="product-sku">SKU: CFE-CP-001</div>
                     </div>
                 </div>
+                <div>範例咖啡廳</div>
+                <div>NT$ 580</div>
+                <div>50</div>
+                <div>
+                    <span class="status-badge active">上架中</span>
+                </div>
+                <div class="action-buttons">
+                    <a href="product-edit.html" class="action-button edit">編輯</a>
+                    <a href="product-detail.html" class="action-button view">查看</a>
+                </div>
+            </div>
+            
+            <div class="table-row">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1572119752777-2a0b6d58b285" alt="商品圖片" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-details">
+                        <div class="product-name">手沖咖啡濾紙</div>
+                        <div class="product-sku">SKU: CFE-FP-002</div>
+                    </div>
+                </div>
+                <div>範例咖啡廳</div>
+                <div>NT$ 120</div>
+                <div>200</div>
+                <div>
+                    <span class="status-badge active">上架中</span>
+                </div>
+                <div class="action-buttons">
+                    <a href="product-edit.html" class="action-button edit">編輯</a>
+                    <a href="product-detail.html" class="action-button view">查看</a>
+                </div>
+            </div>
+            
+            <div class="table-row">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1542224566-6e85f2e6772f" alt="商品圖片" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-details">
+                        <div class="product-name">日式風格餐盤</div>
+                        <div class="product-sku">SKU: TAB-PL-001</div>
+                    </div>
+                </div>
+                <div>優質餐具店</div>
+                <div>NT$ 350</div>
+                <div>30</div>
+                <div>
+                    <span class="status-badge active">上架中</span>
+                </div>
+                <div class="action-buttons">
+                    <a href="product-edit.html" class="action-button edit">編輯</a>
+                    <a href="product-detail.html" class="action-button view">查看</a>
+                </div>
+            </div>
+            
+            <div class="table-row">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1574368573403-da85580e42b9" alt="商品圖片" class="product-image">
+                </div>
+                <div class="product-info">
+                    <div class="product-details">
+                        <div class="product-name">北歐風保溫壺</div>
+                        <div class="product-sku">SKU: KIT-TP-003</div>
+                    </div>
+                </div>
+                <div>生活雜貨鋪</div>
+                <div>NT$ 780</div>
+                <div>15</div>
+                <div>
+                    <span class="status-badge inactive">已下架</span>
+                </div>
+                <div class="action-buttons">
+                    <a href="product-edit.html" class="action-button edit">編輯</a>
+                    <a href="product-detail.html" class="action-button view">查看</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="pagination">
+            <div class="pagination-info">
+                顯示 1 到 4 筆，共 25 筆資料
+            </div>
+            <div class="pagination-buttons">
+                <button class="pagination-button" disabled>上一頁</button>
+                <button class="pagination-button active">1</button>
+                <button class="pagination-button">2</button>
+                <button class="pagination-button">3</button>
+                <button class="pagination-button">下一頁</button>
             </div>
         </div>
     </div>
-    <!-- 瀏覽器模擬框架 結束 -->
 </body>
 </html> 
